@@ -440,7 +440,7 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
       padding: 20, overflowY: 'auto',
     }}>
       <div onClick={e => e.stopPropagation()} className="glass-strong" style={{
-        width: '100%', maxWidth: 720, padding: 22, borderRadius: 18, position: 'relative',
+        width: '100%', maxWidth: 860, padding: 24, borderRadius: 18, position: 'relative',
         margin: 'auto 0',
       }}>
         <button onClick={onClose} className="btn-ghost" style={{ position: 'absolute', top: 12, right: 12 }}>
@@ -452,49 +452,161 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
         <div className="font-display gradient-neon" style={{ fontSize: 22, fontWeight: 700, marginTop: 4, marginBottom: 4 }}>
           Pesos inteligentes para o seu edital ⚖️
         </div>
-        <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.45 }}>
-          Para cada disciplina, informe a <strong>quantidade de questões na prova</strong> (peso 0,5),
-          a <strong>dificuldade</strong> de 1 a 5 (peso 0,3) e a <strong>extensão</strong> do conteúdo
-          de 1 a 5 (peso 0,2). O sistema sugere um peso final de 1 a 5 e <strong>reorganiza</strong>
-          a matriz em ordem decrescente. Você pode ajustar manualmente.
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 16, lineHeight: 1.5 }}>
+          Informe os dados de cada disciplina. O sistema calcula automaticamente o peso (1–5) e <strong>reorganiza a matriz</strong> em ordem de relevância. Você pode ajustar manualmente.
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr repeat(3, minmax(70px, 1fr)) auto auto', gap: 8, alignItems: 'center', fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.08em', padding: '6px 6px', borderBottom: '1px solid rgba(30,32,48,0.07)' }}>
-          <div>DISCIPLINA</div>
-          <div style={{ textAlign: 'center' }}>QTD Q.<br/><span style={{ opacity: 0.6 }}>×0,5</span></div>
-          <div style={{ textAlign: 'center' }}>DIFIC.<br/><span style={{ opacity: 0.6 }}>×0,3</span></div>
-          <div style={{ textAlign: 'center' }}>EXT.<br/><span style={{ opacity: 0.6 }}>×0,2</span></div>
-          <div style={{ textAlign: 'center' }}>PESO</div>
-          <div style={{ textAlign: 'center' }}>TAG</div>
+        {/* Cabeçalho da tabela */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1.6fr repeat(3, minmax(90px, 1fr)) 80px 1fr',
+          gap: 8,
+          alignItems: 'end',
+          padding: '0 8px 8px',
+          borderBottom: '2px solid rgba(30,32,48,0.08)',
+          marginBottom: 4,
+        }}>
+          <div style={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--text-dim)' }}>
+            DISCIPLINA
+          </div>
+          {[
+            { label: 'Quantidade de Questões', hint: 'peso 0,5', icon: '📝' },
+            { label: 'Dificuldade', hint: '1 = fácil · 5 = muito difícil', icon: '🔥' },
+            { label: 'Extensão', hint: '1 = curta · 5 = muito extensa', icon: '📚' },
+          ].map(({ label, hint, icon }) => (
+            <div key={label} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
+                {icon} {label}
+              </div>
+              <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+                {hint}
+              </div>
+            </div>
+          ))}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>⚖️ Peso</div>
+            <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>manual</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>Resultado</div>
+            <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>calculado</div>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: '50vh', overflowY: 'auto', paddingRight: 4 }}>
-          {subjects.map(s => {
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: '48vh', overflowY: 'auto', paddingRight: 2 }}>
+          {subjects.map((s, si) => {
             const v = form[s.id] || { questoes: 0, dificuldade: 3, extensao: 3 };
             const w = computeWeight(v);
             const info = WEIGHT_INFO[w];
+            const isManual = v.manual != null;
             return (
-              <div key={s.id} style={{ display: 'grid', gridTemplateColumns: '1.4fr repeat(3, minmax(70px, 1fr)) auto auto', gap: 8, alignItems: 'center', padding: '6px 6px', borderBottom: '1px solid rgba(30,32,48,0.04)' }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div key={s.id} style={{
+                display: 'grid',
+                gridTemplateColumns: '1.6fr repeat(3, minmax(90px, 1fr)) 80px 1fr',
+                gap: 8,
+                alignItems: 'center',
+                padding: '8px 8px',
+                borderRadius: 8,
+                background: si % 2 === 0 ? 'rgba(30,32,48,0.025)' : 'transparent',
+                transition: 'background 150ms',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,184,212,0.06)'}
+              onMouseLeave={e => e.currentTarget.style.background = si % 2 === 0 ? 'rgba(30,32,48,0.025)' : 'transparent'}
+              >
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={s.name}>
                   {s.name}
                 </div>
-                <input type="number" min={0} className="input-base" value={v.questoes}
-                  onChange={e => setField(s.id, 'questoes', Math.max(0, parseInt(e.target.value) || 0))}
-                  style={{ textAlign: 'center', fontSize: 13 }} />
-                <input type="number" min={1} max={5} className="input-base" value={v.dificuldade}
-                  onChange={e => setField(s.id, 'dificuldade', Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
-                  style={{ textAlign: 'center', fontSize: 13 }} />
-                <input type="number" min={1} max={5} className="input-base" value={v.extensao}
-                  onChange={e => setField(s.id, 'extensao', Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
-                  style={{ textAlign: 'center', fontSize: 13 }} />
-                <select className="input-base" value={v.manual ?? w}
-                  onChange={e => setField(s.id, 'manual', parseInt(e.target.value))}
-                  style={{ textAlign: 'center', fontWeight: 800, color: info.color, fontSize: 13, padding: '6px 8px' }}>
-                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-                <span className={`weight-tag ${info.cls}`} style={{ whiteSpace: 'nowrap' }}>
-                  {info.label}
-                </span>
+
+                {/* Quantidade de Questões */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  <input type="number" min={0} value={v.questoes}
+                    onChange={e => setField(s.id, 'questoes', Math.max(0, parseInt(e.target.value) || 0))}
+                    style={{
+                      width: '100%', boxSizing: 'border-box',
+                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(0,184,212,0.25)',
+                      background: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 700,
+                      color: 'var(--grafite)', textAlign: 'center', outline: 'none',
+                      fontFamily: 'JetBrains Mono, monospace',
+                      transition: 'border-color 150ms',
+                    }}
+                    onFocus={e => e.target.style.borderColor = 'var(--ciano)'}
+                    onBlur={e => e.target.style.borderColor = 'rgba(0,184,212,0.25)'}
+                  />
+                </div>
+
+                {/* Dificuldade */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  <input type="number" min={1} max={5} value={v.dificuldade}
+                    onChange={e => setField(s.id, 'dificuldade', Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
+                    style={{
+                      width: '100%', boxSizing: 'border-box',
+                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(249,115,22,0.25)',
+                      background: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 700,
+                      color: 'var(--grafite)', textAlign: 'center', outline: 'none',
+                      fontFamily: 'JetBrains Mono, monospace',
+                      transition: 'border-color 150ms',
+                    }}
+                    onFocus={e => e.target.style.borderColor = '#F97316'}
+                    onBlur={e => e.target.style.borderColor = 'rgba(249,115,22,0.25)'}
+                  />
+                  <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+                    {'★'.repeat(v.dificuldade)}{'☆'.repeat(5 - v.dificuldade)}
+                  </div>
+                </div>
+
+                {/* Extensão */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  <input type="number" min={1} max={5} value={v.extensao}
+                    onChange={e => setField(s.id, 'extensao', Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
+                    style={{
+                      width: '100%', boxSizing: 'border-box',
+                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(91,71,184,0.25)',
+                      background: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 700,
+                      color: 'var(--grafite)', textAlign: 'center', outline: 'none',
+                      fontFamily: 'JetBrains Mono, monospace',
+                      transition: 'border-color 150ms',
+                    }}
+                    onFocus={e => e.target.style.borderColor = '#5B47B8'}
+                    onBlur={e => e.target.style.borderColor = 'rgba(91,71,184,0.25)'}
+                  />
+                  <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+                    {'▓'.repeat(v.extensao)}{'░'.repeat(5 - v.extensao)}
+                  </div>
+                </div>
+
+                {/* Peso manual */}
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <select value={v.manual ?? ''}
+                    onChange={e => setField(s.id, 'manual', e.target.value === '' ? null : parseInt(e.target.value))}
+                    style={{
+                      width: '100%', boxSizing: 'border-box',
+                      padding: '7px 6px', borderRadius: 8,
+                      border: `1.5px solid ${isManual ? `${info.color}55` : 'rgba(30,32,48,0.15)'}`,
+                      background: isManual ? `${info.color}10` : 'rgba(255,255,255,0.8)',
+                      fontSize: 13, fontWeight: 800, color: isManual ? info.color : 'var(--text-muted)',
+                      textAlign: 'center', outline: 'none', cursor: 'pointer',
+                      fontFamily: 'JetBrains Mono, monospace',
+                    }}>
+                    <option value="">auto</option>
+                    {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
+
+                {/* Tag do peso calculado */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 5,
+                    padding: '5px 10px', borderRadius: 8,
+                    background: `${info.color}14`,
+                    border: `1px solid ${info.color}44`,
+                    color: info.color, fontWeight: 800, fontSize: 11,
+                    fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.04em',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    <strong style={{ fontSize: 14 }}>{w}</strong>
+                    <span style={{ fontSize: 9, opacity: 0.8 }}>{info.label}</span>
+                  </span>
+                </div>
               </div>
             );
           })}

@@ -501,5 +501,102 @@ const FoxEvolutionPanel = React.memo(function FoxEvolutionPanel({ xp, sick = fal
   prev.dailyLogs === next.dailyLogs
 );
 
+// ── FoxEvolutionModal — celebração quando a raposa evolui ──────────────────
+function FoxEvolutionModal({ fromStage, toStage, onClose }) {
+  const fromFox = FOX_STAGES[Math.max(0, fromStage - 1)];
+  const toFox = FOX_STAGES[Math.max(0, toStage - 1)];
+  const FoxComponent = FOX_STAGE_COMPONENTS[Math.max(0, toStage - 1)];
+  const [phase, setPhase] = React.useState('reveal');
+
+  React.useEffect(() => {
+    const t = setTimeout(() => setPhase('done'), 2800);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 200,
+      background: `radial-gradient(ellipse at center, ${toFox.color}66, rgba(12,13,18,0.88))`,
+      backdropFilter: 'blur(14px)',
+      display: 'grid', placeItems: 'center', padding: 24,
+      animation: 'fade-in 400ms ease-out',
+    }}>
+      <div style={{ textAlign: 'center', maxWidth: 480, animation: 'anim-slide-up 500ms cubic-bezier(0.2,0.8,0.2,1)' }}>
+
+        {/* Header */}
+        <div style={{
+          fontSize: 11, letterSpacing: '0.4em', color: toFox.accent, marginBottom: 18,
+          fontFamily: 'JetBrains Mono, monospace', fontWeight: 800,
+          textShadow: `0 0 14px ${toFox.accent}88`,
+        }}>✨ EVOLUÇÃO ✨</div>
+
+        {/* Fox sprite com glow */}
+        <div style={{
+          margin: '0 auto 24px', width: 220, height: 220,
+          position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          animation: phase === 'reveal' ? 'pet-evolution-emerge 2.4s ease-out' : 'pet-bob 3s ease-in-out infinite',
+        }}>
+          {phase === 'reveal' && (
+            <div style={{
+              position: 'absolute', inset: '-50px', borderRadius: '50%',
+              background: `radial-gradient(circle, ${toFox.color}cc, ${toFox.accent}44, transparent 65%)`,
+              animation: 'pet-burst 2s ease-out',
+            }} />
+          )}
+          <div style={{ position: 'relative', zIndex: 2, transform: 'scale(1.6)', transformOrigin: 'center' }}>
+            <FoxComponent />
+          </div>
+        </div>
+
+        {/* Transição de fase */}
+        <div style={{
+          fontSize: 11, color: 'rgba(255,255,255,0.6)',
+          fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.18em', fontWeight: 600,
+          marginBottom: 6,
+        }}>
+          FASE {fromStage} <span style={{ color: toFox.accent, padding: '0 10px' }}>→</span> FASE {toStage}
+        </div>
+
+        {/* Nome da fase */}
+        <div className="font-display" style={{
+          fontSize: 34, fontWeight: 700, color: 'white',
+          letterSpacing: '-0.02em', marginBottom: 10,
+          textShadow: `0 0 24px ${toFox.accent}88, 0 4px 20px rgba(0,0,0,0.5)`,
+        }}>
+          {toFox.name}
+        </div>
+
+        {/* Descrição */}
+        <div style={{
+          fontSize: 14, color: 'rgba(255,255,255,0.88)',
+          maxWidth: 360, margin: '0 auto 22px', lineHeight: 1.6,
+        }}>
+          {toFox.desc}
+        </div>
+
+        {/* Botão */}
+        <button onClick={onClose} style={{
+          padding: '14px 38px', fontSize: 14, fontWeight: 700, letterSpacing: '0.1em',
+          borderRadius: 12, border: `1.5px solid ${toFox.accent}`,
+          background: `linear-gradient(135deg, ${toFox.color}, ${toFox.accent})`,
+          color: 'white', cursor: 'pointer',
+          boxShadow: `0 6px 30px ${toFox.accent}88, 0 0 20px ${toFox.color}55`,
+          fontFamily: 'Space Grotesk, sans-serif',
+          textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+        }}>
+          🦊 CONTINUAR JORNADA →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Função utilitária exposta para que app.jsx use os thresholds da raposa
+function getFoxStage(xp) {
+  return evaluateFoxProgression(xp).currentStage.id;
+}
+
 window.PetFoxProvider = PetFoxProvider;
 window.FoxEvolutionPanel = FoxEvolutionPanel;
+window.FoxEvolutionModal = FoxEvolutionModal;
+window.getFoxStage = getFoxStage;

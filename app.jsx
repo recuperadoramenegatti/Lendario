@@ -21,8 +21,8 @@ function AchievementToast({ kind, onDone }) {
     restore_done:      { title: 'Backup restaurado',            sub: 'Seus dados foram recarregados',             icon: '🔄', color: '#00b8d4' },
     reset_done:        { title: 'Sistema zerado',               sub: 'Tudo voltou ao estado inicial',             icon: '🌱', color: 'var(--esmeralda)' },
     goals_saved:       { title: 'Metas atualizadas',            sub: 'Boa! Vamos cumprir',                        icon: '🎯', color: 'var(--tinta)' },
-    pet_sick:          { title: 'Sua dragãozinha adoeceu 🤒',   sub: 'Estude 2 dias seguidos para curá-la',      icon: '🤒', color: '#f59e0b' },
-    pet_healed:        { title: 'Sua dragãozinha está curada!', sub: 'Cuidando dela com seus estudos',            icon: '💚', color: 'var(--esmeralda)' },
+    pet_sick:          { title: 'Sua raposinha adoeceu 🤒',   sub: 'Estude 2 dias seguidos para curá-la',      icon: '🤒', color: '#f59e0b' },
+    pet_healed:        { title: 'Sua raposinha está curada!', sub: 'Cuidando dela com seus estudos',            icon: '💚', color: 'var(--esmeralda)' },
     // Blindado achievements (regular toast)
     blindado_first:    { title: 'Primeiro Escudo Ativado',      sub: 'Sua primeira sessão blindada',              icon: '🛡️', color: '#5B47B8' },
     blindado_5:        { title: 'Guardião do Foco',             sub: '5 sessões blindadas concluídas',            icon: '⚔️', color: '#5B47B8' },
@@ -547,7 +547,7 @@ function App() {
   const [toasts, setToasts] = useState([]);
   const [cinematicToasts, setCinematicToasts] = useState([]);
   const [evolutionEvent, setEvolutionEvent] = useState(null);
-  const prevPetStageRef = useRef(window.DA.getPetStage(shared.xp));
+  const prevPetStageRef = useRef(window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp));
   const [weeklyReportOpen, setWeeklyReportOpen] = useState(false);
 
   const pushToast = (kind) => {
@@ -569,7 +569,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const stage = window.DA.getPetStage(shared.xp);
+    // Usa os thresholds da raposa (FOX_STAGES) para detecção correta de evolução
+    const stage = window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp);
     if (stage > prevPetStageRef.current) {
       setEvolutionEvent({ from: prevPetStageRef.current, to: stage });
       window.celebrateEvolution && window.celebrateEvolution();
@@ -820,7 +821,7 @@ function App() {
   };
   const handleRestore = (backup) => {
     setShared(backup.shared); setObjState(backup.objetiva); setDiscState(backup.discursiva);
-    prevPetStageRef.current = window.DA.getPetStage(backup.shared.xp || 0);
+    prevPetStageRef.current = window.getFoxStage ? window.getFoxStage(backup.shared.xp || 0) : window.DA.getPetStage(backup.shared.xp || 0);
   };
   const handleReset = () => {
     setShared(window.DA.INITIAL_SHARED); setObjState(window.DA.INITIAL_OBJETIVA); setDiscState(window.DA.INITIAL_DISCURSIVA);
@@ -1180,7 +1181,7 @@ function App() {
 
       {showOnboarding && <OnboardingModal onDone={() => setShowOnboarding(false)} />}
       {legalModal && <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />}
-      {evolutionEvent && <EvolutionModal fromStage={evolutionEvent.from} toStage={evolutionEvent.to} onClose={() => setEvolutionEvent(null)} />}
+      {evolutionEvent && <FoxEvolutionModal fromStage={evolutionEvent.from} toStage={evolutionEvent.to} onClose={() => setEvolutionEvent(null)} />}
       {toasts.map(t => <AchievementToast key={t.id} kind={t.kind} onDone={() => setToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       {cinematicToasts.slice(-1).map(t => <CinematicAchievementToast key={t.id} kind={t.kind} onDone={() => setCinematicToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       <WeeklyReportModal open={weeklyReportOpen} shared={shared} onClose={() => {
