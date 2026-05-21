@@ -83,16 +83,16 @@ const ONBOARDING_STEPS = [
   },
   {
     id: 'pet',
-    title: 'Pet Companion',
-    subtitle: 'Sua dragãozinha evolui com você',
+    title: 'Raposinha Mascote',
+    subtitle: 'Sua raposinha evolui com você',
     body: 'Ganhe XP estudando. Sua companheira evolui conforme você progride. Cuide dela mantendo constância.',
     visual: 'pet',
-    icon: '🐉',
+    icon: '🦊',
     bullets: [
-      'Ovo → Filhote → Aegis → Forma Final',
+      'Ovo → Filhote → Aprendiz → Mestra da Toga',
       'Evolui a cada marco de XP conquistado',
-      'Adoece se você faltar 2 dias seguidos',
-      'Cura estudando novamente'
+      'Adoece se você ficar 3 dias sem estudar',
+      'Cura estudando 2 dias seguidos'
     ],
   },
   {

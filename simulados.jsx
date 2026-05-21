@@ -267,9 +267,8 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
                       const acc = d.questions > 0 ? (d.correct / d.questions) * 100 : 0;
                       const dt = accColorTier(acc);
                       return (
-                        <div key={di} style={{ display: 'grid', gridTemplateColumns: '1.3fr 100px 70px 70px 1.5fr 60px', gap: 10, alignItems: 'center', padding: '6px 0' }}>
+                        <div key={di} style={{ display: 'grid', gridTemplateColumns: '1.3fr 70px 70px 1.5fr 60px', gap: 10, alignItems: 'center', padding: '6px 0' }}>
                           <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.name}</div>
-                          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, textAlign: 'center' }}>P{d.peso || 1}</div>
                           <div className="num" style={{ fontSize: 11, color: 'var(--esmeralda)', fontWeight: 800, textAlign: 'center' }}>✓ {d.correct}</div>
                           <div className="num" style={{ fontSize: 11, color: 'var(--coral)', fontWeight: 800, textAlign: 'center' }}>✗ {d.wrong}</div>
                           <div style={{ height: 10, background: 'rgba(30,32,48,0.05)', borderRadius: 99, overflow: 'hidden' }}>
@@ -448,9 +447,8 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
 
         {/* Disciplines table */}
         <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(30,32,48,0.07)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 70px 1fr 90px 90px', gap: 8, padding: '10px 12px', background: 'rgba(30,32,48,0.04)', fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, color: 'var(--text-dim)', letterSpacing: '0.08em' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 90px 90px', gap: 8, padding: '10px 12px', background: 'rgba(30,32,48,0.04)', fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, color: 'var(--text-dim)', letterSpacing: '0.08em' }}>
             <div>DISCIPLINA</div>
-            <div style={{ textAlign: 'center' }}>PESO</div>
             <div style={{ textAlign: 'center' }}>Qtd Q. ✎</div>
             <div style={{ textAlign: 'center', color: 'var(--esmeralda)' }}>✓ ACERTOS</div>
             <div style={{ textAlign: 'center', color: 'var(--coral)' }}>✗ ERROS</div>
@@ -462,11 +460,8 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
               </div>
             )}
             {rows.map((r, i) => (
-              <div key={r.subjectId || i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 70px 1fr 90px 90px', gap: 8, padding: '6px 12px', borderTop: '1px solid rgba(30,32,48,0.04)', alignItems: 'center' }}>
+              <div key={r.subjectId || i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 90px 90px', gap: 8, padding: '6px 12px', borderTop: '1px solid rgba(30,32,48,0.04)', alignItems: 'center' }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={r.name}>{r.name}</div>
-                <input type="number" min={1} max={5} value={r.peso}
-                  onChange={e => updateRow(i, 'peso', Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
-                  style={{ ...inputStyle, textAlign: 'center', fontSize: 13, fontWeight: 800 }} />
                 <input type="number" min={0} placeholder="0" value={r.questions}
                   onChange={e => updateRow(i, 'questions', e.target.value)}
                   style={{ ...inputStyle, textAlign: 'center', fontSize: 13 }} />
