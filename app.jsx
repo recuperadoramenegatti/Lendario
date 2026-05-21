@@ -1,11 +1,10 @@
-// TOGA — App Root v2 — Ultra Premium
-// Changes vs v1:
-// • Sidebar: fixed 200px, premium active state, no layout bug
-// • TotalsSection: condensed to single horizontal row + mastered % metric
-// • Removed "Checks no edital" item (replaced by Tópicos Dominados %)
-// • Removed ConcursoInfo block below "tempo até a prova"
-// • InsightsPanel, BackupSection, GoalsModal preserved
-// • Micro-animation delays on cards
+// TOGA — App Root v3 — Cloud Sync
+// Changes vs v2:
+// • Google Auth via Supabase (opcional, local-first)
+// • Cloud save silencioso com debounce 30s
+// • Migração automática de dados locais na 1ª autenticação
+// • Merge inteligente: nunca perde XP, streaks ou conquistas
+// • CloudAuthSection na aba Ajustes
 
 const { useState, useEffect, useRef } = React;
 
@@ -23,6 +22,9 @@ function AchievementToast({ kind, onDone }) {
     goals_saved:       { title: 'Metas atualizadas',            sub: 'Boa! Vamos cumprir',                        icon: '🎯', color: 'var(--tinta)' },
     pet_sick:          { title: 'Sua raposinha adoeceu 🤒',   sub: 'Estude 2 dias seguidos para curá-la',      icon: '🤒', color: '#f59e0b' },
     pet_healed:        { title: 'Sua raposinha está curada!', sub: 'Cuidando dela com seus estudos',            icon: '💚', color: 'var(--esmeralda)' },
+    // Cloud sync
+    cloud_synced:      { title: 'Backup atualizado',            sub: 'Progresso salvo na nuvem',                  icon: '☁️', color: 'var(--esmeralda)' },
+    cloud_migrated:    { title: 'Dados migrados',               sub: 'Progresso enviado para a nuvem',            icon: '✨', color: 'var(--ciano)' },
     // Blindado achievements (regular toast)
     blindado_first:    { title: 'Primeiro Escudo Ativado',      sub: 'Sua primeira sessão blindada',              icon: '🛡️', color: '#5B47B8' },
     blindado_5:        { title: 'Guardião do Foco',             sub: '5 sessões blindadas concluídas',            icon: '⚔️', color: '#5B47B8' },
@@ -35,7 +37,7 @@ function AchievementToast({ kind, onDone }) {
     blindado_30day:    { title: 'Mês Blindado',                 sub: '30 dias consecutivos — nível supremo',      icon: '🌟', color: '#C9A961' },
   };
   const a = A[kind] || A.first_mastered;
-  const isAviso = kind.startsWith('pet_') || ['goals_saved','backup_done','restore_done','reset_done'].includes(kind);
+  const isAviso = kind.startsWith('pet_') || ['goals_saved','backup_done','restore_done','reset_done','cloud_synced','cloud_migrated'].includes(kind);
   return (
     <div className="glass-strong toast-achievement" style={{
       position: 'fixed', top: 80, right: 20, zIndex: 80,
@@ -550,6 +552,11 @@ function App() {
   const prevPetStageRef = useRef(window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp));
   const [weeklyReportOpen, setWeeklyReportOpen] = useState(false);
 
+  // ── Cloud Auth + Sync state ────────────────────────────────
+  const [user, setUser]               = useState(null);
+  const [syncStatus, setSyncStatus]   = useState('idle'); // 'idle'|'syncing'|'synced'|'error'
+  const syncTimerRef                  = useRef(null);
+
   const pushToast = (kind) => {
     if (CINEMATIC_KINDS.has(kind)) {
       setCinematicToasts(t => [...t, { id: Math.random(), kind }]);
@@ -592,6 +599,93 @@ function App() {
     const next = window.DA.nextPetHealth(shared.petHealth || 'healthy', shared.dailyLogs || []);
     if (next !== shared.petHealth) setShared(s => ({ ...s, petHealth: next }));
   }, []);
+
+  // ── Cloud Sync Logic ───────────────────────────────────────
+  // Primeiro sync: carrega nuvem, faz merge, salva resultado
+  const handleFirstSync = React.useCallback(async (userId) => {
+    if (!window.TogaAuth?.isConfigured()) return;
+    setSyncStatus('syncing');
+
+    const cloudRow = await window.TogaAuth.loadFromCloud(userId);
+
+    // Snapshot do estado local atual (localStorage está em sync com React state)
+    const localData = {
+      shared:     loadKey(KEYS.shared,   window.DA.INITIAL_SHARED),
+      objetiva:   loadKey(KEYS.obj,      window.DA.INITIAL_OBJETIVA),
+      discursiva: loadKey(KEYS.disc,     window.DA.INITIAL_DISCURSIVA),
+      meta:       loadKey(KEYS.meta,     {}),
+    };
+
+    let dataToSave = localData;
+    let wasMigrated = false;
+
+    if (cloudRow) {
+      // Merge local + cloud — nunca perde progresso
+      const cloudData = {
+        shared:     cloudRow.shared     || {},
+        objetiva:   cloudRow.objetiva   || {},
+        discursiva: cloudRow.discursiva || {},
+        meta:       cloudRow.meta       || {},
+      };
+      const merged = window.TogaAuth.mergeData(localData, cloudData);
+      dataToSave = merged;
+
+      // Atualiza React state (também atualiza localStorage via useEffect)
+      setShared(merged.shared);
+      setObjState(merged.objetiva);
+      setDiscState(merged.discursiva);
+    } else {
+      // Nuvem vazia: primeira vez do usuário → migra dados locais
+      wasMigrated = (localData.shared?.xp || 0) > 0 || (localData.shared?.dailyLogs || []).length > 0;
+    }
+
+    const ok = await window.TogaAuth.saveToCloud(userId, dataToSave);
+    setSyncStatus(ok ? 'synced' : 'error');
+    if (ok) {
+      pushToast(wasMigrated ? 'cloud_migrated' : 'cloud_synced');
+      setTimeout(() => setSyncStatus('idle'), 4000);
+    }
+  }, []); // eslint-disable-line
+
+  // Init auth: verifica sessão existente e escuta mudanças
+  useEffect(() => {
+    if (!window.TogaAuth?.isConfigured()) return;
+
+    // Sessão já existente (reload da página)
+    window.TogaAuth.getSession().then(session => {
+      if (session?.user) {
+        setUser(session.user);
+        handleFirstSync(session.user.id);
+      }
+    });
+
+    // Listener: login / logout / token refresh
+    const unsub = window.TogaAuth.onAuthChange((event, session) => {
+      const u = session?.user || null;
+      setUser(u);
+      if (event === 'SIGNED_IN' && u) handleFirstSync(u.id);
+      if (event === 'SIGNED_OUT')     setSyncStatus('idle');
+    });
+
+    return unsub;
+  }, [handleFirstSync]);
+
+  // Sync silencioso em background: debounce 30s após mudança de estado
+  useEffect(() => {
+    if (!user?.id || !window.TogaAuth?.isConfigured()) return;
+
+    clearTimeout(syncTimerRef.current);
+    syncTimerRef.current = setTimeout(async () => {
+      setSyncStatus('syncing');
+      const ok = await window.TogaAuth.saveToCloud(user.id, {
+        shared, objetiva: objState, discursiva: discState, meta,
+      });
+      setSyncStatus(ok ? 'synced' : 'error');
+      if (ok) setTimeout(() => setSyncStatus('idle'), 3000);
+    }, 30000);
+
+    return () => clearTimeout(syncTimerRef.current);
+  }, [shared, objState, discState, meta, user]); // eslint-disable-line
 
   const calcStreak = (logs) => window.DA.calcConstancia(logs);
   const calcBestStreak = (logs) => window.DA.calcConstanciaRecord(logs);
@@ -1099,6 +1193,19 @@ function App() {
                 }
               </div>
             </section>
+            {/* Cloud Auth + Sync — posicionado antes do backup local */}
+            <section style={{ marginBottom: 14 }}>
+              <CloudAuthSection
+                user={user}
+                syncStatus={syncStatus}
+                onSignIn={() => window.TogaAuth.signInWithGoogle()}
+                onSignOut={async () => {
+                  await window.TogaAuth.signOut();
+                  setUser(null);
+                  setSyncStatus('idle');
+                }}
+              />
+            </section>
             <section style={{ marginBottom: 14 }}>
               <BackupSection shared={shared} objState={objState} discState={discState}
                 onRestore={handleRestore} onReset={handleReset} onToast={pushToast} />
@@ -1122,6 +1229,7 @@ function App() {
                 <button className="btn-ghost" onClick={() => { localStorage.removeItem('toga_onboarded_tutorial'); setShowOnboarding(true); }} style={{ fontSize: 13 }}>📖 Ver tutorial novamente</button>
               </div>
             </section>
+
             <section style={{ marginBottom: 14 }}>
               <div className="glass" style={{ padding: '18px 20px' }}>
                 <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>INFORMAÇÕES LEGAIS</div>
