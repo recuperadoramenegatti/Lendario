@@ -1,5 +1,5 @@
 // Header — Ultra Premium v2
-function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings }) {
+function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenLair }) {
   const level = window.DA.getLevelInfo(shared.xp);
   return (
     <header className="header-sticky">
@@ -49,6 +49,9 @@ function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings }) {
           <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.12em', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>XP</span>
         </div>
 
+        {/* Cristais arcanos (moeda do dragão) */}
+        {window.GemCounterChip && <GemCounterChip gems={shared.dragon ? shared.dragon.gems : 0} onClick={onOpenLair} />}
+
         {/* Constância chip */}
         <div title="Constância atual (sequência de dias úteis estudados)" style={{
           display: 'flex', alignItems: 'center', gap: 6,
@@ -61,6 +64,7 @@ function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings }) {
           <span className="num" style={{ fontSize: 13, fontWeight: 700, color: 'var(--ambar)', letterSpacing: '-0.01em' }}>{shared.streak}</span>
           <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.12em', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>CONSTÂNCIA</span>
         </div>
+        {window.SoundToggle && <SoundToggle />}
       </div>
     </header>
   );

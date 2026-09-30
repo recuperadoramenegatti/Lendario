@@ -105,11 +105,14 @@ animation: `particle-float 4s ease-in-out ${delay}s infinite`,
 // ===== Sound (Web Audio synthesized — no external files) =====
 let audioCtx = null;
 function getCtx() {
+// Reusa o contexto do motor SFX (respeita o botão de mudo)
+if (window.SFX) { if (window.SFX.isMuted()) return null; return window.SFX.ctx(); }
 if (!audioCtx) {
 try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
 }
 return audioCtx;
 }
+function sfxDest(ctx) { return (window.SFX && window.SFX.out()) || ctx.destination; }
 
 function playChord(freqs, duration = 0.45, type = 'triangle', startGain = 0.2) {
 const ctx = getCtx();
@@ -123,7 +126,7 @@ osc.frequency.value = f;
 gain.gain.setValueAtTime(0, t);
 gain.gain.linearRampToValueAtTime(startGain / freqs.length, t + 0.02 + i * 0.04);
 gain.gain.exponentialRampToValueAtTime(0.0001, t + duration + i * 0.04);
-osc.connect(gain).connect(ctx.destination);
+osc.connect(gain).connect(sfxDest(ctx));
 osc.start(t + i * 0.04);
 osc.stop(t + duration + i * 0.04 + 0.05);
 });
@@ -198,7 +201,7 @@ function playEmergency() {
       g.gain.setValueAtTime(0.0001, ctx.currentTime);
       g.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + 0.02);
       g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.36);
-      o.connect(g); g.connect(ctx.destination);
+      o.connect(g); g.connect(sfxDest(ctx));
       o.start();
       o.stop(ctx.currentTime + 0.4);
     }, delay);
@@ -244,6 +247,7 @@ setTimeout(() => el.remove(), dur + 100);
 }
 
 window.SplashScreen = SplashScreen;
+window.spawnConfetti = spawnConfetti;
 window.playEvolution = playEvolution;
 window.playSick = playSick;
 window.playHealed = playHealed;
