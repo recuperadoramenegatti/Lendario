@@ -1,5 +1,5 @@
 // Header — Ultra Premium v2
-function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenLair }) {
+function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenLair, onOpenChest }) {
   const level = window.DA.getLevelInfo(shared.xp);
   return (
     <header className="header-sticky">
@@ -34,7 +34,8 @@ function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenL
           </button>
         </div>
 
-        {/* XP chip */}
+        {/* Nível + XP (avatar do dragão) */}
+        {window.LevelChip ? <LevelChip shared={shared} onClick={onOpenLair} /> : (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '7px 13px', borderRadius: 10,
@@ -49,8 +50,11 @@ function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenL
           <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.12em', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>XP</span>
         </div>
 
+        )}
+
         {/* Cristais arcanos (moeda do dragão) */}
         {window.GemCounterChip && <GemCounterChip gems={shared.dragon ? shared.dragon.gems : 0} onClick={onOpenLair} />}
+        {window.PendingChestChip && <PendingChestChip shared={shared} onOpen={onOpenChest} />}
 
         {/* Constância chip */}
         <div title="Constância atual (sequência de dias úteis estudados)" style={{

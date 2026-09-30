@@ -550,6 +550,10 @@ function App() {
   const [achQueue, setAchQueue] = useState([]);
   const [shareRequest, setShareRequest] = useState(null);
   const prevPetStageRef = useRef(window.getDragonStage(shared.xp));
+  const prevLevelRef = useRef(window.DGPlus.levelInfo(shared.xp).level);
+  const [rewardToast, setRewardToast] = useState(null);   // detalhamento da última sessão
+  const [wisdomChest, setWisdomChest] = useState(null);   // Baú de Sabedoria aberto agora
+  const [levelUp, setLevelUp] = useState(null);           // { id, level, gems }
   const [weeklyReportOpen, setWeeklyReportOpen] = useState(false);
 
   const pushToast = (kind) => {
@@ -581,6 +585,14 @@ function App() {
     } else if (stage < prevPetStageRef.current) {
       prevPetStageRef.current = stage;
     }
+    // Níveis contínuos — vitórias frequentes entre as evoluções (+5 💎 por nível)
+    const level = window.DGPlus.levelInfo(shared.xp).level;
+    if (level > prevLevelRef.current) {
+      const gems = window.DGPlus.LEVEL_GEMS * (level - prevLevelRef.current);
+      setShared(s => window.DG.addReward(s, { gems }));
+      setLevelUp({ id: Date.now(), level, gems });
+    }
+    prevLevelRef.current = level;
   }, [shared.xp]);
 
   useEffect(() => {
@@ -615,13 +627,12 @@ function App() {
     if (h >= 5 && h < 7) n = window.DG.setFlag(n, 'early');
     return n;
   };
-  const showStudyReward = (rw) => {
+  // Toast com o detalhamento: base, Chama do Dragão, Insight Crítico, cristais e Baú de Sabedoria
+  const showStudyReward = (rw, extra = 0) => {
     if (!rw || (rw.xp <= 0 && rw.gems <= 0)) return;
-    setTimeout(() => {
-      window.FX && window.FX.reward(rw);
-      window.SFX && window.SFX.xp();
-      if (rw.mult > 1) { const c = window.FX.center(); window.FX.floatText(`🔥 Chama x${rw.mult}`, c.x, c.y + 50, '#EA580C', 16, 350); }
-    }, 350);
+    const crit = rw.crit || 1;
+    setRewardToast({ id: Date.now(), xp: rw.xp + extra, gems: rw.gems, mult: rw.mult, crit, extra,
+      base: Math.round(rw.xp / crit / (rw.mult || 1)), chest: rw.chest || null });
   };
 
   const calcStreak = (logs) => window.DA.calcConstancia(logs);
@@ -671,8 +682,11 @@ function App() {
     const bonusXp = (opts && opts.bonusXp) || 0;
     const isBlindado = !!(logEntry.blindado);
     // O tempo estudado sempre rende XP/cristais; o bônus do Blindado continua exigindo concluir a sessão.
-    const rw = rewardFor(logEntry);
-    logEntry = { ...logEntry, xp: rw.xp, gems: rw.gems };
+    // Recompensa variável: 12% de Insight Crítico (XP ×2) e 30% de Baú de Sabedoria em sessões de 25+ min.
+    const base = rewardFor(logEntry);
+    const bonus = window.DGPlus.rollSessionBonus(base, logEntry);
+    const rw = { ...base, xp: base.xp * bonus.crit, crit: bonus.crit, chest: bonus.chest };
+    logEntry = { ...logEntry, xp: rw.xp, gems: rw.gems, ...(bonus.crit > 1 ? { crit: bonus.crit } : {}) };
 
     setShared(s => {
       const { logs, idx } = mergeLog(s.dailyLogs, logEntry);
@@ -727,10 +741,11 @@ function App() {
         next = { ...next, blindado: { ...bd, sessions, hours, streak, bestStreak, lastDate: today, modesUsed, achievements: newEarned } };
       }
 
-      return window.DG.addReward(markStudyTime(next), { xp: rw.xp, gems: rw.gems });
+      const rewarded = window.DG.addReward(markStudyTime(next), { xp: rw.xp, gems: rw.gems });
+      return rw.chest ? window.DGPlus.addPendingChest(rewarded, rw.chest) : rewarded;
     });
     window.celebrateLight && window.celebrateLight();
-    showStudyReward(rw);
+    showStudyReward(rw, noXp ? 0 : bonusXp);
   };
 
   const recomputeDayTotals = (day) => {
@@ -791,7 +806,7 @@ function App() {
       if (day.entries[idx] && day.entries[idx].xp != null) {
         const rw = window.DG.studyRewards(newEntry, s.streak);
         const oldGems = day.entries[idx].gems || 0;
-        newEntry.xp = rw.xp; newEntry.gems = rw.gems;
+        newEntry.xp = rw.xp * (day.entries[idx].crit || 1); newEntry.gems = rw.gems; // mantém o Insight Crítico da sessão
         s = window.DG.addReward(s, { xp: newEntry.xp - oldXp, gems: rw.gems - oldGems });
       }
       const newDate = updated.date || date;
@@ -871,10 +886,12 @@ function App() {
   const handleRestore = (backup) => {
     setShared(backup.shared); setObjState(backup.objetiva); setDiscState(backup.discursiva);
     prevPetStageRef.current = window.getDragonStage(backup.shared.xp || 0);
+    prevLevelRef.current = window.DGPlus.levelInfo(backup.shared.xp || 0).level;
   };
   const handleReset = () => {
     setShared(window.DA.INITIAL_SHARED); setObjState(window.DA.INITIAL_OBJETIVA); setDiscState(window.DA.INITIAL_DISCURSIVA);
     prevPetStageRef.current = 1;
+    prevLevelRef.current = 1;
   };
   const handleSaveGoals = (newGoals) => { setShared(s => ({ ...s, goals: { ...s.goals, ...newGoals } })); pushToast('goals_saved'); };
 
@@ -907,7 +924,7 @@ function App() {
       <div className="aurora" />
       <div className="dot-grid" />
 
-      <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} onOpenLair={() => setActiveTab('covil')} />
+      <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} onOpenLair={() => setActiveTab('covil')} onOpenChest={(c) => setWisdomChest(c)} />
 
       {/* Sidebar */}
       <nav className="nav-sidebar">
@@ -1246,6 +1263,10 @@ function App() {
       {!evolutionEvent && !weeklyReportOpen && achQueue.length > 0 && (
         <AchievementCelebration ids={achQueue} onShare={setShareRequest} onDone={() => setAchQueue([])} />
       )}
+      {rewardToast && <RewardToast key={rewardToast.id} reward={rewardToast} onDone={() => setRewardToast(null)} onOpenChest={(c) => setWisdomChest(c)} />}
+      {wisdomChest && <WisdomChestModal key={wisdomChest.id} chest={wisdomChest}
+        onOpened={(c) => setShared(s => window.DGPlus.openPendingChest(s, c))} onClose={() => setWisdomChest(null)} />}
+      {levelUp && <LevelUpBanner key={levelUp.id} level={levelUp.level} gems={levelUp.gems} onDone={() => setLevelUp(null)} />}
       {shareRequest && <ShareCardModal request={shareRequest} shared={shared} objState={objState} discState={discState} onClose={() => setShareRequest(null)} />}
       {toasts.map(t => <AchievementToast key={t.id} kind={t.kind} onDone={() => setToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       {cinematicToasts.slice(-1).map(t => <CinematicAchievementToast key={t.id} kind={t.kind} onDone={() => setCinematicToasts(ts => ts.filter(x => x.id !== t.id))} />)}
@@ -1275,8 +1296,10 @@ function App() {
           <TweakButton label="+250 XP"    onClick={() => setShared(s => ({ ...s, xp: s.xp + 250 }))} />
           <TweakButton label="+1000 XP"   onClick={() => setShared(s => ({ ...s, xp: s.xp + 1000 }))} />
           <TweakButton label="+3000 XP"   onClick={() => setShared(s => ({ ...s, xp: s.xp + 3000 }))} />
-          <TweakButton label="Reset XP"   onClick={() => { setShared(s => ({ ...s, xp: 0 })); prevPetStageRef.current = 1; }} />
+          <TweakButton label="Reset XP"   onClick={() => { setShared(s => ({ ...s, xp: 0 })); prevPetStageRef.current = 1; prevLevelRef.current = 1; }} />
           <TweakButton label="+500 💎"    onClick={() => setShared(s => window.DG.addReward(s, { gems: 500 }))} />
+          <TweakButton label="Baú de Sabedoria" onClick={() => setShared(s => window.DGPlus.addPendingChest(s, window.DGPlus.rollChest('raro')))} />
+          <TweakButton label="Recompensa (crítico + baú)" onClick={() => showStudyReward({ xp: 96, gems: 12, mult: 1.25, crit: 2, chest: window.DGPlus.rollChest() })} />
           <TweakButton label="Evoluir →"  onClick={() => { const e = window.evaluateDragon(shared.xp); if (e.next) setShared(s => ({ ...s, xp: e.next.minXp })); }} />
           <TweakButton label="Conquista"  onClick={() => setAchQueue(['streak_7'])} />
           <TweakButton label="XP=15k"     onClick={() => setShared(s => ({ ...s, xp: 15000 }))} />

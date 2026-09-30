@@ -477,9 +477,10 @@ function DragonSprite({
   const localRef = React.useRef(null);
   const ref = svgRef || localRef;
   const info = DRAGON_STAGES[Math.max(0, Math.min(7, stage - 1))];
-  const p = info.pal;
-  const sick = mood === 'sick';
   const eq = equipped || {};
+  // Pele equipada (loja) sobrepõe a paleta da fase — ver dragon-plus.jsx
+  const p = eq.skin && window.dragonSkinPalette ? window.dragonSkinPalette(eq.skin, info) : info.pal;
+  const sick = mood === 'sick';
 
   // Olhos seguem o ponteiro (sem re-render: só variáveis CSS)
   React.useEffect(() => {
