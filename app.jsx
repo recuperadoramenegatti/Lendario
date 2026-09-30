@@ -10,7 +10,7 @@
 const { useState, useEffect, useRef } = React;
 
 // ── Achievement Toast ──────────────────────────────────────
-function AchievementToast({ kind, onDone }) {
+function AchievementToast({ kind, custom, onDone }) {
   useEffect(() => { const t = setTimeout(onDone, 4500); return () => clearTimeout(t); }, []);
   const A = {
     week_streak:       { title: '7 dias de constância',         sub: 'Uma semana inteira encadeada',              icon: '🔥', color: '#f59e0b' },
@@ -21,8 +21,8 @@ function AchievementToast({ kind, onDone }) {
     restore_done:      { title: 'Backup restaurado',            sub: 'Seus dados foram recarregados',             icon: '🔄', color: '#00b8d4' },
     reset_done:        { title: 'Sistema zerado',               sub: 'Tudo voltou ao estado inicial',             icon: '🌱', color: 'var(--esmeralda)' },
     goals_saved:       { title: 'Metas atualizadas',            sub: 'Boa! Vamos cumprir',                        icon: '🎯', color: 'var(--tinta)' },
-    pet_sick:          { title: 'Sua raposinha adoeceu 🤒',   sub: 'Estude 2 dias seguidos para curá-la',      icon: '🤒', color: '#f59e0b' },
-    pet_healed:        { title: 'Sua raposinha está curada!', sub: 'Cuidando dela com seus estudos',            icon: '💚', color: 'var(--esmeralda)' },
+    pet_sick:          { title: 'Seu dragãozinho adoeceu 🤒',  sub: 'Estude 2 dias seguidos para curá-lo',      icon: '🤒', color: '#f59e0b' },
+    pet_healed:        { title: 'Seu dragão está curado!',     sub: 'Sua chama voltou a brilhar ✨',             icon: '💚', color: 'var(--esmeralda)' },
     // Blindado achievements (regular toast)
     blindado_first:    { title: 'Primeiro Escudo Ativado',      sub: 'Sua primeira sessão blindada',              icon: '🛡️', color: '#5B47B8' },
     blindado_5:        { title: 'Guardião do Foco',             sub: '5 sessões blindadas concluídas',            icon: '⚔️', color: '#5B47B8' },
@@ -34,8 +34,8 @@ function AchievementToast({ kind, onDone }) {
     blindado_100h:     { title: 'Centúria',                     sub: '100 horas em Modo Blindado',                icon: '🏆', color: '#C9A961' },
     blindado_30day:    { title: 'Mês Blindado',                 sub: '30 dias consecutivos — nível supremo',      icon: '🌟', color: '#C9A961' },
   };
-  const a = A[kind] || A.first_mastered;
-  const isAviso = kind.startsWith('pet_') || ['goals_saved','backup_done','restore_done','reset_done'].includes(kind);
+  const a = custom || A[kind] || A.first_mastered;
+  const isAviso = custom ? !!custom.aviso : (kind.startsWith('pet_') || ['goals_saved','backup_done','restore_done','reset_done'].includes(kind));
   return (
     <div className="glass-strong toast-achievement" style={{
       position: 'fixed', top: 80, right: 20, zIndex: 80,
@@ -547,14 +547,24 @@ function App() {
   const [toasts, setToasts] = useState([]);
   const [cinematicToasts, setCinematicToasts] = useState([]);
   const [evolutionEvent, setEvolutionEvent] = useState(null);
-  const prevPetStageRef = useRef(window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp));
+  const prevPetStageRef = useRef(window.GM.stageFromXp(shared.xp));
+  const prevLevelRef = useRef(window.GM.levelInfo(shared.xp).level);
   const [weeklyReportOpen, setWeeklyReportOpen] = useState(false);
+  // Gamificação
+  const [rewardToast, setRewardToast] = useState(null);   // recompensa da última sessão
+  const [chestOpen, setChestOpen] = useState(null);       // baú sendo aberto
+  const [levelUp, setLevelUp] = useState(null);           // { level, gems }
+  const [achQueue, setAchQueue] = useState([]);           // ids de conquistas a celebrar
+  const [shareState, setShareState] = useState(null);     // { kind, payload }
+  const [wardrobeOpen, setWardrobeOpen] = useState(false);
 
-  const pushToast = (kind) => {
+  const pushToast = (kind, custom) => {
     if (CINEMATIC_KINDS.has(kind)) {
       setCinematicToasts(t => [...t, { id: Math.random(), kind }]);
+      window.SFX && window.SFX.achievement('ouro');
     } else {
-      setToasts(t => [...t, { id: Math.random(), kind }]);
+      setToasts(t => [...t, { id: Math.random(), kind, custom }]);
+      if (kind.startsWith('blindado_')) window.SFX && window.SFX.achievement('bronze');
     }
   };
 
@@ -569,16 +579,51 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Usa os thresholds da raposa (FOX_STAGES) para detecção correta de evolução
-    const stage = window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp);
+    // Evolução do dragão (8 fases) — a celebração é orquestrada pelo DragonEvolutionModal
+    const stage = window.GM.stageFromXp(shared.xp);
     if (stage > prevPetStageRef.current) {
       setEvolutionEvent({ from: prevPetStageRef.current, to: stage });
-      window.celebrateEvolution && window.celebrateEvolution();
+      setShared(s => ({ ...s, gems: (s.gems || 0) + 50 * (stage - prevPetStageRef.current) }));
       prevPetStageRef.current = stage;
     } else if (stage < prevPetStageRef.current) {
       prevPetStageRef.current = stage;
     }
+    // Níveis contínuos — vitórias frequentes (+5 gemas por nível)
+    const level = window.GM.levelInfo(shared.xp).level;
+    if (level > prevLevelRef.current) {
+      const gained = level - prevLevelRef.current;
+      setShared(s => ({ ...s, gems: (s.gems || 0) + 5 * gained }));
+      setLevelUp({ id: Date.now(), level, gems: 5 * gained });
+    }
+    prevLevelRef.current = level;
   }, [shared.xp]);
+
+  // Conquistas: detecta novos desbloqueios, concede XP + gemas e enfileira a celebração
+  useEffect(() => {
+    const GM = window.GM;
+    const evald = GM.evalAchievements(shared, objState, discState);
+    const have = new Set((shared.unlocked || []).map(u => u.id));
+    const fresh = evald.filter(a => !a.external && a.reached && !have.has(a.id));
+    if (!fresh.length) {
+      if (!shared.achvInit) setShared(s => ({ ...s, achvInit: true }));
+      return;
+    }
+    const firstRun = !shared.achvInit;
+    const now = new Date().toISOString();
+    const gems = fresh.reduce((a, x) => a + GM.TIERS[x.tier].gems, 0);
+    const xp = firstRun ? 0 : fresh.reduce((a, x) => a + GM.TIERS[x.tier].xp, 0);
+    setShared(s => {
+      const had = new Set((s.unlocked || []).map(u => u.id));
+      const add = fresh.filter(f => !had.has(f.id));
+      if (!add.length) return s.achvInit ? s : { ...s, achvInit: true };
+      return { ...s, achvInit: true, unlocked: [...(s.unlocked || []), ...add.map(a => ({ id: a.id, at: now }))], xp: (s.xp || 0) + xp, gems: (s.gems || 0) + gems };
+    });
+    if (firstRun) {
+      pushToast('achv_restored', { title: `${fresh.length} conquista${fresh.length > 1 ? 's' : ''} recuperada${fresh.length > 1 ? 's' : ''} ✨`, sub: `+${gems} gemas · veja no Salão das Conquistas`, icon: '🏅', color: '#8B5CF6' });
+    } else {
+      setAchQueue(q => [...q, ...fresh.map(f => f.id).filter(id => !q.includes(id))]);
+    }
+  }, [shared.dailyLogs, shared.xp, shared.simulados, shared.dragon, shared.questStats, shared.bestStreak, shared.streak, shared.goals, shared.achvInit, objState, discState]);
 
   useEffect(() => {
     const next = window.DA.nextPetHealth(shared.petHealth || 'healthy', shared.dailyLogs || []);
@@ -637,12 +682,19 @@ function App() {
     const noXp    = opts && opts.noXp;
     const bonusXp = (opts && opts.bonusXp) || 0;
     const isBlindado = !!(logEntry.blindado);
+    // XP da sessão: horas, questões, acertos e flashcards × bônus de constância (+ chance de crítico e baú)
+    const roll = noXp ? null : window.GM.rollSession(logEntry, shared.streak);
+    const entry = roll && roll.total > 0 ? { ...logEntry, xpAwarded: roll.total } : logEntry;
 
     setShared(s => {
-      const { logs, idx } = mergeLog(s.dailyLogs, logEntry);
+      const { logs, idx } = mergeLog(s.dailyLogs, entry);
       const day = logs[idx];
       const cross = noXp ? 0 : goalCrossBonus(day, (day.hours||0)-(logEntry.hours||0), (day.questions||0)-(logEntry.questions||0), s.goals);
-      let next = { ...withStreakState(s, logs), xp: s.xp + cross + (noXp ? 0 : bonusXp) };
+      let next = { ...withStreakState(s, logs), xp: s.xp + cross + (noXp ? 0 : bonusXp) + (roll ? roll.total : 0), gems: (s.gems || 0) + (roll ? roll.gems : 0) };
+      if (roll && roll.chest) {
+        const drg = s.dragon || {};
+        next.dragon = { ...drg, chests: [...(drg.chests || []), roll.chest] };
+      }
 
       if (isBlindado && !noXp) {
         const today = new Date().toISOString().slice(0,10);
@@ -693,7 +745,11 @@ function App() {
 
       return next;
     });
-    window.celebrateLight && window.celebrateLight();
+    if (roll && roll.total > 0) {
+      setRewardToast({ id: Date.now(), ...roll, total: roll.total + bonusXp, extra: bonusXp });
+    } else {
+      window.celebrateLight && window.celebrateLight();
+    }
   };
 
   const recomputeDayTotals = (day) => {
@@ -728,6 +784,8 @@ function App() {
       const i = logs.findIndex(d => d.date === date);
       if (i < 0) return s;
       const day = logs[i];
+      const removed = day.entries[idx];
+      const refund = (removed && removed.xpAwarded) || 0;
       const newEntries = day.entries.filter((_, k) => k !== idx);
       let newLogs;
       if (newEntries.length === 0) {
@@ -736,7 +794,7 @@ function App() {
         newLogs = [...logs];
         newLogs[i] = recomputeDayTotals({ ...day, entries: newEntries });
       }
-      return withStreakState(s, newLogs);
+      return { ...withStreakState(s, newLogs), xp: Math.max(0, (s.xp || 0) - refund) };
     });
   };
 
@@ -803,7 +861,81 @@ function App() {
       setShared(s => ({ ...s, achievements: [...s.achievements, 'first_mastered'] }));
     }
   };
-  const handleCheckXp = (delta) => setShared(s => ({ ...s, xp: Math.max(0, s.xp + delta) }));
+  const handleCheckXp = (delta) => setShared(s => {
+    const iso = window.GM.todayISO();
+    const ds = s.dayStats && s.dayStats.date === iso ? s.dayStats : { date: iso, checks: 0 };
+    return { ...s, xp: Math.max(0, s.xp + delta), dayStats: delta > 0 ? { ...ds, checks: (ds.checks || 0) + 1 } : ds };
+  });
+
+  // ── Dragão: carinho, nome, guarda-roupa ──
+  const updateDragon = (fn) => setShared(s => ({ ...s, dragon: fn(s.dragon || {}) }));
+  const handlePet = () => updateDragon(d => ({ ...d, pets: (d.pets || 0) + 1 }));
+  const handleRename = (name) => updateDragon(d => ({ ...d, name }));
+  const handleEquip = (slot, id) => updateDragon(d => ({ ...d, [slot]: id }));
+  const handleBuy = (item) => {
+    if ((shared.gems || 0) < item.price) return;
+    setShared(s => {
+      if ((s.gems || 0) < item.price) return s;
+      const d = s.dragon || {};
+      const owned = Array.from(new Set([...(d.owned || []), item.id]));
+      return { ...s, gems: s.gems - item.price, dragon: { ...d, owned, [item.slot]: item.id } };
+    });
+    const o = window.FX ? window.FX.origin() : null;
+    if (o) { window.FX.ring(o.x, o.y, { color: '#FCD34D', max: 120 }); window.FX.burst(o.x, o.y, { count: 36, speed: 6, kinds: ['star', 'gem', 'spark'] }); }
+    window.SFX && (window.SFX.gem(), setTimeout(() => window.SFX.dragonHappy(), 250));
+  };
+
+  // ── Missões do dia ──
+  const rewardFx = (el, xp, gems) => {
+    if (!window.FX) return;
+    const c = el ? window.FX.elCenter(el) : window.FX.origin();
+    window.FX.ring(c.x, c.y, { color: '#FCD34D', max: 110 });
+    window.FX.burst(c.x, c.y, { count: 34, speed: 6, kinds: ['star', 'spark', 'glyph'], palette: ['#FDE68A', '#FCD34D', '#C4B5FD', '#fff'] });
+    if (xp) window.FX.floatText(c.x, c.y - 24, `+${xp} XP`, { color: '#FDE68A' });
+    if (gems) setTimeout(() => window.FX.flyTo(c, '#gem-counter', { count: Math.min(10, gems) }), 250);
+  };
+  const handleClaimQuest = (id, el) => {
+    const q = window.GM.dailyQuests(shared).list.find(x => x.id === id);
+    if (!q || !q.done || q.claimed) return;
+    setShared(s => {
+      const iso = window.GM.todayISO();
+      const st = s.quests && s.quests.date === iso ? s.quests : { date: iso, claimed: [], bonus: false };
+      if (st.claimed.includes(id)) return s;
+      const qs = s.questStats || {};
+      return { ...s, xp: s.xp + q.reward.xp, gems: (s.gems || 0) + q.reward.gems,
+        quests: { ...st, claimed: [...st.claimed, id] }, questStats: { ...qs, claimed: (qs.claimed || 0) + 1 } };
+    });
+    window.SFX && window.SFX.quest();
+    window.haptic && window.haptic([10, 30, 20]);
+    rewardFx(el, q.reward.xp, q.reward.gems);
+  };
+  const handleClaimBonus = (el) => {
+    const dq = window.GM.dailyQuests(shared);
+    if (!dq.allClaimed || dq.bonusClaimed) return;
+    setShared(s => {
+      const iso = window.GM.todayISO();
+      const st = s.quests && s.quests.date === iso ? s.quests : { date: iso, claimed: [], bonus: false };
+      if (st.bonus) return s;
+      const qs = s.questStats || {};
+      return { ...s, xp: s.xp + window.GM.QUEST_BONUS.xp, quests: { ...st, bonus: true }, questStats: { ...qs, perfectDays: (qs.perfectDays || 0) + 1 } };
+    });
+    rewardFx(el, window.GM.QUEST_BONUS.xp, 0);
+    setTimeout(() => setChestOpen(window.GM.rollChest(Math.random() < 0.15 ? 'lendario' : 'raro')), 650);
+  };
+
+  // ── Baús ──
+  const handleChestOpened = (chest) => {
+    setShared(s => {
+      const d = s.dragon || {};
+      return { ...s, gems: (s.gems || 0) + chest.gems,
+        dragon: { ...d, chests: (d.chests || []).filter(c => c.id !== chest.id), chestsOpened: (d.chestsOpened || 0) + 1 } };
+    });
+  };
+
+  // ── Compartilhar ──
+  const shareAchievement = (ach) => setShareState({ kind: 'achievement', payload: { ach } });
+  const shareProfile = () => setShareState({ kind: 'profile', payload: {} });
+  const shareEvolution = (stage) => setShareState({ kind: 'evolution', payload: { stage } });
 
   const setConcursos = (updater) => setShared(s => ({ ...s, concursos: typeof updater === 'function' ? updater(s.concursos) : updater }));
   const setHistoricoProvas = (updater) => setShared(s => ({ ...s, historicoProvas: typeof updater === 'function' ? updater(s.historicoProvas || []) : updater }));
@@ -821,11 +953,13 @@ function App() {
   };
   const handleRestore = (backup) => {
     setShared(backup.shared); setObjState(backup.objetiva); setDiscState(backup.discursiva);
-    prevPetStageRef.current = window.getFoxStage ? window.getFoxStage(backup.shared.xp || 0) : window.DA.getPetStage(backup.shared.xp || 0);
+    prevPetStageRef.current = window.GM.stageFromXp(backup.shared.xp || 0);
+    prevLevelRef.current = window.GM.levelInfo(backup.shared.xp || 0).level;
   };
   const handleReset = () => {
     setShared(window.DA.INITIAL_SHARED); setObjState(window.DA.INITIAL_OBJETIVA); setDiscState(window.DA.INITIAL_DISCURSIVA);
     prevPetStageRef.current = 1;
+    prevLevelRef.current = 1;
   };
   const handleSaveGoals = (newGoals) => { setShared(s => ({ ...s, goals: { ...s.goals, ...newGoals } })); pushToast('goals_saved'); };
 
@@ -841,9 +975,12 @@ function App() {
   }, [objState.subjects, discState.subjects]);
   const totalStats = mode === 'objetiva' ? window.DA.getTotalStatsObj(objState.subjects) : window.DA.getTotalStatsDisc(discState.subjects);
   const isSick = shared.petHealth === 'sick';
+  const hojeBadge = window.GM.dailyQuests(shared).list.filter(q => q.done && !q.claimed).length + ((shared.dragon && shared.dragon.chests) || []).length;
+  const tabBadge = (id) => (id === 'hoje' && activeTab !== 'hoje' && hojeBadge > 0 ? <span className="nav-tab-badge">{hojeBadge}</span> : null);
 
   const TABS = [
     { id: 'hoje',         label: 'HOJE',                      icon: '🏠' },
+    { id: 'conquistas',   label: 'CONQUISTAS',                icon: '🏅' },
     { id: 'edital',       label: 'EDITAL',                    icon: '📋' },
     { id: 'simulados',    label: 'SIMULADOS',                 icon: '🎯' },
     { id: 'concursos',    label: 'DESEMPENHO EM CONCURSOS',   icon: '🏆', shortLabel: 'CONCURSOS' },
@@ -857,18 +994,19 @@ function App() {
       <div className="aurora" />
       <div className="dot-grid" />
 
-      <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} />
+      <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} onOpenHall={() => setActiveTab('conquistas')} />
 
       {/* Sidebar */}
       <nav className="nav-sidebar">
         <div className="nav-sidebar-brand">
-          <span style={{ fontSize: 20 }}>⚖️</span> TOGA
+          <span style={{ fontSize: 20 }}>🐉</span> TOGA
         </div>
         {TABS.map(tab => (
           <button key={tab.id} className={`nav-tab ${activeTab === tab.id ? 'nav-tab-active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}>
+            onClick={() => { setActiveTab(tab.id); window.SFX && window.SFX.tap(); }}>
             <span className="nav-tab-icon">{tab.icon}</span>
             <span style={tab.shortLabel ? { whiteSpace: 'normal', lineHeight: 1.25, fontSize: 10.5, textAlign: 'left' } : undefined}>{tab.label}</span>
+            {tabBadge(tab.id)}
           </button>
         ))}
       </nav>
@@ -877,9 +1015,10 @@ function App() {
       <nav className="nav-bottom">
         {TABS.map(tab => (
           <button key={tab.id} className={`nav-tab ${activeTab === tab.id ? 'nav-tab-active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}>
+            onClick={() => { setActiveTab(tab.id); window.SFX && window.SFX.tap(); }}>
             <span className="nav-tab-icon">{tab.icon}</span>
             <span>{tab.shortLabel || tab.label}</span>
+            {tabBadge(tab.id)}
           </button>
         ))}
       </nav>
@@ -890,45 +1029,56 @@ function App() {
         {activeTab === 'hoje' && (
           <>
             <style>{`@media (max-width: 900px) { .greeting-row { grid-template-columns: 1fr !important; } }`}</style>
+            <div className="anim-slide-up" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
+              <div>
+                <div className="font-display" style={{ fontSize: 27, fontWeight: 700, letterSpacing: '-0.025em' }}>
+                  Bom estudo, <span className="gradient-neon">Concurseiro(a)</span>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
+                  {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  {' · '}
+                  <span style={{ fontWeight: 700, color: mode === 'objetiva' ? 'var(--ciano)' : 'var(--coral)' }}>
+                    Modo {mode === 'objetiva' ? 'Objetiva' : 'Discursiva'}
+                  </span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <button className="btn-ghost" onClick={() => setGoalsOpen(true)}
+                  style={{ borderColor: 'rgba(91,71,184,0.3)', color: 'var(--tinta)', background: 'rgba(91,71,184,0.05)', fontWeight: 600, fontSize: 12 }}>
+                  🎯 Metas
+                </button>
+                <button className="btn-neon" onClick={() => setSessionLogOpen(true)} style={{ fontSize: 12 }}>
+                  ✏️ Registrar sessão
+                </button>
+                <button className="btn-ghost" onClick={() => setPomodoroOpen(true)} style={{ fontSize: 12 }}>
+                  🛡 Blindado
+                </button>
+              </div>
+            </div>
+
+            <div className="anim-slide-up" style={{ animationDelay: '40ms' }}>
+              <DragonLair
+                shared={shared}
+                onPet={handlePet}
+                onRename={handleRename}
+                onOpenWardrobe={() => setWardrobeOpen(true)}
+                onOpenHall={() => setActiveTab('conquistas')}
+                onShare={shareProfile}
+                onClaimQuest={handleClaimQuest}
+                onClaimBonus={handleClaimBonus}
+                onOpenChest={(c) => setChestOpen(c)}
+              />
+            </div>
+
             <div className="greeting-row" style={{ display: 'grid', gap: 16, gridTemplateColumns: 'minmax(0,1.2fr) minmax(0,1fr)', marginBottom: 16 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div className="anim-slide-up" style={{ animationDelay: '0ms' }}>
-                  <div className="font-display" style={{ fontSize: 27, fontWeight: 700, letterSpacing: '-0.025em' }}>
-                    Bom estudo, <span className="gradient-neon">Concurseiro(a)</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
-                    {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
-                    {' · '}
-                    <span style={{ fontWeight: 700, color: mode === 'objetiva' ? 'var(--ciano)' : 'var(--coral)' }}>
-                      Modo {mode === 'objetiva' ? 'Objetiva' : 'Discursiva'}
-                    </span>
-                  </div>
-                </div>
                 <DailyPhrase />
-                <FoxEvolutionPanel xp={shared.xp} sick={isSick} dailyLogs={shared.dailyLogs} streak={shared.streak} />
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div className="anim-slide-up" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', animationDelay: '60ms' }}>
-                  <button className="btn-ghost" onClick={() => setGoalsOpen(true)}
-                    style={{ borderColor: 'rgba(91,71,184,0.3)', color: 'var(--tinta)', background: 'rgba(91,71,184,0.05)', fontWeight: 600, fontSize: 12 }}>
-                    🎯 Metas
-                  </button>
-                  <button className="btn-neon" onClick={() => setSessionLogOpen(true)} style={{ fontSize: 12 }}>
-                    ✏️ Registrar sessão
-                  </button>
-                  <button className="btn-ghost" onClick={() => setPomodoroOpen(true)} style={{ fontSize: 12 }}>
-                    🛡 Blindado
-                  </button>
-                </div>
-
                 <div className="anim-slide-up" style={{ animationDelay: '100ms' }}>
                   <GavelBar percentage={totalStats.percentage} streak={shared.streak} shields={shared.shields} />
                 </div>
-
-                <div className="anim-slide-up" style={{ animationDelay: '140ms' }}>
-                  <ConcursoDonuts concursos={shared.concursos || []} setConcursos={setConcursos} />
-                </div>
+              </div>
+              <div className="anim-slide-up" style={{ animationDelay: '140ms' }}>
+                <ConcursoDonuts concursos={shared.concursos || []} setConcursos={setConcursos} />
               </div>
             </div>
 
@@ -974,6 +1124,12 @@ function App() {
               <TotalsSection shared={shared} objState={objState} discState={discState} />
             </section>
           </>
+        )}
+
+        {/* ── ABA: CONQUISTAS ── */}
+        {activeTab === 'conquistas' && (
+          <AchievementsHall shared={shared} objState={objState} discState={discState}
+            onShare={shareAchievement} onShareProfile={shareProfile} />
         )}
 
         {/* ── ABA: HISTÓRICO ── */}
@@ -1181,8 +1337,18 @@ function App() {
 
       {showOnboarding && <OnboardingModal onDone={() => setShowOnboarding(false)} />}
       {legalModal && <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />}
-      {evolutionEvent && <FoxEvolutionModal fromStage={evolutionEvent.from} toStage={evolutionEvent.to} onClose={() => setEvolutionEvent(null)} />}
-      {toasts.map(t => <AchievementToast key={t.id} kind={t.kind} onDone={() => setToasts(ts => ts.filter(x => x.id !== t.id))} />)}
+      {evolutionEvent && <DragonEvolutionModal fromStage={evolutionEvent.from} toStage={evolutionEvent.to} dragon={shared.dragon || {}}
+        onClose={() => setEvolutionEvent(null)} onShare={shareEvolution} />}
+      {!evolutionEvent && achQueue.length > 0 && window.GM.achById(achQueue[0]) && (
+        <AchievementUnlockModal key={achQueue[0]} ach={window.GM.achById(achQueue[0])} queueLeft={achQueue.length - 1}
+          onClose={() => setAchQueue(q => q.slice(1))} onShare={shareAchievement} />
+      )}
+      {rewardToast && <RewardToast key={rewardToast.id} reward={rewardToast} onDone={() => setRewardToast(null)} onOpenChest={(c) => setChestOpen(c)} />}
+      {chestOpen && <ChestModal key={chestOpen.id} chest={chestOpen} onOpened={handleChestOpened} onClose={() => setChestOpen(null)} />}
+      {levelUp && <LevelUpBanner key={levelUp.id} level={levelUp.level} gems={levelUp.gems} onDone={() => setLevelUp(null)} />}
+      {wardrobeOpen && <WardrobeModal shared={shared} onClose={() => setWardrobeOpen(false)} onBuy={handleBuy} onEquip={handleEquip} />}
+      {shareState && <ShareModal kind={shareState.kind} payload={shareState.payload} shared={shared} onClose={() => setShareState(null)} />}
+      {toasts.map(t => <AchievementToast key={t.id} kind={t.kind} custom={t.custom} onDone={() => setToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       {cinematicToasts.slice(-1).map(t => <CinematicAchievementToast key={t.id} kind={t.kind} onDone={() => setCinematicToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       <WeeklyReportModal open={weeklyReportOpen} shared={shared} onClose={() => {
         localStorage.setItem('toga_weekly_report_seen', window.getCurrentWeekKey());
@@ -1210,10 +1376,18 @@ function App() {
           <TweakButton label="+250 XP"    onClick={() => setShared(s => ({ ...s, xp: s.xp + 250 }))} />
           <TweakButton label="+1000 XP"   onClick={() => setShared(s => ({ ...s, xp: s.xp + 1000 }))} />
           <TweakButton label="+3000 XP"   onClick={() => setShared(s => ({ ...s, xp: s.xp + 3000 }))} />
-          <TweakButton label="Reset XP"   onClick={() => { setShared(s => ({ ...s, xp: 0 })); prevPetStageRef.current = 1; }} />
+          <TweakButton label="Reset XP"   onClick={() => { setShared(s => ({ ...s, xp: 0 })); prevPetStageRef.current = 1; prevLevelRef.current = 1; }} />
           <TweakButton label="XP=15k"     onClick={() => setShared(s => ({ ...s, xp: 15000 }))} />
           <TweakButton label="Pet doente" onClick={() => { setShared(s => ({ ...s, petHealth: 'sick' })); pushToast('pet_sick'); }} />
           <TweakButton label="Pet saudável" onClick={() => { setShared(s => ({ ...s, petHealth: 'healthy' })); pushToast('pet_healed'); }} />
+        </TweakSection>
+        <TweakSection label="Gamificação">
+          <TweakButton label="+100 💎"      onClick={() => setShared(s => ({ ...s, gems: (s.gems || 0) + 100 }))} />
+          <TweakButton label="Baú raro"     onClick={() => setChestOpen(window.GM.rollChest('raro'))} />
+          <TweakButton label="Baú lendário" onClick={() => setChestOpen(window.GM.rollChest('lendario'))} />
+          <TweakButton label="Conquista teste" onClick={() => setAchQueue(q => [...q, 'hours_500'])} />
+          <TweakButton label="Recompensa teste" onClick={() => setRewardToast({ id: Date.now(), base: 48, mult: 1.25, crit: 2, total: 120, gems: 8, extra: 0, chest: window.GM.rollChest() })} />
+          <TweakButton label="Compartilhar perfil" onClick={shareProfile} />
         </TweakSection>
         <TweakSection label="Celebrações">
           <TweakButton label="✨ Leve"    onClick={() => window.celebrateLight && window.celebrateLight()} />
@@ -1236,8 +1410,4 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <PetFoxProvider>
-    <App />
-  </PetFoxProvider>
-);
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);

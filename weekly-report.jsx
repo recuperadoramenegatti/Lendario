@@ -157,9 +157,9 @@ function generateWeeklyInsights(report, shared) {
 
   // Pet progression
   if (petInfo.stage >= 6) {
-    insights.push({ icon: '🐉', text: `Sua ${petInfo.name} está em estágio avançado! Cada sessão alimenta sua evolução.` });
+    insights.push({ icon: '🐉', text: `Seu dragão (${petInfo.name}) está em estágio avançado! Cada sessão alimenta sua evolução.` });
   } else if (petInfo.stage >= 3) {
-    insights.push({ icon: '🐣', text: `Sua ${petInfo.name} está crescendo! Continue estudando para desbloquear a próxima forma.` });
+    insights.push({ icon: '🐣', text: `Seu dragão (${petInfo.name}) está crescendo! Continue estudando para desbloquear a próxima forma.` });
   } else if (petInfo.xpToNext > 0) {
     insights.push({ icon: '🥚', text: `Faltam apenas ${petInfo.xpToNext} XP para sua próxima evolução. Você está quase lá!` });
   }
@@ -228,7 +228,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
 
   const DISC_COLORS = ['#00B8D4', '#7B67D8', '#00A86B', '#C9A961'];
 
-  const petEmoji = petInfo.stage >= 7 ? '🐉' : petInfo.stage >= 5 ? '🦎' : petInfo.stage >= 3 ? '🐣' : '🥚';
+  const petEmoji = petInfo.stage >= 3 ? '🐉' : '🥚';
 
   return (
     <>
