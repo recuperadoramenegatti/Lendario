@@ -83,16 +83,16 @@ const ONBOARDING_STEPS = [
   },
   {
     id: 'pet',
-    title: 'Raposinha Mascote',
-    subtitle: 'Sua raposinha evolui com você',
-    body: 'Ganhe XP estudando. Sua companheira evolui conforme você progride. Cuide dela mantendo constância.',
+    title: 'Seu Dragãozinho Arcano',
+    subtitle: 'Um companheiro mágico que cresce com você',
+    body: 'Cada hora de estudo vira XP e cristais. Seu dragão sente o que você faz: horas enchem a Mana, questões o Saber e a constância o Afeto.',
     visual: 'pet',
-    icon: '🦊',
+    icon: '🐉',
     bullets: [
-      'Ovo → Filhote → Aprendiz → Mestra da Toga',
-      'Evolui a cada marco de XP conquistado',
-      'Adoece se você ficar 3 dias sem estudar',
-      'Cura estudando 2 dias seguidos'
+      'Ovo Arcano → Filhote → Sábio → Dragão Lendário (8 fases)',
+      'Missões diárias, baú do dia e conquistas para compartilhar',
+      'Loja de acessórios e cenários no Covil do Dragão',
+      'Adoece se você ficar 3 dias sem estudar — cura com 2 dias seguidos'
     ],
   },
   {

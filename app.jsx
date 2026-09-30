@@ -21,8 +21,8 @@ function AchievementToast({ kind, onDone }) {
     restore_done:      { title: 'Backup restaurado',            sub: 'Seus dados foram recarregados',             icon: '🔄', color: '#00b8d4' },
     reset_done:        { title: 'Sistema zerado',               sub: 'Tudo voltou ao estado inicial',             icon: '🌱', color: 'var(--esmeralda)' },
     goals_saved:       { title: 'Metas atualizadas',            sub: 'Boa! Vamos cumprir',                        icon: '🎯', color: 'var(--tinta)' },
-    pet_sick:          { title: 'Sua raposinha adoeceu 🤒',   sub: 'Estude 2 dias seguidos para curá-la',      icon: '🤒', color: '#f59e0b' },
-    pet_healed:        { title: 'Sua raposinha está curada!', sub: 'Cuidando dela com seus estudos',            icon: '💚', color: 'var(--esmeralda)' },
+    pet_sick:          { title: 'Seu dragãozinho adoeceu 🤒', sub: 'Estude 2 dias seguidos para curá-lo',      icon: '🤒', color: '#f59e0b' },
+    pet_healed:        { title: 'Seu dragãozinho está curado!', sub: 'Cuidando dele com seus estudos 🐉',      icon: '💚', color: 'var(--esmeralda)' },
     // Blindado achievements (regular toast)
     blindado_first:    { title: 'Primeiro Escudo Ativado',      sub: 'Sua primeira sessão blindada',              icon: '🛡️', color: '#5B47B8' },
     blindado_5:        { title: 'Guardião do Foco',             sub: '5 sessões blindadas concluídas',            icon: '⚔️', color: '#5B47B8' },
@@ -519,7 +519,7 @@ function App() {
       const logs = s.dailyLogs || [];
       const streak = window.DA.calcConstancia(logs);
       const bestStreak = Math.max(s.bestStreak || 0, window.DA.calcConstanciaRecord(logs), streak);
-      return { petHealth: s.petHealth || 'healthy', goals: { dailyFlashcards: 30, ...s.goals }, ...s, streak, bestStreak };
+      return { petHealth: s.petHealth || 'healthy', goals: { dailyFlashcards: 30, ...s.goals }, ...s, streak, bestStreak, dragon: window.DG.ensure(s) };
     });
     const todayISO = new Date().toISOString();
     const FLAGS_O = ['lei','doutrina','juris','questoes','revisao'];
@@ -547,7 +547,9 @@ function App() {
   const [toasts, setToasts] = useState([]);
   const [cinematicToasts, setCinematicToasts] = useState([]);
   const [evolutionEvent, setEvolutionEvent] = useState(null);
-  const prevPetStageRef = useRef(window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp));
+  const [achQueue, setAchQueue] = useState([]);
+  const [shareRequest, setShareRequest] = useState(null);
+  const prevPetStageRef = useRef(window.getDragonStage(shared.xp));
   const [weeklyReportOpen, setWeeklyReportOpen] = useState(false);
 
   const pushToast = (kind) => {
@@ -569,11 +571,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Usa os thresholds da raposa (FOX_STAGES) para detecção correta de evolução
-    const stage = window.getFoxStage ? window.getFoxStage(shared.xp) : window.DA.getPetStage(shared.xp);
+    // Evolução do dragão (DRAGON_STAGES) — cinemática + cristais de recompensa
+    const stage = window.getDragonStage(shared.xp);
     if (stage > prevPetStageRef.current) {
-      setEvolutionEvent({ from: prevPetStageRef.current, to: stage });
-      window.celebrateEvolution && window.celebrateEvolution();
+      const from = prevPetStageRef.current;
+      setEvolutionEvent({ from, to: stage });
+      setShared(s => window.DG.addReward(s, { gems: window.DG.EVOLUTION_GEMS * (stage - from) }));
       prevPetStageRef.current = stage;
     } else if (stage < prevPetStageRef.current) {
       prevPetStageRef.current = stage;
@@ -592,6 +595,34 @@ function App() {
     const next = window.DA.nextPetHealth(shared.petHealth || 'healthy', shared.dailyLogs || []);
     if (next !== shared.petHealth) setShared(s => ({ ...s, petHealth: next }));
   }, []);
+
+  // Conquistas: avalia sempre que o progresso muda e celebra as novas
+  useEffect(() => {
+    const unlocked = window.DG.evaluateAchievements(shared, objState, discState);
+    const have = (shared.dragon && shared.dragon.achievements) || {};
+    const fresh = unlocked.filter(id => !have[id]);
+    if (!fresh.length) return;
+    setShared(s => window.DG.recordAchievements(s, fresh));
+    setAchQueue(q => [...q, ...fresh.filter(id => !q.includes(id))]);
+  }, [shared, objState, discState]);
+
+  // Recompensa de estudo (XP + cristais, multiplicados pela Chama do Dragão)
+  const rewardFor = (entry) => window.DG.studyRewards(entry, shared.streak);
+  const markStudyTime = (s) => {
+    const h = new Date().getHours();
+    let n = s;
+    if (h >= 22 || h < 4) n = window.DG.setFlag(n, 'owl');
+    if (h >= 5 && h < 7) n = window.DG.setFlag(n, 'early');
+    return n;
+  };
+  const showStudyReward = (rw) => {
+    if (!rw || (rw.xp <= 0 && rw.gems <= 0)) return;
+    setTimeout(() => {
+      window.FX && window.FX.reward(rw);
+      window.SFX && window.SFX.xp();
+      if (rw.mult > 1) { const c = window.FX.center(); window.FX.floatText(`🔥 Chama x${rw.mult}`, c.x, c.y + 50, '#EA580C', 16, 350); }
+    }, 350);
+  };
 
   const calcStreak = (logs) => window.DA.calcConstancia(logs);
   const calcBestStreak = (logs) => window.DA.calcConstanciaRecord(logs);
@@ -623,20 +654,25 @@ function App() {
   };
 
   const handleLog = (date, h, q, r) => {
-    const entry = { date, hours: h, questions: q, reviews: r };
+    const rw = rewardFor({ hours: h, questions: q, reviews: r });
+    const entry = { date, hours: h, questions: q, reviews: r, xp: rw.xp, gems: rw.gems };
     setShared(s => {
       const { logs, idx } = mergeLog(s.dailyLogs, entry);
       const day = logs[idx];
       const bonus = goalCrossBonus(day, (day.hours||0)-h, (day.questions||0)-q, s.goals);
-      return { ...withStreakState(s, logs), xp: s.xp + bonus };
+      return window.DG.addReward(markStudyTime({ ...withStreakState(s, logs), xp: s.xp + bonus }), { xp: rw.xp, gems: rw.gems });
     });
     window.celebrateVictory && window.celebrateVictory();
+    showStudyReward(rw);
   };
 
   const handleEnrichedLog = (logEntry, opts) => {
     const noXp    = opts && opts.noXp;
     const bonusXp = (opts && opts.bonusXp) || 0;
     const isBlindado = !!(logEntry.blindado);
+    // O tempo estudado sempre rende XP/cristais; o bônus do Blindado continua exigindo concluir a sessão.
+    const rw = rewardFor(logEntry);
+    logEntry = { ...logEntry, xp: rw.xp, gems: rw.gems };
 
     setShared(s => {
       const { logs, idx } = mergeLog(s.dailyLogs, logEntry);
@@ -691,9 +727,10 @@ function App() {
         next = { ...next, blindado: { ...bd, sessions, hours, streak, bestStreak, lastDate: today, modesUsed, achievements: newEarned } };
       }
 
-      return next;
+      return window.DG.addReward(markStudyTime(next), { xp: rw.xp, gems: rw.gems });
     });
     window.celebrateLight && window.celebrateLight();
+    showStudyReward(rw);
   };
 
   const recomputeDayTotals = (day) => {
@@ -728,6 +765,9 @@ function App() {
       const i = logs.findIndex(d => d.date === date);
       if (i < 0) return s;
       const day = logs[i];
+      // Estorna XP e cristais concedidos pela sessão excluída
+      const removed = day.entries[idx] || {};
+      s = window.DG.addReward(s, { xp: -(removed.xp || 0), gems: -(removed.gems || 0) });
       const newEntries = day.entries.filter((_, k) => k !== idx);
       let newLogs;
       if (newEntries.length === 0) {
@@ -746,7 +786,14 @@ function App() {
       const i = logs.findIndex(d => d.date === date);
       if (i < 0) return s;
       const day = logs[i];
+      const oldXp = (day.entries[idx] && day.entries[idx].xp) || 0;
       const newEntry = { ...day.entries[idx], ...updated };
+      if (day.entries[idx] && day.entries[idx].xp != null) {
+        const rw = window.DG.studyRewards(newEntry, s.streak);
+        const oldGems = day.entries[idx].gems || 0;
+        newEntry.xp = rw.xp; newEntry.gems = rw.gems;
+        s = window.DG.addReward(s, { xp: newEntry.xp - oldXp, gems: rw.gems - oldGems });
+      }
       const newDate = updated.date || date;
 
       if (newDate === date) {
@@ -785,15 +832,17 @@ function App() {
   const handleSession = ({ minutes, subjectId, discipline, studyType, note }) => {
     const today = new Date().toISOString().slice(0,10);
     const hours = minutes / 60;
-    const entry = { date: today, hours, discipline, studyType: studyType || 'Pomodoro', note, source: 'pomodoro' };
+    const rw = rewardFor({ hours });
+    const entry = { date: today, hours, discipline, studyType: studyType || 'Pomodoro', note, source: 'pomodoro', xp: rw.xp, gems: rw.gems };
     setShared(s => {
       const { logs, idx } = mergeLog(s.dailyLogs, entry);
       const day = logs[idx];
       const cross = goalCrossBonus(day, (day.hours||0)-hours, (day.questions||0), s.goals);
-      return { ...withStreakState(s, logs), xp: s.xp + 2 + cross };
+      return window.DG.addReward(markStudyTime({ ...withStreakState(s, logs), xp: s.xp + 2 + cross }), { xp: rw.xp, gems: rw.gems });
     });
     if (minutes >= 90) pushToast('marathon');
     window.celebrateVictory();
+    showStudyReward(rw);
   };
 
   const handleMaster = () => {
@@ -803,7 +852,7 @@ function App() {
       setShared(s => ({ ...s, achievements: [...s.achievements, 'first_mastered'] }));
     }
   };
-  const handleCheckXp = (delta) => setShared(s => ({ ...s, xp: Math.max(0, s.xp + delta) }));
+  const handleCheckXp = (delta) => setShared(s => window.DG.countCheck({ ...s, xp: Math.max(0, s.xp + delta) }, delta));
 
   const setConcursos = (updater) => setShared(s => ({ ...s, concursos: typeof updater === 'function' ? updater(s.concursos) : updater }));
   const setHistoricoProvas = (updater) => setShared(s => ({ ...s, historicoProvas: typeof updater === 'function' ? updater(s.historicoProvas || []) : updater }));
@@ -821,7 +870,7 @@ function App() {
   };
   const handleRestore = (backup) => {
     setShared(backup.shared); setObjState(backup.objetiva); setDiscState(backup.discursiva);
-    prevPetStageRef.current = window.getFoxStage ? window.getFoxStage(backup.shared.xp || 0) : window.DA.getPetStage(backup.shared.xp || 0);
+    prevPetStageRef.current = window.getDragonStage(backup.shared.xp || 0);
   };
   const handleReset = () => {
     setShared(window.DA.INITIAL_SHARED); setObjState(window.DA.INITIAL_OBJETIVA); setDiscState(window.DA.INITIAL_DISCURSIVA);
@@ -844,6 +893,7 @@ function App() {
 
   const TABS = [
     { id: 'hoje',         label: 'HOJE',                      icon: '🏠' },
+    { id: 'covil',        label: 'COVIL DO DRAGÃO',           icon: '🐉', shortLabel: 'COVIL' },
     { id: 'edital',       label: 'EDITAL',                    icon: '📋' },
     { id: 'simulados',    label: 'SIMULADOS',                 icon: '🎯' },
     { id: 'concursos',    label: 'DESEMPENHO EM CONCURSOS',   icon: '🏆', shortLabel: 'CONCURSOS' },
@@ -857,7 +907,7 @@ function App() {
       <div className="aurora" />
       <div className="dot-grid" />
 
-      <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} />
+      <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} onOpenLair={() => setActiveTab('covil')} />
 
       {/* Sidebar */}
       <nav className="nav-sidebar">
@@ -905,7 +955,7 @@ function App() {
                   </div>
                 </div>
                 <DailyPhrase />
-                <FoxEvolutionPanel xp={shared.xp} sick={isSick} dailyLogs={shared.dailyLogs} streak={shared.streak} />
+                <DragonHomeCard shared={shared} setShared={setShared} onOpenLair={() => { setActiveTab('covil'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -920,6 +970,10 @@ function App() {
                   <button className="btn-ghost" onClick={() => setPomodoroOpen(true)} style={{ fontSize: 12 }}>
                     🛡 Blindado
                   </button>
+                </div>
+
+                <div className="anim-slide-up" style={{ animationDelay: '80ms' }}>
+                  <DailyQuestsCard shared={shared} setShared={setShared} compact />
                 </div>
 
                 <div className="anim-slide-up" style={{ animationDelay: '100ms' }}>
@@ -974,6 +1028,11 @@ function App() {
               <TotalsSection shared={shared} objState={objState} discState={discState} />
             </section>
           </>
+        )}
+
+        {/* ── ABA: COVIL DO DRAGÃO ── */}
+        {activeTab === 'covil' && (
+          <DragonLairTab shared={shared} setShared={setShared} objState={objState} discState={discState} onShare={setShareRequest} />
         )}
 
         {/* ── ABA: HISTÓRICO ── */}
@@ -1181,7 +1240,13 @@ function App() {
 
       {showOnboarding && <OnboardingModal onDone={() => setShowOnboarding(false)} />}
       {legalModal && <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />}
-      {evolutionEvent && <FoxEvolutionModal fromStage={evolutionEvent.from} toStage={evolutionEvent.to} onClose={() => setEvolutionEvent(null)} />}
+      {evolutionEvent && <EvolutionCinematic from={evolutionEvent.from} to={evolutionEvent.to}
+        equipped={{ ...(shared.dragon && shared.dragon.equipped), bg: undefined }}
+        onShare={setShareRequest} onClose={() => setEvolutionEvent(null)} />}
+      {!evolutionEvent && !weeklyReportOpen && achQueue.length > 0 && (
+        <AchievementCelebration ids={achQueue} onShare={setShareRequest} onDone={() => setAchQueue([])} />
+      )}
+      {shareRequest && <ShareCardModal request={shareRequest} shared={shared} objState={objState} discState={discState} onClose={() => setShareRequest(null)} />}
       {toasts.map(t => <AchievementToast key={t.id} kind={t.kind} onDone={() => setToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       {cinematicToasts.slice(-1).map(t => <CinematicAchievementToast key={t.id} kind={t.kind} onDone={() => setCinematicToasts(ts => ts.filter(x => x.id !== t.id))} />)}
       <WeeklyReportModal open={weeklyReportOpen} shared={shared} onClose={() => {
@@ -1211,6 +1276,9 @@ function App() {
           <TweakButton label="+1000 XP"   onClick={() => setShared(s => ({ ...s, xp: s.xp + 1000 }))} />
           <TweakButton label="+3000 XP"   onClick={() => setShared(s => ({ ...s, xp: s.xp + 3000 }))} />
           <TweakButton label="Reset XP"   onClick={() => { setShared(s => ({ ...s, xp: 0 })); prevPetStageRef.current = 1; }} />
+          <TweakButton label="+500 💎"    onClick={() => setShared(s => window.DG.addReward(s, { gems: 500 }))} />
+          <TweakButton label="Evoluir →"  onClick={() => { const e = window.evaluateDragon(shared.xp); if (e.next) setShared(s => ({ ...s, xp: e.next.minXp })); }} />
+          <TweakButton label="Conquista"  onClick={() => setAchQueue(['streak_7'])} />
           <TweakButton label="XP=15k"     onClick={() => setShared(s => ({ ...s, xp: 15000 }))} />
           <TweakButton label="Pet doente" onClick={() => { setShared(s => ({ ...s, petHealth: 'sick' })); pushToast('pet_sick'); }} />
           <TweakButton label="Pet saudável" onClick={() => { setShared(s => ({ ...s, petHealth: 'healthy' })); pushToast('pet_healed'); }} />
@@ -1236,8 +1304,4 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <PetFoxProvider>
-    <App />
-  </PetFoxProvider>
-);
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
