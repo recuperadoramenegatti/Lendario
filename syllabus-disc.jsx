@@ -68,7 +68,7 @@ const removeSubject = (sId) => setState(s => ({ ...s, subjects: s.subjects.filte
 if (state.subjects.length === 0) {
 return (
 <div className="glass" style={{ padding: 48, textAlign: 'center' }}>
-<div style={{ fontSize: 64, marginBottom: 16 }}>✍️</div>
+<div style={{ fontSize: 64, marginBottom: 16 }}><Glyph e="✍️" /></div>
 <div className="font-display" style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
 Modo <span style={{ background: 'linear-gradient(90deg, var(--ambar), var(--coral))', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>Discursiva</span>
 </div>
@@ -76,8 +76,8 @@ Modo <span style={{ background: 'linear-gradient(90deg, var(--ambar), var(--cora
 Sua jornada na fase discursiva começa aqui. Adicione as disciplinas e os temas que você quer dominar — registre simulados e acompanhe sua evolução.
 </div>
 <button className="btn-neon" onClick={addSubject} style={{
-background: 'linear-gradient(135deg, rgba(255,122,26,0.12), rgba(232,93,93,0.12))',
-borderColor: 'rgba(232,93,93,0.4)', color: '#a82360',
+background: 'linear-gradient(135deg, rgba(255,122,26,0.12), rgba(255,122,138,0.12))',
+borderColor: 'rgba(255,122,138,0.4)', color: '#EEA3BA',
 }}>
 <I.plus size={14} /> Adicionar primeira disciplina
 </button>
@@ -95,8 +95,8 @@ onRemoveSubject={removeSubject} />
 ))}
 <button className="btn-neon" style={{
 justifySelf: 'start',
-background: 'linear-gradient(135deg, rgba(255,122,26,0.12), rgba(232,93,93,0.12))',
-borderColor: 'rgba(232,93,93,0.4)', color: '#a82360',
+background: 'linear-gradient(135deg, rgba(255,122,26,0.12), rgba(255,122,138,0.12))',
+borderColor: 'rgba(255,122,138,0.4)', color: '#EEA3BA',
 }} onClick={addSubject}>
 <I.plus size={14} /> Nova disciplina
 </button>
@@ -114,12 +114,12 @@ return (
 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
 <div style={{ position: 'relative', width: 40, height: 40, flexShrink: 0 }}>
 <svg viewBox="0 0 40 40" width={40} height={40}>
-<circle cx="20" cy="20" r="17" fill="none" stroke="rgba(12,13,18,0.06)" strokeWidth="3" />
+<circle cx="20" cy="20" r="17" fill="none" stroke="rgba(243,235,221,0.06)" strokeWidth="3" />
 <circle cx="20" cy="20" r="17" fill="none" stroke="var(--ambar)" strokeWidth="3"
 strokeDasharray={`${(completion / 100) * 107} 107`} strokeLinecap="round" transform="rotate(-90 20 20)"
 style={{ filter: 'drop-shadow(0 0 4px rgba(255,122,26,0.5))' }} />
 </svg>
-<div className="num" style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700, color: '#a14e0c' }}>
+<div className="num" style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700, color: '#EEBB8F' }}>
 {Math.round(completion)}
 </div>
 </div>
@@ -142,13 +142,13 @@ onChange={e => onRename(subject.id, e.target.value)} />
 </div>
 
   {open && (
-    <div style={{ borderTop: '1px solid rgba(12,13,18,0.04)' }}>
+    <div style={{ borderTop: '1px solid rgba(243,235,221,0.04)' }}>
       {(
         <div style={{ padding: '6px 18px 14px' }}>
-          <div className="topic-row-disc header-row" style={{ padding: '10px 0', borderBottom: '1px solid rgba(12,13,18,0.04)' }}>
-            <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>TEMA</div>
+          <div className="topic-row-disc header-row" style={{ padding: '10px 0', borderBottom: '1px solid rgba(243,235,221,0.04)' }}>
+            <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600 }}>TEMA</div>
             {FLAGS_DISC.map(f => (
-              <div key={f} style={{ fontSize: 10, letterSpacing: '0.08em', color: 'var(--text-dim)', textAlign: 'center', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+              <div key={f} style={{ fontSize: 10, letterSpacing: '0.08em', color: 'var(--text-dim)', textAlign: 'center', fontFamily: 'var(--font-label)', fontWeight: 600 }}>
                 {FLAG_LABELS_DISC[f]}
               </div>
             ))}
@@ -213,7 +213,7 @@ return (
 <div style={{ padding: '14px 18px' }}>
 {/* Add form */}
 <div className="glass" style={{ padding: 12, marginBottom: 14, background: 'rgba(255,122,26,0.04)', borderColor: 'rgba(255,122,26,0.2)' }}>
-<div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#a14e0c', fontFamily: 'JetBrains Mono, monospace', marginBottom: 8, fontWeight: 600 }}>
+<div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#EEBB8F', fontFamily: 'var(--font-label)', marginBottom: 8, fontWeight: 600 }}>
 REGISTRAR SIMULADO
 </div>
 <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'auto 1fr auto', alignItems: 'end' }}>
@@ -230,7 +230,7 @@ style={{ flex: 1, accentColor: 'var(--ambar)' }} />
 </div>
 </div>
 <button className="btn-neon" onClick={submit}
-style={{ background: 'linear-gradient(135deg, var(--ambar), var(--coral))', borderColor: 'transparent', color: 'white' }}>
+style={{ background: 'linear-gradient(135deg, var(--ambar), var(--coral))', borderColor: 'transparent', color: '#FFFFFF' }}>
 <I.plus size={12} /> Salvar
 </button>
 </div>
@@ -248,22 +248,22 @@ style={{ background: 'linear-gradient(135deg, var(--ambar), var(--coral))', bord
   {/* List */}
   {sorted.length > 0 && (
     <div style={{ marginTop: 14 }}>
-      <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', marginBottom: 8, fontWeight: 600 }}>
+      <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', marginBottom: 8, fontWeight: 600 }}>
         HISTÓRICO ({sims.length})
       </div>
       <div style={{ display: 'grid', gap: 4, maxHeight: 180, overflowY: 'auto' }}>
         {[...sims].reverse().map((s, i) => {
           const realIdx = sims.length - 1 - i;
-          const color = s.score >= 70 ? '#00c46a' : s.score >= 50 ? '#f59e0b' : 'var(--coral)';
+          const color = s.score >= 70 ? '#00c46a' : s.score >= 50 ? '#FFB057' : 'var(--coral)';
           return (
             <div key={i} style={{
               display: 'flex', alignItems: 'center', gap: 10, padding: '6px 10px',
-              background: 'rgba(12,13,18,0.02)', borderRadius: 6,
+              background: 'rgba(243,235,221,0.02)', borderRadius: 6,
             }}>
               <div className="num" style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 80 }}>
                 {new Date(s.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: '2-digit' })}
               </div>
-              <div style={{ flex: 1, height: 6, background: 'rgba(12,13,18,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+              <div style={{ flex: 1, height: 6, background: 'rgba(243,235,221,0.06)', borderRadius: 3, overflow: 'hidden' }}>
                 <div style={{ height: '100%', width: `${s.score}%`, background: color }} />
               </div>
               <div className="num" style={{ fontSize: 13, fontWeight: 700, color, minWidth: 44, textAlign: 'right' }}>{s.score}%</div>
@@ -289,7 +289,7 @@ const area = `${path} L ${xs[xs.length-1]} ${H-P} L ${xs[0]} ${H-P} Z`;
 
 return (
 <div className="glass" style={{ padding: 12 }}>
-<div style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', marginBottom: 8, fontWeight: 600 }}>
+<div style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', marginBottom: 8, fontWeight: 600 }}>
 EVOLUÇÃO DOS SIMULADOS
 </div>
 <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: 'block' }}>
@@ -308,8 +308,8 @@ EVOLUÇÃO DOS SIMULADOS
 const y = H - P - ((v - min) / (max - min)) * (H - 2*P);
 return (
 <g key={v}>
-<line x1={P} y1={y} x2={W-P} y2={y} stroke="rgba(12,13,18,0.06)" strokeDasharray="2 4" />
-<text x={P-6} y={y+3} textAnchor="end" fontSize="9" fill="rgba(12,13,18,0.4)" fontFamily="JetBrains Mono">{v}</text>
+<line x1={P} y1={y} x2={W-P} y2={y} stroke="rgba(243,235,221,0.06)" strokeDasharray="2 4" />
+<text x={P-6} y={y+3} textAnchor="end" fontSize="9" fill="rgba(12,13,18,0.4)" fontFamily="Manrope, sans-serif">{v}</text>
 </g>
 );
 })}
@@ -321,12 +321,12 @@ return (
 {sims.map((s, i) => (
 <g key={i}>
 <circle cx={xs[i]} cy={ys[i]} r="5" fill="white" stroke="var(--coral)" strokeWidth="2" />
-<text x={xs[i]} y={ys[i] - 10} textAnchor="middle" fontSize="10" fontWeight="700" fill="#a82360" fontFamily="JetBrains Mono">{s.score}</text>
+<text x={xs[i]} y={ys[i] - 10} textAnchor="middle" fontSize="10" fontWeight="700" fill="#a82360" fontFamily="Manrope, sans-serif">{s.score}</text>
 </g>
 ))}
 {/* X labels */}
 {sims.map((s, i) => (sims.length <= 8 || i % Math.ceil(sims.length / 6) === 0) && (
-<text key={i} x={xs[i]} y={H - 8} textAnchor="middle" fontSize="9" fill="rgba(12,13,18,0.4)" fontFamily="JetBrains Mono">
+<text key={i} x={xs[i]} y={H - 8} textAnchor="middle" fontSize="9" fill="rgba(12,13,18,0.4)" fontFamily="Manrope, sans-serif">
 {new Date(s.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
 </text>
 ))}

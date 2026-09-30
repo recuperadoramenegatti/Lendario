@@ -12,11 +12,11 @@ const FOCUS_MODES = {
     label: 'Foco Leve',
     icon: '🌿',
     tagline: 'Redes sociais bloqueadas',
-    color: '#00B8D4',
-    colorRaw: '#00b8d4',
-    colorGlow: 'rgba(0,217,255,0.45)',
-    gradient: 'linear-gradient(135deg, #00B8D4, #00A86B)',
-    bgGlow: 'rgba(0,184,212,0.06)',
+    color: '#8FB8FF',
+    colorRaw: '#8FB8FF',
+    colorGlow: 'rgba(169,200,255,0.45)',
+    gradient: 'linear-gradient(135deg, #8FB8FF, #4FD1A5)',
+    bgGlow: 'rgba(143,184,255,0.06)',
     intensity: 'low',
     xpBonus: 2,
     defaultSites: [
@@ -29,11 +29,11 @@ const FOCUS_MODES = {
     label: 'Foco Profundo',
     icon: '🔮',
     tagline: 'Concentração máxima',
-    color: '#5B47B8',
-    colorRaw: '#5B47B8',
-    colorGlow: 'rgba(91,71,184,0.55)',
-    gradient: 'linear-gradient(135deg, #5B47B8, #0B3D5C)',
-    bgGlow: 'rgba(91,71,184,0.07)',
+    color: '#B7AAFF',
+    colorRaw: '#B7AAFF',
+    colorGlow: 'rgba(183,170,255,0.55)',
+    gradient: 'linear-gradient(135deg, #B7AAFF, #4A36C4)',
+    bgGlow: 'rgba(183,170,255,0.07)',
     intensity: 'high',
     xpBonus: 5,
     defaultSites: [
@@ -49,11 +49,11 @@ const FOCUS_MODES = {
     label: 'Modo Monge',
     icon: '🧘',
     tagline: 'Apenas o essencial',
-    color: '#C9A961',
-    colorRaw: '#C9A961',
-    colorGlow: 'rgba(201,169,97,0.55)',
-    gradient: 'linear-gradient(135deg, #C9A961, #7A5E1F)',
-    bgGlow: 'rgba(201,169,97,0.05)',
+    color: '#E8C47A',
+    colorRaw: '#E8C47A',
+    colorGlow: 'rgba(232,196,122,0.55)',
+    gradient: 'linear-gradient(135deg, #E8C47A, #7A5E1F)',
+    bgGlow: 'rgba(232,196,122,0.05)',
     intensity: 'monk',
     xpBonus: 10,
     defaultWhitelist: [
@@ -177,7 +177,7 @@ function FocusModeSelector({ blocker }) {
   const { settings } = blocker;
   return (
     <div>
-      <div style={{ fontSize: 9.5, letterSpacing: '0.2em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', marginBottom: 8 }}>
+      <div style={{ fontSize: 9.5, letterSpacing: '0.2em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)', marginBottom: 8 }}>
         MODO DE FOCO · EXTENSÃO ATIVA
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7 }}>
@@ -187,16 +187,16 @@ function FocusModeSelector({ blocker }) {
             <button key={m.id} onClick={() => blocker.setFocusMode(m.id)}
               style={{
                 padding: '10px 6px', borderRadius: 12, cursor: 'pointer', textAlign: 'center',
-                background: on ? `${m.bgGlow}` : 'rgba(255,255,255,0.6)',
-                border: `1.5px solid ${on ? m.colorRaw : 'rgba(30,32,48,0.08)'}`,
+                background: on ? `${m.bgGlow}` : 'rgba(22,19,40,0.6)',
+                border: `1.5px solid ${on ? m.colorRaw : 'rgba(243,235,221,0.08)'}`,
                 boxShadow: on ? `0 0 16px ${m.colorGlow}, 0 2px 8px rgba(0,0,0,0.06)` : '0 1px 3px rgba(0,0,0,0.04)',
                 transition: 'all 200ms cubic-bezier(0.2,0.8,0.2,1)',
               }}>
-              <div style={{ fontSize: 20 }}>{m.icon}</div>
+              <div style={{ fontSize: 20 }}><Glyph e={m.icon} /></div>
               <div style={{ fontSize: 10.5, fontWeight: 700, color: on ? m.colorRaw : 'var(--text-muted)', marginTop: 4, lineHeight: 1.2 }}>{m.label}</div>
               <div style={{ fontSize: 9, color: on ? m.colorRaw : 'var(--text-dim)', marginTop: 3, lineHeight: 1.3, opacity: on ? 0.8 : 0.6 }}>{m.tagline}</div>
               {on && (
-                <div style={{ marginTop: 4, fontSize: 8.5, fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, color: m.colorRaw, letterSpacing: '0.05em' }}>
+                <div style={{ marginTop: 4, fontSize: 8.5, fontFamily: 'var(--font-num)', fontWeight: 800, color: m.colorRaw, letterSpacing: '0.05em' }}>
                   +{m.xpBonus} XP
                 </div>
               )}
@@ -220,19 +220,19 @@ function BlockerSettingsPanel({ blocker }) {
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '10px 14px', borderRadius: 10,
-        background: blocker.installed ? 'rgba(0,168,107,0.08)' : 'rgba(90,100,120,0.06)',
-        border: `1px solid ${blocker.installed ? 'rgba(0,168,107,0.25)' : 'rgba(90,100,120,0.12)'}`,
+        background: blocker.installed ? 'rgba(79,209,165,0.08)' : 'rgba(179,171,199,0.06)',
+        border: `1px solid ${blocker.installed ? 'rgba(79,209,165,0.25)' : 'rgba(179,171,199,0.12)'}`,
       }}>
         <div style={{
           width: 8, height: 8, borderRadius: '50%',
-          background: blocker.installed ? '#00A86B' : '#9CA3AF',
-          boxShadow: blocker.installed ? '0 0 8px rgba(0,168,107,0.6)' : 'none',
+          background: blocker.installed ? '#4FD1A5' : '#9CA3AF',
+          boxShadow: blocker.installed ? '0 0 8px rgba(79,209,165,0.6)' : 'none',
         }} />
-        <div style={{ fontSize: 12, fontWeight: 600, color: blocker.installed ? '#00A86B' : 'var(--text-muted)' }}>
+        <div style={{ fontSize: 12, fontWeight: 600, color: blocker.installed ? '#4FD1A5' : 'var(--text-muted)' }}>
           {blocker.installed ? 'Extensão conectada' : 'Extensão não detectada'}
         </div>
         {blocker.active && (
-          <div style={{ marginLeft: 'auto', fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--coral)' }}>
+          <div style={{ marginLeft: 'auto', fontSize: 10, fontFamily: 'var(--font-num)', fontWeight: 700, color: 'var(--coral)' }}>
             BLOQUEANDO
           </div>
         )}
@@ -240,7 +240,7 @@ function BlockerSettingsPanel({ blocker }) {
 
       {/* Focus mode */}
       <div>
-        <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', marginBottom: 10 }}>
+        <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)', marginBottom: 10 }}>
           MODO DE FOCO PADRÃO
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
@@ -250,15 +250,15 @@ function BlockerSettingsPanel({ blocker }) {
               <button key={m.id} onClick={() => blocker.setFocusMode(m.id)}
                 style={{
                   padding: '12px 8px', borderRadius: 12, cursor: 'pointer', textAlign: 'center',
-                  background: on ? m.bgGlow : 'white',
-                  border: `1.5px solid ${on ? m.colorRaw : 'rgba(30,32,48,0.08)'}`,
+                  background: on ? m.bgGlow : 'rgba(255,255,255,0.04)',
+                  border: `1.5px solid ${on ? m.colorRaw : 'rgba(243,235,221,0.08)'}`,
                   boxShadow: on ? `0 0 20px ${m.colorGlow}` : 'none',
                   transition: 'all 200ms',
                 }}>
-                <div style={{ fontSize: 24 }}>{m.icon}</div>
+                <div style={{ fontSize: 24 }}><Glyph e={m.icon} /></div>
                 <div style={{ fontSize: 12, fontWeight: 700, color: on ? m.colorRaw : 'var(--text-primary)', marginTop: 6 }}>{m.label}</div>
                 <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 3 }}>{m.tagline}</div>
-                <div style={{ marginTop: 5, fontSize: 9.5, fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, color: on ? m.colorRaw : 'var(--text-dim)' }}>+{m.xpBonus} XP bônus</div>
+                <div style={{ marginTop: 5, fontSize: 9.5, fontFamily: 'var(--font-num)', fontWeight: 800, color: on ? m.colorRaw : 'var(--text-dim)' }}>+{m.xpBonus} XP bônus</div>
               </button>
             );
           })}
@@ -274,11 +274,11 @@ function BlockerSettingsPanel({ blocker }) {
         <button onClick={blocker.toggleBlockEnabled}
           style={{
             width: 44, height: 24, borderRadius: 12, border: 'none', cursor: 'pointer',
-            background: settings.blockEnabled ? mode.colorRaw : 'rgba(90,100,120,0.2)',
+            background: settings.blockEnabled ? mode.colorRaw : 'rgba(179,171,199,0.2)',
             transition: 'background 200ms', position: 'relative',
           }}>
           <div style={{
-            width: 18, height: 18, borderRadius: '50%', background: 'white',
+            width: 18, height: 18, borderRadius: '50%', background: 'var(--surface)',
             position: 'absolute', top: 3,
             left: settings.blockEnabled ? 23 : 3,
             transition: 'left 200ms', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
@@ -289,7 +289,7 @@ function BlockerSettingsPanel({ blocker }) {
       {/* Categories */}
       {settings.focusMode !== 'monge' && (
         <div>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', marginBottom: 8 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)', marginBottom: 8 }}>
             CATEGORIAS BLOQUEADAS
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -299,12 +299,12 @@ function BlockerSettingsPanel({ blocker }) {
                 <button key={key} onClick={() => blocker.toggleCategory(key)}
                   style={{
                     padding: '5px 11px', borderRadius: 99, cursor: 'pointer',
-                    background: on ? 'rgba(91,71,184,0.1)' : 'white',
-                    border: `1px solid ${on ? 'rgba(91,71,184,0.4)' : 'rgba(30,32,48,0.1)'}`,
+                    background: on ? 'rgba(183,170,255,0.1)' : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${on ? 'rgba(183,170,255,0.4)' : 'rgba(243,235,221,0.1)'}`,
                     fontSize: 11.5, color: on ? 'var(--tinta)' : 'var(--text-muted)',
                     fontWeight: on ? 700 : 500, transition: 'all 150ms',
                   }}>
-                  {cat.icon} {cat.label}
+                  <Glyph e={cat.icon} /> {cat.label}
                 </button>
               );
             })}
@@ -315,7 +315,7 @@ function BlockerSettingsPanel({ blocker }) {
       {/* Custom sites */}
       {settings.focusMode !== 'monge' && (
         <div>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', marginBottom: 8 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)', marginBottom: 8 }}>
             SITES EXTRAS PERSONALIZADOS
           </div>
           <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>
@@ -332,8 +332,8 @@ function BlockerSettingsPanel({ blocker }) {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {settings.customSites.map(site => (
                 <div key={site} style={{
-                  padding: '3px 9px', borderRadius: 99, fontSize: 11, fontFamily: 'JetBrains Mono, monospace',
-                  background: 'rgba(232,93,93,0.08)', border: '1px solid rgba(232,93,93,0.22)',
+                  padding: '3px 9px', borderRadius: 99, fontSize: 11, fontFamily: 'var(--font-num)',
+                  background: 'rgba(255,122,138,0.08)', border: '1px solid rgba(255,122,138,0.22)',
                   color: 'var(--coral)', display: 'flex', alignItems: 'center', gap: 5,
                 }}>
                   {site}

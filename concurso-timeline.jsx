@@ -12,7 +12,7 @@ return (
 className={`glass ${urgent ? 'pulse-amber' : ''}`}
 style={{ padding: '14px 18px', minWidth: 240, flexShrink: 0 }}>
 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-<div style={{ fontSize: 11, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+<div style={{ fontSize: 11, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)' }}>
 CONCURSO
 </div>
 {urgent && (
@@ -29,7 +29,7 @@ PRÓXIMO
 {days}
 </span>
 <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>dias</span>
-<span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 'auto', fontFamily: 'JetBrains Mono, monospace' }}>
+<span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 'auto', fontFamily: 'var(--font-num)' }}>
 {new Date(c.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
 </span>
 </div>
@@ -37,7 +37,7 @@ PRÓXIMO
 <div style={{ height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden' }}>
 <div className="gradient-bar-green-cyan" style={{ height: '100%', width: `${Math.min(100, Math.max(0, 100 - (days || 0) / 2))}%` }} />
 </div>
-<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>
 <span>Preparação</span>
 <span>{Math.round(Math.min(100, Math.max(0, 100 - (days || 0) / 2)))}%</span>
 </div>

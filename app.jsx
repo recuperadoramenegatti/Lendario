@@ -1,4 +1,4 @@
-// TOGA — App Root v2 — Ultra Premium
+// Lendário — App Root v2 — Ultra Premium
 // Changes vs v1:
 // • Sidebar: fixed 200px, premium active state, no layout bug
 // • TotalsSection: condensed to single horizontal row + mastered % metric
@@ -13,26 +13,26 @@ const { useState, useEffect, useRef } = React;
 function AchievementToast({ kind, onDone }) {
   useEffect(() => { const t = setTimeout(onDone, 4500); return () => clearTimeout(t); }, []);
   const A = {
-    week_streak:       { title: '7 dias de constância',         sub: 'Uma semana inteira encadeada',              icon: '🔥', color: '#f59e0b' },
+    week_streak:       { title: '7 dias de constância',         sub: 'Uma semana inteira encadeada',              icon: '🔥', color: '#FFB057' },
     marathon:          { title: 'Maratonista',                  sub: 'Sessão de 90 min completa',                 icon: '🛡', color: 'var(--tinta)' },
-    first_mastered:    { title: 'Primeiro tema dominado',       sub: 'Um tópico conquistado',                     icon: '⚡', color: '#00b8d4' },
+    first_mastered:    { title: 'Primeiro tema dominado',       sub: 'Um tópico conquistado',                     icon: '⚡', color: '#8FB8FF' },
     half_edital:       { title: 'Meio edital',                  sub: '50% dos tópicos dominados',                 icon: '🏆', color: 'var(--esmeralda)' },
     backup_done:       { title: 'Backup baixado',               sub: 'Arquivo salvo no seu computador',           icon: '💾', color: 'var(--esmeralda)' },
-    restore_done:      { title: 'Backup restaurado',            sub: 'Seus dados foram recarregados',             icon: '🔄', color: '#00b8d4' },
+    restore_done:      { title: 'Backup restaurado',            sub: 'Seus dados foram recarregados',             icon: '🔄', color: '#8FB8FF' },
     reset_done:        { title: 'Sistema zerado',               sub: 'Tudo voltou ao estado inicial',             icon: '🌱', color: 'var(--esmeralda)' },
     goals_saved:       { title: 'Metas atualizadas',            sub: 'Boa! Vamos cumprir',                        icon: '🎯', color: 'var(--tinta)' },
-    pet_sick:          { title: 'Seu dragãozinho adoeceu 🤒', sub: 'Estude 2 dias seguidos para curá-lo',      icon: '🤒', color: '#f59e0b' },
+    pet_sick:          { title: 'Seu dragãozinho adoeceu 🤒', sub: 'Estude 2 dias seguidos para curá-lo',      icon: '🤒', color: '#FFB057' },
     pet_healed:        { title: 'Seu dragãozinho está curado!', sub: 'Cuidando dele com seus estudos 🐉',      icon: '💚', color: 'var(--esmeralda)' },
     // Blindado achievements (regular toast)
-    blindado_first:    { title: 'Primeiro Escudo Ativado',      sub: 'Sua primeira sessão blindada',              icon: '🛡️', color: '#5B47B8' },
-    blindado_5:        { title: 'Guardião do Foco',             sub: '5 sessões blindadas concluídas',            icon: '⚔️', color: '#5B47B8' },
-    blindado_monge:    { title: 'Caminho do Monge',             sub: 'Primeira sessão em Modo Monge completa',    icon: '🧘', color: '#C9A961' },
+    blindado_first:    { title: 'Primeiro Escudo Ativado',      sub: 'Sua primeira sessão blindada',              icon: '🛡️', color: '#B7AAFF' },
+    blindado_5:        { title: 'Guardião do Foco',             sub: '5 sessões blindadas concluídas',            icon: '⚔️', color: '#B7AAFF' },
+    blindado_monge:    { title: 'Caminho do Monge',             sub: 'Primeira sessão em Modo Monge completa',    icon: '🧘', color: '#E8C47A' },
     // Epic blindado achievements (handled by CinematicAchievementToast — this is fallback)
-    blindado_7day:     { title: 'Semana Blindada',              sub: '7 dias consecutivos no Modo Blindado',      icon: '🔥', color: '#f59e0b' },
-    blindado_25:       { title: 'Sentinela',                    sub: '25 sessões blindadas completadas',          icon: '🏰', color: '#5B47B8' },
-    blindado_50:       { title: 'Mestre Blindado',              sub: '50 sessões blindadas — lenda!',             icon: '⚡', color: '#00b8d4' },
-    blindado_100h:     { title: 'Centúria',                     sub: '100 horas em Modo Blindado',                icon: '🏆', color: '#C9A961' },
-    blindado_30day:    { title: 'Mês Blindado',                 sub: '30 dias consecutivos — nível supremo',      icon: '🌟', color: '#C9A961' },
+    blindado_7day:     { title: 'Semana Blindada',              sub: '7 dias consecutivos no Modo Blindado',      icon: '🔥', color: '#FFB057' },
+    blindado_25:       { title: 'Sentinela',                    sub: '25 sessões blindadas completadas',          icon: '🏰', color: '#B7AAFF' },
+    blindado_50:       { title: 'Mestre Blindado',              sub: '50 sessões blindadas — lenda!',             icon: '⚡', color: '#8FB8FF' },
+    blindado_100h:     { title: 'Centúria',                     sub: '100 horas em Modo Blindado',                icon: '🏆', color: '#E8C47A' },
+    blindado_30day:    { title: 'Mês Blindado',                 sub: '30 dias consecutivos — nível supremo',      icon: '🌟', color: '#E8C47A' },
   };
   const a = A[kind] || A.first_mastered;
   const isAviso = kind.startsWith('pet_') || ['goals_saved','backup_done','restore_done','reset_done'].includes(kind);
@@ -41,16 +41,16 @@ function AchievementToast({ kind, onDone }) {
       position: 'fixed', top: 80, right: 20, zIndex: 80,
       padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12,
       maxWidth: 340, borderRadius: 16,
-      boxShadow: `0 12px 40px rgba(30,32,48,0.18), 0 0 0 1px ${a.color}44`,
+      boxShadow: `0 12px 40px rgba(0,0,0,0.54), 0 0 0 1px ${a.color}44`,
     }}>
       <div style={{
         width: 40, height: 40, borderRadius: 10, flexShrink: 0,
         background: `radial-gradient(circle, ${a.color}28, transparent)`,
         border: `1px solid ${a.color}33`,
         display: 'grid', placeItems: 'center', fontSize: 20,
-      }}>{a.icon}</div>
+      }}><Glyph e={a.icon} /></div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 9, letterSpacing: '0.2em', color: a.color, fontFamily: 'JetBrains Mono, monospace', fontWeight: 800 }}>
+        <div style={{ fontSize: 9, letterSpacing: '0.2em', color: a.color, fontFamily: 'var(--font-label)', fontWeight: 800 }}>
           {isAviso ? 'AVISO' : 'CONQUISTA'}
         </div>
         <div className="font-display" style={{ fontSize: 13, fontWeight: 700, marginTop: 2 }}>{a.title}</div>
@@ -66,11 +66,11 @@ function CinematicAchievementToast({ kind, onDone }) {
   useEffect(() => { const t = setTimeout(onDone, DISMISS_MS); return () => clearTimeout(t); }, []);
 
   const EPIC = {
-    blindado_7day:  { title: 'SEMANA BLINDADA', sub: '7 dias consecutivos de foco inabalável', icon: '🔥', color: '#f59e0b', glow: 'rgba(245,158,11,0.55)', bg: 'rgba(20,14,0,0.97)' },
-    blindado_25:    { title: 'SENTINELA',        sub: '25 sessões blindadas — você é incansável', icon: '🏰', color: '#5B47B8', glow: 'rgba(91,71,184,0.6)',  bg: 'rgba(8,6,20,0.97)'  },
-    blindado_50:    { title: 'MESTRE BLINDADO',  sub: '50 sessões de concentração absoluta',      icon: '⚡', color: '#00b8d4', glow: 'rgba(0,184,212,0.55)', bg: 'rgba(0,10,18,0.97)' },
-    blindado_100h:  { title: 'CENTÚRIA',         sub: '100 horas em Modo Blindado — lendário',    icon: '🏆', color: '#C9A961', glow: 'rgba(201,169,97,0.6)', bg: 'rgba(12,8,0,0.97)'  },
-    blindado_30day: { title: 'MÊS BLINDADO',     sub: '30 dias seguidos — foco de elite',         icon: '🌟', color: '#C9A961', glow: 'rgba(201,169,97,0.6)', bg: 'rgba(10,8,0,0.97)'  },
+    blindado_7day:  { title: 'SEMANA BLINDADA', sub: '7 dias consecutivos de foco inabalável', icon: '🔥', color: '#FFB057', glow: 'rgba(255,176,87,0.55)', bg: 'rgba(20,14,0,0.97)' },
+    blindado_25:    { title: 'SENTINELA',        sub: '25 sessões blindadas — você é incansável', icon: '🏰', color: '#B7AAFF', glow: 'rgba(183,170,255,0.6)',  bg: 'rgba(8,6,20,0.97)'  },
+    blindado_50:    { title: 'MESTRE BLINDADO',  sub: '50 sessões de concentração absoluta',      icon: '⚡', color: '#8FB8FF', glow: 'rgba(143,184,255,0.55)', bg: 'rgba(0,10,18,0.97)' },
+    blindado_100h:  { title: 'CENTÚRIA',         sub: '100 horas em Modo Blindado — lendário',    icon: '🏆', color: '#E8C47A', glow: 'rgba(232,196,122,0.6)', bg: 'rgba(12,8,0,0.97)'  },
+    blindado_30day: { title: 'MÊS BLINDADO',     sub: '30 dias seguidos — foco de elite',         icon: '🌟', color: '#E8C47A', glow: 'rgba(232,196,122,0.6)', bg: 'rgba(10,8,0,0.97)'  },
   };
   const a = EPIC[kind] || EPIC.blindado_7day;
 
@@ -135,9 +135,9 @@ function CinematicAchievementToast({ kind, onDone }) {
               fontSize: 44, flexShrink: 0,
               '--pcolor': a.glow,
               animation: 'cinematic-icon-pulse 1.6s ease-in-out infinite',
-            }}>{a.icon}</div>
+            }}><Glyph e={a.icon} /></div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 8.5, letterSpacing: '0.35em', color: a.color, fontFamily: 'JetBrains Mono, monospace', fontWeight: 900, marginBottom: 5 }}>
+              <div style={{ fontSize: 8.5, letterSpacing: '0.35em', color: a.color, fontFamily: 'var(--font-label)', fontWeight: 900, marginBottom: 5 }}>
                 ✦ CONQUISTA ÉPICA ✦
               </div>
               <div className="font-display" style={{ fontSize: 18, fontWeight: 800, color: a.color, letterSpacing: '-0.01em', lineHeight: 1.2, marginBottom: 4 }}>
@@ -180,25 +180,25 @@ const DEFAULTS = /*EDITMODE-BEGIN*/{
 // Frases inspiradoras diárias — rotação determinística pelo dia do ano
 const DAILY_PHRASES = [
   { text: 'Disciplina é a ponte entre as metas e as conquistas.', author: 'Jim Rohn' },
-  { text: 'Constância vence talento quando o talento não é constante.', author: 'TOGA' },
-  { text: 'Aprovação não acontece num dia — acontece todos os dias.', author: 'TOGA' },
+  { text: 'Constância vence talento quando o talento não é constante.', author: 'Lendário' },
+  { text: 'Aprovação não acontece num dia — acontece todos os dias.', author: 'Lendário' },
   { text: 'O sucesso é a soma de pequenos esforços repetidos dia após dia.', author: 'Robert Collier' },
   { text: 'Sua única competição é quem você foi ontem.', author: 'James Clear' },
   { text: 'Não pare quando estiver cansado. Pare quando tiver terminado.', author: 'David Goggins' },
-  { text: 'A toga não veste quem desiste no meio do caminho.', author: 'TOGA' },
+  { text: 'A toga não veste quem desiste no meio do caminho.', author: 'Lendário' },
   { text: 'A persistência realiza o impossível.', author: 'Provérbio chinês' },
-  { text: 'Pequenos passos diários superam grandes saltos esporádicos.', author: 'TOGA' },
+  { text: 'Pequenos passos diários superam grandes saltos esporádicos.', author: 'Lendário' },
   { text: 'A dor da disciplina pesa gramas; a dor do arrependimento, toneladas.', author: 'Jim Rohn' },
   { text: 'O futuro pertence àqueles que se preparam hoje.', author: 'Malcolm X' },
-  { text: 'Aprovar é decidir, todo dia, não desistir.', author: 'TOGA' },
-  { text: 'Quem planta constância, colhe aprovação.', author: 'TOGA' },
-  { text: 'Estude como se a vaga já fosse sua — porque ela está.', author: 'TOGA' },
+  { text: 'Aprovar é decidir, todo dia, não desistir.', author: 'Lendário' },
+  { text: 'Quem planta constância, colhe aprovação.', author: 'Lendário' },
+  { text: 'Estude como se a vaga já fosse sua — porque ela está.', author: 'Lendário' },
   { text: 'Foco não é fazer mil coisas, é dizer não pra novecentas e noventa e nove.', author: 'Steve Jobs' },
-  { text: 'Hábitos diários definem destinos finais.', author: 'TOGA' },
+  { text: 'Hábitos diários definem destinos finais.', author: 'Lendário' },
   { text: 'Não conte os dias — faça os dias contarem.', author: 'Muhammad Ali' },
   { text: 'A diferença entre o ordinário e o extraordinário é o "extra".', author: 'Jimmy Johnson' },
   { text: 'Comece onde está. Use o que tem. Faça o que pode.', author: 'Arthur Ashe' },
-  { text: 'A jornada de mil páginas começa com uma única virada.', author: 'TOGA' },
+  { text: 'A jornada de mil páginas começa com uma única virada.', author: 'Lendário' },
 ];
 
 function DailyPhrase() {
@@ -206,26 +206,15 @@ function DailyPhrase() {
   const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
   const p = DAILY_PHRASES[dayOfYear % DAILY_PHRASES.length];
   return (
-    <div className="anim-slide-up glass" style={{
-      animationDelay: '40ms',
-      padding: '12px 16px',
-      display: 'flex', alignItems: 'flex-start', gap: 12,
-      background: 'linear-gradient(135deg, rgba(11,61,92,0.05), rgba(0,184,212,0.05))',
-      border: '1px solid rgba(0,184,212,0.15)',
-      borderLeft: '3px solid var(--ciano)',
-    }}>
-      <div style={{ fontSize: 20, lineHeight: 1, flexShrink: 0, filter: 'drop-shadow(0 0 6px rgba(0,184,212,0.4))' }}>✨</div>
-      <div style={{ minWidth: 0, flex: 1 }}>
-        <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 4 }}>
-          INSPIRAÇÃO DO DIA
-        </div>
-        <div className="font-display" style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.45, fontStyle: 'italic' }}>
-          "{p.text}"
-        </div>
-        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4, fontWeight: 600 }}>
-          — {p.author}
-        </div>
+    <div className="anim-slide-up glass ld-quote" style={{ animationDelay: '40ms', padding: '16px 20px 14px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <G name="sparkles" size={14} color="#E8C47A" />
+        <span style={{ fontFamily: 'var(--font-label)', fontSize: 9.5, letterSpacing: '0.26em', color: '#E8C47A', fontWeight: 700 }}>INSPIRAÇÃO DO DIA</span>
       </div>
+      <div className="font-display" style={{ fontSize: 19, fontWeight: 500, fontStyle: 'italic', color: 'var(--text-primary)', lineHeight: 1.3 }}>
+        “{p.text}”
+      </div>
+      <div style={{ fontSize: 11.5, color: 'var(--text-muted)', fontWeight: 600 }}>— {p.author}</div>
     </div>
   );
 }
@@ -237,17 +226,17 @@ function GoalsModal({ open, goals, onSave, onClose }) {
   if (!open) return null;
 
   const fields = [
-    { k: 'dailyHours',      label: 'Horas por dia',        max: 16,   step: 0.5, color: '#00b8d4', icon: '⏱', unit: 'h' },
+    { k: 'dailyHours',      label: 'Horas por dia',        max: 16,   step: 0.5, color: '#8FB8FF', icon: '⏱', unit: 'h' },
     { k: 'weeklyHours',     label: 'Horas por semana',     max: 80,   step: 1,   color: 'var(--tinta)',     icon: '📅', unit: 'h' },
     { k: 'dailyQuestions',  label: 'Questões por dia',     max: 300,  step: 5,   color: 'var(--esmeralda)', icon: '❓', unit: '' },
-    { k: 'weeklyQuestions', label: 'Questões por semana',  max: 1500, step: 10,  color: '#f59e0b',          icon: '🎯', unit: '' },
+    { k: 'weeklyQuestions', label: 'Questões por semana',  max: 1500, step: 10,  color: '#FFB057',          icon: '🎯', unit: '' },
     { k: 'dailyFlashcards', label: 'Flashcards por dia',   max: 300,  step: 5,   color: 'var(--coral)',     icon: '🃏', unit: '' },
   ];
 
   return (
     <div onClick={onClose} style={{
       position: 'fixed', inset: 0, zIndex: 90,
-      background: 'rgba(30,32,48,0.45)', backdropFilter: 'blur(10px)',
+      background: 'radial-gradient(ellipse at 50% 30%, rgba(42,31,92,0.55), rgba(7,6,13,0.86))', backdropFilter: 'blur(10px)',
       display: 'grid', placeItems: 'center', padding: 24,
       animation: 'fade-in 250ms ease-out',
     }}>
@@ -257,7 +246,7 @@ function GoalsModal({ open, goals, onSave, onClose }) {
           <I.close size={13} />
         </button>
         <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.25em', color: 'var(--tinta)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 800 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.25em', color: 'var(--tinta)', fontFamily: 'var(--font-label)', fontWeight: 800 }}>
             CONFIGURAR METAS
           </div>
           <div className="font-display gradient-neon" style={{ fontSize: 22, fontWeight: 700, marginTop: 4 }}>
@@ -272,7 +261,7 @@ function GoalsModal({ open, goals, onSave, onClose }) {
             <div key={f.k}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, alignItems: 'center' }}>
                 <span style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 600 }}>
-                  <span style={{ marginRight: 6 }}>{f.icon}</span>{f.label}
+                  <span style={{ marginRight: 6 }}><Glyph e={f.icon} /></span>{f.label}
                 </span>
                 <span className="num" style={{ fontSize: 16, fontWeight: 800, color: f.color }}>
                   {form[f.k] ?? 0}{f.unit}
@@ -296,7 +285,7 @@ function GoalsModal({ open, goals, onSave, onClose }) {
         </div>
         <button onClick={() => { onSave(form); onClose(); }} className="btn-neon" style={{
           width: '100%', justifyContent: 'center', marginTop: 22, padding: '12px 20px', fontSize: 13,
-          background: 'linear-gradient(135deg, var(--petroleo), var(--ciano))', borderColor: 'transparent', color: 'white',
+          background: 'var(--grad-primary)', borderColor: 'transparent', color: 'var(--on-primary)',
         }}>
           <I.check size={14} stroke={2.5} /> Salvar metas
         </button>
@@ -355,22 +344,22 @@ function TotalsSection({ shared, objState, discState }) {
     : null;
 
   const items = [
-    { label: 'Horas estudadas',    value: totalHours.toFixed(1),              unit: 'h',  color: '#00b8d4',       colorRaw: '#00b8d4',  glow: '#00d9ff', sub: `${activeDays} dias` },
-    { label: 'Questões',           value: totalQuestions.toLocaleString('pt-BR'), unit: '',color: 'var(--esmeralda)', colorRaw: '#00A86B', glow: '#00ff88', sub: 'resolvidas' },
-    { label: 'Revisões',           value: totalReviews.toLocaleString('pt-BR'),   unit: '',color: 'var(--tinta)',   colorRaw: '#5B47B8',  glow: '#7B67D8', sub: 'flashcards' },
-    { label: 'Tópicos dominados',  value: masteredPct.toFixed(0),             unit: '%',  color: 'var(--coral)',   colorRaw: '#E85D5D',  glow: '#FF7070', sub: `${totalMastered}/${totalTopics}` },
-    { label: 'Pedem revisão',      value: needsReview,                        unit: '',   color: '#f59e0b',        colorRaw: '#f59e0b',  glow: '#ffc107', sub: needsReview > 0 ? '>30 dias' : 'tudo ok' },
+    { label: 'Horas estudadas',    value: totalHours.toFixed(1),              unit: 'h',  color: '#8FB8FF',       colorRaw: '#8FB8FF',  glow: '#A9C8FF', sub: `${activeDays} dias` },
+    { label: 'Questões',           value: totalQuestions.toLocaleString('pt-BR'), unit: '',color: 'var(--esmeralda)', colorRaw: '#4FD1A5', glow: '#00ff88', sub: 'resolvidas' },
+    { label: 'Revisões',           value: totalReviews.toLocaleString('pt-BR'),   unit: '',color: 'var(--tinta)',   colorRaw: '#B7AAFF',  glow: '#C9C1FF', sub: 'flashcards' },
+    { label: 'Tópicos dominados',  value: masteredPct.toFixed(0),             unit: '%',  color: 'var(--coral)',   colorRaw: '#FF7A8A',  glow: '#FFA0AB', sub: `${totalMastered}/${totalTopics}` },
+    { label: 'Pedem revisão',      value: needsReview,                        unit: '',   color: '#FFB057',        colorRaw: '#FFB057',  glow: '#FFD27A', sub: needsReview > 0 ? '>30 dias' : 'tudo ok' },
   ];
 
   return (
     <div className="glass" style={{ padding: '16px 20px' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 6 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>
             SUA JORNADA ATÉ AGORA
           </div>
           {since && (
-            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 3, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 3, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
               desde {since}
             </div>
           )}
@@ -380,13 +369,13 @@ function TotalsSection({ shared, objState, discState }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>Dominância do edital</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 120, height: 5, background: 'rgba(30,32,48,0.07)', borderRadius: 99, overflow: 'hidden' }}>
+            <div style={{ width: 120, height: 5, background: 'rgba(243,235,221,0.07)', borderRadius: 99, overflow: 'hidden' }}>
               <div style={{
                 height: '100%', width: `${masteredPct}%`,
                 background: 'linear-gradient(90deg, var(--coral), var(--ambar))',
                 borderRadius: 99,
                 transition: 'width 700ms cubic-bezier(0.16,1,0.3,1)',
-                boxShadow: masteredPct > 0 ? '0 0 6px rgba(232,93,93,0.4)' : 'none',
+                boxShadow: masteredPct > 0 ? '0 0 6px rgba(255,122,138,0.4)' : 'none',
               }} />
             </div>
             <span className="num" style={{ fontSize: 12, fontWeight: 800, color: 'var(--coral)' }}>{masteredPct.toFixed(0)}%</span>
@@ -399,14 +388,14 @@ function TotalsSection({ shared, objState, discState }) {
         {items.map((m, i) => (
           <div key={i} className="anim-slide-up" style={{
             flex: '1 1 140px', padding: '12px 14px', borderRadius: 12,
-            background: `linear-gradient(145deg, rgba(255,255,255,0.8), rgba(255,255,255,0.55)), radial-gradient(ellipse at 0% 0%, ${m.colorRaw}0e, transparent 60%)`,
+            background: `linear-gradient(145deg, rgba(22,19,40,0.8), rgba(22,19,40,0.55)), radial-gradient(ellipse at 0% 0%, ${m.colorRaw}0e, transparent 60%)`,
             border: `1px solid ${m.colorRaw}22`,
             animationDelay: `${i * 60}ms`,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
               <div style={{
                 fontSize: 10, letterSpacing: '0.08em', color: 'var(--text-muted)',
-                fontWeight: 700, textTransform: 'uppercase', fontFamily: 'JetBrains Mono, monospace',
+                fontWeight: 700, textTransform: 'uppercase', fontFamily: 'var(--font-label)',
               }}>{m.label}</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
@@ -417,7 +406,7 @@ function TotalsSection({ shared, objState, discState }) {
               }}>{m.value}</span>
               <span className="num" style={{ fontSize: 11, color: 'var(--text-dim)', fontWeight: 600 }}>{m.unit}</span>
             </div>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 3, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 3, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
               {m.sub}
             </div>
           </div>
@@ -459,8 +448,8 @@ function BackupSection({ shared, objState, discState, onRestore, onReset, onToas
   };
 
   const handleReset = () => {
-    const typed = window.prompt('⚠️ Para confirmar, digite exatamente:\n\nRESETAR TOGA');
-    if (typed !== 'RESETAR TOGA') return;
+    const typed = window.prompt('⚠️ Para confirmar, digite exatamente:\n\nRESETAR LENDARIO');
+    if (typed !== 'RESETAR LENDARIO') return;
     localStorage.removeItem('toga_onboarded'); onReset(); onToast('reset_done');
   };
 
@@ -468,10 +457,10 @@ function BackupSection({ shared, objState, discState, onRestore, onReset, onToas
     <div className="glass" style={{ padding: '18px 20px' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, flexWrap: 'wrap', justifyContent: 'space-between' }}>
         <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 5 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 5 }}>
             DADOS · BACKUP & RESTAURO
           </div>
-          <div className="font-display" style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>Seus dados, sob seu controle 💾</div>
+          <div className="font-display" style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>Seus dados, sob seu controle <Glyph e="💾" /></div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', maxWidth: 580 }}>
             Baixe um arquivo .json com todo o seu progresso. Você pode restaurar em outro navegador ou após reinstalação.
           </div>
@@ -479,11 +468,11 @@ function BackupSection({ shared, objState, discState, onRestore, onReset, onToas
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignSelf: 'center' }}>
           <button className="btn-neon" onClick={handleExport}><I.download size={13} /> Baixar backup</button>
           <button className="btn-ghost" onClick={handleImportClick}
-            style={{ borderColor: 'rgba(245,158,11,0.4)', color: '#a14e0c', background: 'rgba(245,158,11,0.06)' }}>
+            style={{ borderColor: 'rgba(255,176,87,0.4)', color: '#EEBB8F', background: 'rgba(255,176,87,0.06)' }}>
             <I.up size={13} /> Restaurar
           </button>
           <button className="btn-ghost" onClick={handleReset}
-            style={{ borderColor: 'rgba(232,93,93,0.4)', color: '#a82360', background: 'rgba(232,93,93,0.06)' }}>
+            style={{ borderColor: 'rgba(255,122,138,0.4)', color: '#EEA3BA', background: 'rgba(255,122,138,0.06)' }}>
             <I.close size={13} /> Zerar
           </button>
           <input ref={fileInputRef} type="file" accept="application/json,.json" onChange={handleFileChange} className="file-input-hidden" />
@@ -537,7 +526,7 @@ function App() {
   const mode = tweaks.mode;
   const setMode = (m) => { setTweaks('mode', m); setMeta(mt => ({ ...mt, mode: m })); };
 
-  const [showSplash, setShowSplash] = useState(tweaks.showSplash);
+  const [showSplash, setShowSplash] = useState(() => { try { return tweaks.showSplash || !sessionStorage.getItem('ld_splash_seen'); } catch { return tweaks.showSplash; } });
   const [pomodoroOpen, setPomodoroOpen] = useState(false);
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [sessionLogOpen, setSessionLogOpen] = useState(false);
@@ -895,7 +884,7 @@ function App() {
   };
   const handleSaveGoals = (newGoals) => { setShared(s => ({ ...s, goals: { ...s.goals, ...newGoals } })); pushToast('goals_saved'); };
 
-  if (showSplash) return <SplashScreen onEnter={() => { setShowSplash(false); setTweaks('showSplash', false); }} />;
+  if (showSplash) return <SplashScreen onEnter={() => { try { sessionStorage.setItem('ld_splash_seen', '1'); } catch {} setShowSplash(false); setTweaks('showSplash', false); }} />;
 
   const activeSubjects = mode === 'objetiva' ? objState.subjects : discState.subjects;
   const combinedSubjects = React.useMemo(() => {
@@ -909,49 +898,65 @@ function App() {
   const isSick = shared.petHealth === 'sick';
 
   const TABS = [
-    { id: 'hoje',         label: 'HOJE',                      icon: '🏠' },
-    { id: 'covil',        label: 'COVIL DO DRAGÃO',           icon: '🐉', shortLabel: 'COVIL' },
-    { id: 'edital',       label: 'EDITAL',                    icon: '📋' },
-    { id: 'simulados',    label: 'SIMULADOS',                 icon: '🎯' },
-    { id: 'concursos',    label: 'DESEMPENHO EM CONCURSOS',   icon: '🏆', shortLabel: 'CONCURSOS' },
-    { id: 'estatisticas', label: 'ESTATÍSTICAS',              icon: '📊' },
-    { id: 'historico',    label: 'HISTÓRICO',                 icon: '📜' },
-    { id: 'ajustes',      label: 'AJUSTES',                   icon: '⚙️' },
+    { id: 'hoje',         label: 'Hoje',                      g: 'sun' },
+    { id: 'covil',        label: 'Covil do Dragão',           g: 'dragon', shortLabel: 'Covil' },
+    { id: 'edital',       label: 'Edital',                    g: 'scroll' },
+    { id: 'simulados',    label: 'Simulados',                 g: 'target' },
+    { id: 'concursos',    label: 'Desempenho em concursos',   g: 'trophy', shortLabel: 'Concursos' },
+    { id: 'estatisticas', label: 'Estatísticas',              g: 'bars', shortLabel: 'Estatíst.' },
+    { id: 'historico',    label: 'Histórico',                 g: 'hourglass' },
+    { id: 'ajustes',      label: 'Ajustes',                   g: 'astrolabe' },
   ];
+  const tabIcon = (tab, active) => tab.g === 'dragon'
+    ? <LogoMark size={active ? 24 : 22} star={false} detail={false} />
+    : <G name={tab.g} size={19} color={active ? '#F7E2A8' : 'currentColor'} />;
 
   return (
     <div style={{ position: 'relative', zIndex: 1 }}>
       <div className="aurora" />
       <div className="dot-grid" />
+      <svg className="ld-sigil" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="97" fill="none" stroke="#E8C47A" strokeOpacity=".25" strokeWidth=".35" />
+        <circle cx="100" cy="100" r="92" fill="none" stroke="#E8C47A" strokeOpacity=".4" strokeWidth="1.4" strokeDasharray=".4 5.2" />
+        <circle cx="100" cy="100" r="85" fill="none" stroke="#9D8CFF" strokeOpacity=".3" strokeWidth="2.6" strokeDasharray="1 2 6 2 1 9" />
+        <polygon points="100,24 165.8,138 34.2,138" fill="none" stroke="#E8C47A" strokeOpacity=".12" strokeWidth=".4" />
+        <polygon points="100,176 34.2,62 165.8,62" fill="none" stroke="#9D8CFF" strokeOpacity=".14" strokeWidth=".4" />
+        <path d="M100 3 L102 10 L100 17 L98 10 Z M197 100 L190 102 L183 100 L190 98 Z M100 197 L98 190 L100 183 L102 190 Z M3 100 L10 98 L17 100 L10 102 Z" fill="#E8C47A" fillOpacity=".6" />
+      </svg>
 
       <GlobalHeader shared={shared} mode={mode} setMode={setMode} totalPct={totalStats.percentage} onOpenLair={() => setActiveTab('covil')} onOpenChest={(c) => setWisdomChest(c)} />
 
       {/* Sidebar */}
-      <nav className="nav-sidebar">
+      <nav className="nav-sidebar" aria-label="Navegação principal">
         <div className="nav-sidebar-brand">
-          <span style={{ fontSize: 20 }}>⚖️</span> TOGA
+          <LogoMark size={44} title="Lendário" className="ld-float" />
+          <Wordmark size={17} tagline />
         </div>
         {TABS.map(tab => (
           <button key={tab.id} className={`nav-tab ${activeTab === tab.id ? 'nav-tab-active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}>
-            <span className="nav-tab-icon">{tab.icon}</span>
-            <span style={tab.shortLabel ? { whiteSpace: 'normal', lineHeight: 1.25, fontSize: 10.5, textAlign: 'left' } : undefined}>{tab.label}</span>
+            aria-current={activeTab === tab.id ? 'page' : undefined}
+            onClick={() => { setActiveTab(tab.id); window.SFX && window.SFX.tick && window.SFX.tick(); }}>
+            <span className="nav-tab-icon">{tabIcon(tab, activeTab === tab.id)}</span>
+            <span>{tab.label}</span>
           </button>
         ))}
+        <div className="nav-sidebar-foot">BIBLIOTECA ARCANA</div>
       </nav>
 
       {/* Bottom nav (mobile) */}
-      <nav className="nav-bottom">
+      <nav className="nav-bottom" aria-label="Navegação principal">
         {TABS.map(tab => (
-          <button key={tab.id} className={`nav-tab ${activeTab === tab.id ? 'nav-tab-active' : ''}`}
+          <button key={tab.id} className={`nav-tab ${tab.id === 'covil' ? 'ld-nav-covil' : ''} ${activeTab === tab.id ? 'nav-tab-active' : ''}`}
+            aria-current={activeTab === tab.id ? 'page' : undefined}
             onClick={() => setActiveTab(tab.id)}>
-            <span className="nav-tab-icon">{tab.icon}</span>
+            <span className="nav-tab-icon">{tabIcon(tab, activeTab === tab.id)}</span>
             <span>{tab.shortLabel || tab.label}</span>
           </button>
         ))}
       </nav>
 
       <main className="toga-main" style={{ maxWidth: 1200, margin: '0 auto', padding: '22px 24px 100px', position: 'relative' }}>
+        <div key={activeTab} className="ld-page">
 
         {/* ── ABA: HOJE ── */}
         {activeTab === 'hoje' && (
@@ -960,12 +965,14 @@ function App() {
             <div className="greeting-row" style={{ display: 'grid', gap: 16, gridTemplateColumns: 'minmax(0,1.2fr) minmax(0,1fr)', marginBottom: 16 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div className="anim-slide-up" style={{ animationDelay: '0ms' }}>
-                  <div className="font-display" style={{ fontSize: 27, fontWeight: 700, letterSpacing: '-0.025em' }}>
-                    Bom estudo, <span className="gradient-neon">Concurseiro(a)</span>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.28em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 4 }}>
+                    {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase()}
+                  </div>
+                  <div className="font-display" style={{ fontSize: 36, fontWeight: 600, lineHeight: 1.05, letterSpacing: '-0.01em' }}>
+                    {(() => { const h = new Date().getHours(); return h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite'; })()}, <span className="gradient-neon" style={{ fontStyle: 'italic' }}>Concurseiro(a)</span>
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
-                    {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
-                    {' · '}
+                    Estude como uma lenda{' · '}
                     <span style={{ fontWeight: 700, color: mode === 'objetiva' ? 'var(--ciano)' : 'var(--coral)' }}>
                       Modo {mode === 'objetiva' ? 'Objetiva' : 'Discursiva'}
                     </span>
@@ -978,14 +985,14 @@ function App() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div className="anim-slide-up" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', animationDelay: '60ms' }}>
                   <button className="btn-ghost" onClick={() => setGoalsOpen(true)}
-                    style={{ borderColor: 'rgba(91,71,184,0.3)', color: 'var(--tinta)', background: 'rgba(91,71,184,0.05)', fontWeight: 600, fontSize: 12 }}>
-                    🎯 Metas
+                    style={{ borderColor: 'rgba(183,170,255,0.3)', color: 'var(--tinta)', background: 'rgba(183,170,255,0.05)', fontWeight: 600, fontSize: 12 }}>
+                    <Glyph e="🎯" /> Metas
                   </button>
                   <button className="btn-neon" onClick={() => setSessionLogOpen(true)} style={{ fontSize: 12 }}>
-                    ✏️ Registrar sessão
+                    <Glyph e="✏️" /> Registrar sessão
                   </button>
                   <button className="btn-ghost" onClick={() => setPomodoroOpen(true)} style={{ fontSize: 12 }}>
-                    🛡 Blindado
+                    <Glyph e="🛡" /> Blindado
                   </button>
                 </div>
 
@@ -1067,10 +1074,10 @@ function App() {
             <section style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
                 <div className="font-display" style={{ fontSize: 20, fontWeight: 700 }}>Matriz do Edital</div>
-                <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.1em', fontWeight: 700 }}>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', letterSpacing: '0.1em', fontWeight: 700 }}>
                   · {mode === 'objetiva' ? 'OBJETIVA' : 'DISCURSIVA'}
                 </div>
-                <div style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+                <div style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>
                   cada check +1 XP × peso
                 </div>
               </div>
@@ -1123,20 +1130,20 @@ function App() {
         {/* ── ABA: AJUSTES ── */}
         {activeTab === 'ajustes' && (
           <>
-            <div className="font-display" style={{ fontSize: 20, fontWeight: 700, color: 'var(--petroleo)', marginBottom: 16 }}>Ajustes</div>
+            <div className="font-display" style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-heading)', marginBottom: 16 }}>Ajustes</div>
             <section style={{ marginBottom: 14 }}>
               <div className="glass" style={{ padding: '18px 20px' }}>
-                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>METAS PESSOAIS</div>
+                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>METAS PESSOAIS</div>
                 <div className="font-display" style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>Configure suas metas diárias e semanais</div>
-                <button className="btn-neon" onClick={() => setGoalsOpen(true)} style={{ fontSize: 13 }}>🎯 Configurar metas</button>
+                <button className="btn-neon" onClick={() => setGoalsOpen(true)} style={{ fontSize: 13 }}><Glyph e="🎯" /> Configurar metas</button>
               </div>
             </section>
 
             {/* Blindado settings + stats */}
             <section style={{ marginBottom: 14 }}>
               <div className="glass" style={{ padding: '18px 20px' }}>
-                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--tinta)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>
-                  🛡 MODO BLINDADO · EXTENSÃO
+                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--tinta)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>
+                  <Glyph e="🛡" /> MODO BLINDADO · EXTENSÃO
                 </div>
                 <div className="font-display" style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Configurações de bloqueio</div>
                 <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
@@ -1147,10 +1154,10 @@ function App() {
                 {(shared.blindado?.sessions || 0) > 0 && (() => {
                   const bd = shared.blindado || {};
                   const items = [
-                    { label: 'Sessões', value: bd.sessions || 0, unit: '', color: '#5B47B8' },
-                    { label: 'Horas blindadas', value: ((bd.hours || 0)).toFixed(1), unit: 'h', color: '#00b8d4' },
-                    { label: 'Streak atual', value: bd.streak || 0, unit: bd.streak > 1 ? ' dias' : ' dia', color: '#f59e0b' },
-                    { label: 'Recorde', value: bd.bestStreak || 0, unit: bd.bestStreak > 1 ? ' dias' : ' dia', color: '#C9A961' },
+                    { label: 'Sessões', value: bd.sessions || 0, unit: '', color: '#B7AAFF' },
+                    { label: 'Horas blindadas', value: ((bd.hours || 0)).toFixed(1), unit: 'h', color: '#8FB8FF' },
+                    { label: 'Streak atual', value: bd.streak || 0, unit: bd.streak > 1 ? ' dias' : ' dia', color: '#FFB057' },
+                    { label: 'Recorde', value: bd.bestStreak || 0, unit: bd.bestStreak > 1 ? ' dias' : ' dia', color: '#E8C47A' },
                   ];
                   return (
                     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
@@ -1159,7 +1166,7 @@ function App() {
                           flex: '1 1 100px', padding: '10px 12px', borderRadius: 10,
                           background: `${it.color}0e`, border: `1px solid ${it.color}22`,
                         }}>
-                          <div style={{ fontSize: 9.5, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.08em', marginBottom: 4 }}>{it.label.toUpperCase()}</div>
+                          <div style={{ fontSize: 9.5, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.08em', marginBottom: 4 }}>{it.label.toUpperCase()}</div>
                           <div className="num" style={{ fontSize: 20, fontWeight: 800, color: it.color }}>{it.value}<span style={{ fontSize: 11 }}>{it.unit}</span></div>
                         </div>
                       ))}
@@ -1170,7 +1177,7 @@ function App() {
                 {typeof window.BlockerSettingsSection === 'function'
                   ? <BlockerSettingsSection />
                   : <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                      Abra o timer <strong>🛡 Blindado</strong> para configurar os modos de foco e sites bloqueados.
+                      Abra o timer <strong><Glyph e="🛡" /> Blindado</strong> para configurar os modos de foco e sites bloqueados.
                     </div>
                 }
               </div>
@@ -1181,37 +1188,38 @@ function App() {
             </section>
             <section style={{ marginBottom: 14 }}>
               <div className="glass" style={{ padding: '18px 20px' }}>
-                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>RELATÓRIO SEMANAL</div>
+                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>RELATÓRIO SEMANAL</div>
                 <div className="font-display" style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>Resumo da semana anterior</div>
                 <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
                   Veja o relatório completo da semana passada com horas, disciplinas e insights.
                 </div>
                 <button className="btn-ghost" onClick={() => setWeeklyReportOpen(true)} style={{ fontSize: 13 }}>
-                  📋 Ver relatório semanal
+                  <Glyph e="📋" /> Ver relatório semanal
                 </button>
               </div>
             </section>
             <section style={{ marginBottom: 14 }}>
               <div className="glass" style={{ padding: '18px 20px' }}>
-                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>TUTORIAL</div>
+                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>TUTORIAL</div>
                 <div className="font-display" style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>Rever o tutorial de boas-vindas</div>
-                <button className="btn-ghost" onClick={() => { localStorage.removeItem('toga_onboarded_tutorial'); setShowOnboarding(true); }} style={{ fontSize: 13 }}>📖 Ver tutorial novamente</button>
+                <button className="btn-ghost" onClick={() => { localStorage.removeItem('toga_onboarded_tutorial'); setShowOnboarding(true); }} style={{ fontSize: 13 }}><Glyph e="📖" /> Ver tutorial novamente</button>
               </div>
             </section>
             <section style={{ marginBottom: 14 }}>
               <div className="glass" style={{ padding: '18px 20px' }}>
-                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>INFORMAÇÕES LEGAIS</div>
+                <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>INFORMAÇÕES LEGAIS</div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
-                  <button className="btn-ghost" onClick={() => setLegalModal('privacy')} style={{ fontSize: 12 }}>🔒 Política de Privacidade</button>
-                  <button className="btn-ghost" onClick={() => setLegalModal('terms')} style={{ fontSize: 12 }}>📄 Termos de Uso</button>
+                  <button className="btn-ghost" onClick={() => setLegalModal('privacy')} style={{ fontSize: 12 }}><Glyph e="🔒" /> Política de Privacidade</button>
+                  <button className="btn-ghost" onClick={() => setLegalModal('terms')} style={{ fontSize: 12 }}><Glyph e="📄" /> Termos de Uso</button>
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 10, fontFamily: 'JetBrains Mono, monospace' }}>
-                  TOGA v2.0 · Todos os dados ficam no seu dispositivo
+                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 10, fontFamily: 'var(--font-num)' }}>
+                  Lendário v2.0 · Todos os dados ficam no seu dispositivo
                 </div>
               </div>
             </section>
           </>
         )}
+        </div>
       </main>
 
       <QuickLogFAB onOpenSessionLog={() => setSessionLogOpen(true)} onOpenPomodoro={() => setPomodoroOpen(true)} />
@@ -1275,7 +1283,7 @@ function App() {
         setWeeklyReportOpen(false);
       }} />
 
-      <TweaksPanel title="Tweaks · TOGA">
+      <TweaksPanel title="Tweaks · Lendário">
         <TweakSection label="Modo">
           <TweakRadio label="Fase" value={tweaks.mode}
             options={[{ value: 'objetiva', label: 'Objetiva' }, { value: 'discursiva', label: 'Discursiva' }]}

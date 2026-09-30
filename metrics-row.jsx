@@ -1,4 +1,4 @@
-// TOGA — MetricsRow + ConcursoDonuts v2 — Ultra Premium
+// Lendário — MetricsRow + ConcursoDonuts v2 — Ultra Premium
 
 const INCENTIVE_MESSAGES = [
   { min: 1.00, text: '🏆 Meta batida! Você é um(a) monstro(a) da disciplina.' },
@@ -28,17 +28,17 @@ function MetricsRow({ shared, setShared, kind = 'all', title, cols }) {
   const weekQ = thisWeekLogs.reduce((a, d) => a + d.questions, 0);
 
   const allMetrics = [
-    { key: 'hours-day',  label: 'Horas hoje',       value: today.hours.toFixed(1), goal: shared.goals.dailyHours,    unit: 'h',  color: '#00b8d4',       colorRaw: '#00b8d4',  glow: '#00d9ff', icon: <I.clock   size={13} /> },
-    { key: 'hours-week', label: 'Horas semana',     value: weekHours.toFixed(1),   goal: shared.goals.weeklyHours,   unit: 'h',  color: 'var(--tinta)',  colorRaw: '#5B47B8',  glow: '#7B67D8', icon: <I.target  size={13} /> },
+    { key: 'hours-day',  label: 'Horas hoje',       value: today.hours.toFixed(1), goal: shared.goals.dailyHours,    unit: 'h',  color: '#8FB8FF',       colorRaw: '#8FB8FF',  glow: '#A9C8FF', icon: <I.clock   size={13} /> },
+    { key: 'hours-week', label: 'Horas semana',     value: weekHours.toFixed(1),   goal: shared.goals.weeklyHours,   unit: 'h',  color: 'var(--tinta)',  colorRaw: '#B7AAFF',  glow: '#C9C1FF', icon: <I.target  size={13} /> },
     { key: 'q-day',      label: 'Questões hoje',    value: today.questions,        goal: shared.goals.dailyQuestions, unit: '',   color: '#00c46a',       colorRaw: '#00c46a',  glow: '#00ff88', icon: <I.bolt    size={13} /> },
-    { key: 'q-week',     label: 'Questões semana',  value: weekQ,                  goal: shared.goals.weeklyQuestions,unit: '',   color: '#f59e0b',       colorRaw: '#f59e0b',  glow: '#ffc107', icon: <I.trophy  size={13} /> },
+    { key: 'q-week',     label: 'Questões semana',  value: weekQ,                  goal: shared.goals.weeklyQuestions,unit: '',   color: '#FFB057',       colorRaw: '#FFB057',  glow: '#FFD27A', icon: <I.trophy  size={13} /> },
   ];
   const metrics = kind === 'hours'     ? allMetrics.filter(m => m.key.startsWith('hours'))
                 : kind === 'questions' ? allMetrics.filter(m => m.key.startsWith('q'))
                 : allMetrics;
 
   const headerEl = title ? (
-    <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 10 }}>
+    <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 10 }}>
       {title}
     </div>
   ) : null;
@@ -72,9 +72,9 @@ function MetricsRow({ shared, setShared, kind = 'all', title, cols }) {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 6,
                 color: 'var(--text-muted)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700,
-                fontFamily: 'JetBrains Mono, monospace',
+                fontFamily: 'var(--font-label)',
               }}>
-                <span style={{ color: m.colorRaw, filter: `drop-shadow(0 0 4px ${m.glow})` }}>{m.icon}</span>
+                <span style={{ color: m.colorRaw, filter: `drop-shadow(0 0 4px ${m.glow})` }}><Glyph e={m.icon} /></span>
                 {m.label}
               </div>
               {done && (
@@ -82,7 +82,7 @@ function MetricsRow({ shared, setShared, kind = 'all', title, cols }) {
                   padding: '2px 7px', borderRadius: 99,
                   background: `${m.colorRaw}18`, border: `1px solid ${m.colorRaw}44`,
                   fontSize: 9, color: m.colorRaw, fontWeight: 800, letterSpacing: '0.10em',
-                  fontFamily: 'JetBrains Mono, monospace',
+                  fontFamily: 'var(--font-label)',
                 }}>✓ META</div>
               )}
             </div>
@@ -99,7 +99,7 @@ function MetricsRow({ shared, setShared, kind = 'all', title, cols }) {
             </div>
 
             {/* Thin progress bar */}
-            <div style={{ height: 4, background: 'rgba(30,32,48,0.07)', borderRadius: 99, overflow: 'hidden', position: 'relative' }}>
+            <div style={{ height: 4, background: 'rgba(243,235,221,0.07)', borderRadius: 99, overflow: 'hidden', position: 'relative' }}>
               <div style={{
                 position: 'absolute', inset: 0,
                 width: `${progress * 100}%`,
@@ -116,7 +116,7 @@ function MetricsRow({ shared, setShared, kind = 'all', title, cols }) {
             <div style={{
               display: 'flex', justifyContent: 'space-between',
               marginTop: 6, fontSize: 10,
-              fontFamily: 'JetBrains Mono, monospace', fontWeight: 700,
+              fontFamily: 'var(--font-num)', fontWeight: 700,
               letterSpacing: '0.04em',
             }}>
               <span style={{ color: m.colorRaw }}>{pctDone}% cumprida</span>
@@ -178,18 +178,18 @@ function WeeklyHoursChart({ shared }) {
   const maxH = Math.max(...days.map(d => d.thisH), 0.5);
   const goalDaily = shared.goals?.dailyHours || 0;
 
-  const CYAN = '#00b8d4';
-  const CYAN_GLOW = '#00d9ff';
+  const CYAN = '#E8C47A'; // barras em folha de ouro
+  const CYAN_GLOW = '#FFF1C9';
 
   return (
     <div className="glass anim-slide-up" style={{
       padding: '18px 20px',
-      background: `linear-gradient(145deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6)), radial-gradient(ellipse at 0% 0%, ${CYAN}10, transparent 60%)`,
+      background: `linear-gradient(145deg, rgba(22,19,40,0.85), rgba(22,19,40,0.6)), radial-gradient(ellipse at 0% 0%, ${CYAN}10, transparent 60%)`,
       border: `1px solid ${CYAN}22`,
     }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>
             HORAS POR DIA · SEMANA ATUAL
           </div>
           <div className="font-display" style={{ fontSize: 17, fontWeight: 700, marginTop: 4 }}>
@@ -216,7 +216,7 @@ function WeeklyHoursChart({ shared }) {
                 {goalLineY !== null && (
                   <div style={{
                     position: 'absolute', left: 0, right: 0, bottom: `${goalLineY}px`,
-                    height: 1, borderTop: '1px dashed rgba(245,158,11,0.45)',
+                    height: 1, borderTop: '1px dashed rgba(255,176,87,0.45)',
                     pointerEvents: 'none',
                   }} />
                 )}
@@ -224,7 +224,7 @@ function WeeklyHoursChart({ shared }) {
                 <div style={{
                   width: '70%', height: `${tH}px`, minHeight: d.thisH > 0 ? 4 : 0,
                   background: d.future
-                    ? 'rgba(0,184,212,0.10)'
+                    ? 'rgba(143,184,255,0.10)'
                     : `linear-gradient(180deg, ${CYAN_GLOW}, ${CYAN})`,
                   borderRadius: '6px 6px 0 0',
                   boxShadow: d.thisH > 0 && !d.future ? `0 0 10px ${CYAN}66, 0 -2px 6px ${CYAN_GLOW}88 inset` : 'none',
@@ -236,7 +236,7 @@ function WeeklyHoursChart({ shared }) {
               <div style={{
                 fontSize: 10, fontWeight: 700,
                 color: d.isToday ? CYAN : 'var(--text-muted)',
-                fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.05em',
+                fontFamily: 'var(--font-num)', letterSpacing: '0.05em',
                 opacity: d.future ? 0.4 : 1,
               }}>
                 {d.label}{d.isToday ? ' •' : ''}
@@ -246,14 +246,14 @@ function WeeklyHoursChart({ shared }) {
         })}
       </div>
 
-      <div style={{ display: 'flex', gap: 14, marginTop: 14, fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.04em', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 14, marginTop: 14, fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 700, letterSpacing: '0.04em', flexWrap: 'wrap' }}>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span style={{ display: 'inline-block', width: 12, height: 8, background: `linear-gradient(180deg, ${CYAN_GLOW}, ${CYAN})`, borderRadius: 3 }} />
           ESTA SEMANA
         </span>
         {goalDaily > 0 && (
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ display: 'inline-block', width: 14, height: 0, borderTop: '1px dashed rgba(245,158,11,0.75)' }} />
+            <span style={{ display: 'inline-block', width: 14, height: 0, borderTop: '1px dashed rgba(255,176,87,0.75)' }} />
             META DIÁRIA · {goalDaily}h
           </span>
         )}
@@ -287,7 +287,7 @@ function ConcursoDonuts({ concursos, setConcursos }) {
       {/* Header row with inline "new" button */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: editingC ? 12 : 14 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, textTransform: 'uppercase' }}>
             TEMPO ATÉ A PROVA
           </div>
         </div>
@@ -300,8 +300,8 @@ function ConcursoDonuts({ concursos, setConcursos }) {
       {editingC && (
         <div className="anim-slide-up" style={{
           display: 'grid', gap: 8, padding: '12px 14px',
-          background: 'rgba(0,184,212,0.05)', borderRadius: 12, marginBottom: 14,
-          border: '1px solid rgba(0,184,212,0.22)',
+          background: 'rgba(143,184,255,0.05)', borderRadius: 12, marginBottom: 14,
+          border: '1px solid rgba(143,184,255,0.22)',
         }}>
           <input className="input-base" placeholder="Nome do concurso" value={editingC.name}
             autoFocus onKeyDown={e => { if (e.key === 'Enter') setEditing(null); }}
@@ -321,7 +321,7 @@ function ConcursoDonuts({ concursos, setConcursos }) {
           <div style={{ display: 'flex', gap: 6 }}>
             <button className="btn-neon" onClick={() => setEditing(null)} style={{ flex: 1, justifyContent: 'center', fontSize: 12 }}>OK</button>
             <button className="btn-ghost" onClick={() => { remove(editingC.id); setEditing(null); }}
-              style={{ color: 'var(--coral)', borderColor: 'rgba(232,93,93,0.3)' }}>
+              style={{ color: 'var(--coral)', borderColor: 'rgba(255,122,138,0.3)' }}>
               <I.close size={11} /> Remover
             </button>
           </div>
@@ -330,7 +330,7 @@ function ConcursoDonuts({ concursos, setConcursos }) {
 
       {concursos.length === 0 ? (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '16px 0' }}>
-          <div style={{ fontSize: 28, opacity: 0.25 }}>⚖️</div>
+          <div style={{ fontSize: 28, opacity: 0.25 }}><Glyph e="⚖️" /></div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
             Nenhum concurso.<br />Clique em <strong>Novo</strong> para adicionar.
           </div>
@@ -359,9 +359,9 @@ function ConcursoDonutItem({ c, onEdit, idx }) {
   const elapsed = Math.max(0, totalDays - (days || 0));
   const remainingPct = 1 - Math.min(1, elapsed / totalDays);
 
-  let color = '#00b8d4', colorRaw = '#00b8d4', glow = '#00d9ff';
-  if (days !== null && days < 30) { color = 'var(--coral)'; colorRaw = '#E85D5D'; glow = '#FF7070'; }
-  else if (days !== null && days < 60) { color = '#f59e0b'; colorRaw = '#f59e0b'; glow = '#ffc107'; }
+  let color = '#8FB8FF', colorRaw = '#8FB8FF', glow = '#A9C8FF';
+  if (days !== null && days < 30) { color = 'var(--coral)'; colorRaw = '#FF7A8A'; glow = '#FFA0AB'; }
+  else if (days !== null && days < 60) { color = '#FFB057'; colorRaw = '#FFB057'; glow = '#FFD27A'; }
 
   const r = 36; const circ = 2 * Math.PI * r;
   const urgent = days !== null && days < 30 && days >= 0;
@@ -387,9 +387,9 @@ function ConcursoDonutItem({ c, onEdit, idx }) {
       {urgent && (
         <div style={{
           padding: '2px 8px', borderRadius: 99, marginBottom: 2,
-          background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)',
-          fontSize: 9, color: '#f59e0b', fontWeight: 800, letterSpacing: '0.12em',
-          fontFamily: 'JetBrains Mono, monospace',
+          background: 'rgba(255,176,87,0.12)', border: '1px solid rgba(255,176,87,0.35)',
+          fontSize: 9, color: '#FFB057', fontWeight: 800, letterSpacing: '0.12em',
+          fontFamily: 'var(--font-label)',
         }}>URGENTE</div>
       )}
 
@@ -410,7 +410,7 @@ function ConcursoDonutItem({ c, onEdit, idx }) {
               fontSize: 20, fontWeight: 800, color, letterSpacing: '-0.03em', lineHeight: 1,
               filter: `drop-shadow(0 0 6px ${glow}66)`,
             }}>{days ?? '—'}</div>
-            <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: '0.15em', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', marginTop: 2 }}>DIAS</div>
+            <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: '0.15em', fontWeight: 700, fontFamily: 'var(--font-label)', marginTop: 2 }}>DIAS</div>
           </div>
         </div>
       </div>
@@ -421,7 +421,7 @@ function ConcursoDonutItem({ c, onEdit, idx }) {
           fontSize: 12, fontWeight: 700, color: 'var(--text-primary)',
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>{c.name}</div>
-        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
           {c.date ? new Date(c.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: '2-digit' }) : 'sem data'}
         </div>
       </div>
@@ -496,7 +496,7 @@ function AccuracyOverallCard({ shared }) {
   if (totalQ === 0) {
     return (
       <div className="glass" style={{ padding: '18px 20px' }}>
-        <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>
+        <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>
           PERCENTUAL DE ACERTOS · GERAL
         </div>
         <div className="font-display" style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 4 }}>Ainda sem questões registradas</div>
@@ -510,7 +510,7 @@ function AccuracyOverallCard({ shared }) {
   return (
     <div className="glass anim-slide-up" style={{
       padding: '18px 20px',
-      background: `linear-gradient(145deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6)), radial-gradient(ellipse at 0% 0%, ${PINK}14, transparent 60%)`,
+      background: `linear-gradient(145deg, rgba(22,19,40,0.85), rgba(22,19,40,0.6)), radial-gradient(ellipse at 0% 0%, ${PINK}14, transparent 60%)`,
       border: `1px solid ${PINK}28`,
       boxShadow: `0 0 0 1px ${PINK}22, 0 8px 32px -8px ${PINK_GLOW}33, var(--card-shadow)`,
     }}>
@@ -537,14 +537,14 @@ function AccuracyOverallCard({ shared }) {
                 fontSize: 30, fontWeight: 800, color: PINK_DEEP, lineHeight: 1, letterSpacing: '-0.03em',
                 filter: `drop-shadow(0 0 6px ${PINK_GLOW}66)`,
               }}>{pct.toFixed(0)}<span style={{ fontSize: 16, opacity: 0.7 }}>%</span></div>
-              <div style={{ fontSize: 9, color: 'var(--text-muted)', letterSpacing: '0.16em', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', marginTop: 3 }}>
+              <div style={{ fontSize: 9, color: 'var(--text-muted)', letterSpacing: '0.16em', fontWeight: 800, fontFamily: 'var(--font-label)', marginTop: 3 }}>
                 ACERTOS
               </div>
             </div>
           </div>
         </div>
         <div style={{ flex: 1, minWidth: 200 }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 4 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 4 }}>
             PERCENTUAL DE ACERTOS · GERAL
           </div>
           <div className="font-display" style={{ fontSize: 18, fontWeight: 700, color: PINK_DEEP, marginBottom: 8 }}>
@@ -555,16 +555,16 @@ function AccuracyOverallCard({ shared }) {
               : 'Crítico: foque em teoria antes de questões'}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 10 }}>
-            <div style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(0,168,107,0.08)', border: '1px solid rgba(0,168,107,0.18)' }}>
-              <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.1em' }}>ACERTOS</div>
+            <div style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(79,209,165,0.08)', border: '1px solid rgba(79,209,165,0.18)' }}>
+              <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.1em' }}>ACERTOS</div>
               <div className="num" style={{ fontSize: 18, fontWeight: 800, color: 'var(--esmeralda)' }}>{totalCorrect.toLocaleString('pt-BR')}</div>
             </div>
-            <div style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(232,93,93,0.08)', border: '1px solid rgba(232,93,93,0.18)' }}>
-              <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.1em' }}>ERROS</div>
+            <div style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,122,138,0.08)', border: '1px solid rgba(255,122,138,0.18)' }}>
+              <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.1em' }}>ERROS</div>
               <div className="num" style={{ fontSize: 18, fontWeight: 800, color: 'var(--coral)' }}>{totalWrong.toLocaleString('pt-BR')}</div>
             </div>
             <div style={{ padding: '8px 10px', borderRadius: 8, background: `${PINK}10`, border: `1px solid ${PINK}28` }}>
-              <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.1em' }}>7 DIAS</div>
+              <div style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.1em' }}>7 DIAS</div>
               <div className="num" style={{ fontSize: 18, fontWeight: 800, color: PINK_DEEP }}>
                 {weekTotal > 0 ? `${weekPct.toFixed(0)}%` : '—'}
               </div>

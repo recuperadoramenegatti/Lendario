@@ -1,4 +1,4 @@
-// TOGA — Dragon Game Engine (window.DG)
+// Lendário — Dragon Game Engine (window.DG)
 // Regras puras (sem UI): economia de cristais, missões diárias, baú,
 // sinais vitais do dragão, humor, falas contextuais e conquistas.
 // Tudo é derivado dos registros de estudo — o dragão reage ao que o estudante faz de verdade.
@@ -309,12 +309,12 @@
     return 'happy';
   }
   const MOOD_LABEL = {
-    happy: { label: 'Feliz', icon: '😊', color: '#7C5CFF' },
-    excited: { label: 'Empolgado', icon: '🤩', color: '#F59E0B' },
+    happy: { label: 'Feliz', icon: '😊', color: '#C0B0E0' },
+    excited: { label: 'Empolgado', icon: '🤩', color: '#FFB057' },
     ecstatic: { label: 'Radiante', icon: '✨', color: '#EC4899' },
     hungry: { label: 'Com fome de saber', icon: '🥺', color: '#F97316' },
-    sleepy: { label: 'Dormindo', icon: '💤', color: '#6366F1' },
-    sick: { label: 'Doentinho', icon: '🤒', color: '#F59E0B' },
+    sleepy: { label: 'Dormindo', icon: '💤', color: '#BAB6E0' },
+    sick: { label: 'Doentinho', icon: '🤒', color: '#FFB057' },
     love: { label: 'Apaixonado', icon: '💜', color: '#EC4899' },
     eating: { label: 'Comendo', icon: '😋', color: '#10B981' },
   };
@@ -372,7 +372,7 @@
   const TIERS = {
     bronze:   { label: 'BRONZE',   c1: '#F4C08A', c2: '#B7702F', ring: '#8A4B18', glow: 'rgba(205,127,50,0.55)', gems: 15 },
     prata:    { label: 'PRATA',    c1: '#F1F5F9', c2: '#94A3B8', ring: '#475569', glow: 'rgba(148,163,184,0.6)', gems: 30 },
-    ouro:     { label: 'OURO',     c1: '#FEF3C7', c2: '#F59E0B', ring: '#92400E', glow: 'rgba(245,158,11,0.65)', gems: 60 },
+    ouro:     { label: 'OURO',     c1: '#FEF3C7', c2: '#FFB057', ring: '#92400E', glow: 'rgba(255,176,87,0.65)', gems: 60 },
     lendario: { label: 'LENDÁRIO', c1: '#F5D0FE', c2: '#8B5CF6', ring: '#4C1D95', glow: 'rgba(168,85,247,0.7)', gems: 120 },
   };
   const CATS = [

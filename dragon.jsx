@@ -1,4 +1,4 @@
-// TOGA — Dragãozinho Arcano
+// Lendário — Dragãozinho Arcano
 // Mascote de gamificação: 8 fases, humores, acessórios equipáveis,
 // olhos que seguem o cursor, runas brilhantes e familiares mágicos.
 // SVG 100% vetorial (sem imagens) — também é serializado para os cards de compartilhamento.
@@ -28,8 +28,8 @@ const DRAGON_STAGES = [
            wing1: '#6D5AE6', wing2: '#2E1B8C', gem: '#FBBF24', glow: '#FDE68A', accent: '#4527B5', starWings: true } },
   { id: 7, name: 'Dragão Sábio',     minXp: 9500,
     desc: 'Orbes de conhecimento orbitam ao seu redor. Poucos estudantes chegam tão longe.',
-    pal: { body1: '#9683FB', body2: '#4E2FC2', belly: '#FFEFD0', belly2: '#ECB86E', horn1: '#FFFBEB', horn2: '#F59E0B',
-           wing1: '#5B45D8', wing2: '#1E1170', gem: '#F59E0B', glow: '#FCD34D', accent: '#3A1F9E', starWings: true } },
+    pal: { body1: '#9683FB', body2: '#4E2FC2', belly: '#FFEFD0', belly2: '#ECB86E', horn1: '#FFFBEB', horn2: '#FFB057',
+           wing1: '#5B45D8', wing2: '#1E1170', gem: '#FFB057', glow: '#FCD34D', accent: '#3A1F9E', starWings: true } },
   { id: 8, name: 'Dragão Lendário',  minXp: 15000,
     desc: 'Asas de galáxia e coroa de estrelas. O guardião da sua aprovação. ⚖️✨',
     pal: { body1: '#8A76F7', body2: '#3B1F9E', belly: '#FFF3D6', belly2: '#F0C27A', horn1: '#FFFFFF', horn2: '#FFD166',
@@ -370,7 +370,7 @@ function DragonEgg({ stage, p, uid, animate, sick, mood }) {
 
 function DragonZzz({ x, y }) {
   return (
-    <g fontFamily="Space Grotesk, sans-serif" fontWeight="700" fill="#7C8CF8">
+    <g fontFamily="Cormorant Garamond, serif" fontWeight="700" fill="#7C8CF8">
       <text x={x} y={y} fontSize="16" className="dg-zzz">z</text>
       <text x={x + 12} y={y - 14} fontSize="12" className="dg-zzz" style={{ animationDelay: '0.8s' }}>z</text>
       <text x={x + 22} y={y - 26} fontSize="9" className="dg-zzz" style={{ animationDelay: '1.6s' }}>z</text>

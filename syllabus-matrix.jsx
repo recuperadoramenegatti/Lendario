@@ -12,11 +12,11 @@ const FLAG_TOOLTIP_OBJ = { lei: 'Lei seca', doutrina: 'Teoria/Resumos', juris: '
 
 // Weight metadata — tags + glow
 const WEIGHT_INFO = {
-  5: { label: 'ESSENCIAL',           cls: 'w5', color: '#B91C1C' },
-  4: { label: 'MUITO IMPORTANTE',    cls: 'w4', color: '#C2410C' },
-  3: { label: 'IMPORTANTE',          cls: 'w3', color: '#92400E' },
-  2: { label: 'MÉDIA RELEVÂNCIA',    cls: 'w2', color: '#065F46' },
-  1: { label: 'BAIXA INCIDÊNCIA',    cls: 'w1', color: '#475569' },
+  5: { label: 'ESSENCIAL',           cls: 'w5', color: '#EE9E95' },
+  4: { label: 'MUITO IMPORTANTE',    cls: 'w4', color: '#EEAE8E' },
+  3: { label: 'IMPORTANTE',          cls: 'w3', color: '#EEB791' },
+  2: { label: 'MÉDIA RELEVÂNCIA',    cls: 'w2', color: '#9BE9C9' },
+  1: { label: 'BAIXA INCIDÊNCIA',    cls: 'w1', color: '#D1D8E0' },
 };
 
 // Compute % acerto e horas estudadas por tópico a partir de shared.dailyLogs
@@ -157,8 +157,8 @@ const applyAutoWeights = (weightsById) => {
 return (
 <div style={{ display: 'grid', gap: 12 }}>
 {/* Cabeçalho didático */}
-<div className="glass" style={{ padding: '14px 18px', borderLeft: '3px solid var(--ciano)' }}>
-  <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>
+<div className="glass" style={{ padding: '14px 18px' }}>
+  <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>
     COMO USAR A MATRIZ
   </div>
   <div style={{ fontSize: 12.5, color: 'var(--text-primary)', lineHeight: 1.5 }}>
@@ -166,7 +166,7 @@ return (
       <strong>↑↓ Setas:</strong> Use para <strong>reordenar</strong> temas e disciplinas por <strong>incidência em prova</strong>. Os mais cobrados ficam no topo.
     </div>
     <div style={{ marginBottom: 5 }}>
-      <strong>⚖️ Peso (1 a 5):</strong> Define o impacto no XP a cada check.
+      <strong><Glyph e="⚖️" /> Peso (1 a 5):</strong> Define o impacto no XP a cada check.
       <span className="weight-tag w5" style={{ marginLeft: 6 }}>5 ESSENCIAL</span>
       <span className="weight-tag w4" style={{ marginLeft: 4 }}>4 MUITO IMP.</span>
       <span className="weight-tag w3" style={{ marginLeft: 4 }}>3 IMP.</span>
@@ -179,7 +179,7 @@ return (
   </div>
   <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
     <button className="btn-neon" style={{ fontSize: 12 }} onClick={() => setWeightModalOpen(true)}>
-      ⚖️ Calcular pesos automaticamente
+      <Glyph e="⚖️" /> Calcular pesos automaticamente
     </button>
   </div>
 </div>
@@ -231,9 +231,9 @@ onClick={e => { e.stopPropagation(); onMoveSubject(idx, 'down'); }}><I.down size
 
       <div style={{ position: 'relative', width: 40, height: 40, flexShrink: 0 }}>
         <svg viewBox="0 0 40 40" width={40} height={40}>
-          <circle cx="20" cy="20" r="17" fill="none" stroke="rgba(12,13,18,0.06)" strokeWidth="3" />
+          <circle cx="20" cy="20" r="17" fill="none" stroke="rgba(243,235,221,0.06)" strokeWidth="3" />
           <circle cx="20" cy="20" r="17" fill="none"
-            stroke={completion === 100 ? 'var(--esmeralda)' : '#00b8d4'} strokeWidth="3"
+            stroke={completion === 100 ? 'var(--esmeralda)' : '#8FB8FF'} strokeWidth="3"
             strokeDasharray={`${(completion / 100) * 107} 107`} strokeLinecap="round" transform="rotate(-90 20 20)" />
         </svg>
         <div className="num" style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700, color: completion === 100 ? 'var(--esmeralda)' : '#006e80' }}>
@@ -262,22 +262,22 @@ onClick={e => { e.stopPropagation(); onMoveSubject(idx, 'down'); }}><I.down size
         <I.chevronR size={14} />
       </div>
     </div>
-    <div style={{ marginTop: 12, height: 4, background: 'rgba(12,13,18,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+    <div style={{ marginTop: 12, height: 4, background: 'rgba(243,235,221,0.06)', borderRadius: 3, overflow: 'hidden' }}>
       <div className="gradient-bar-green-cyan" style={{ height: '100%', width: `${completion}%`, transition: 'width 500ms ease' }} />
     </div>
   </div>
 
   {open && (
-    <div style={{ padding: '4px 18px 14px', borderTop: '1px solid rgba(12,13,18,0.04)' }}>
-      <div className="topic-row-obj header-row" style={{ padding: '10px 0', borderBottom: '1px solid rgba(12,13,18,0.04)' }}>
-        <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>TÓPICO</div>
+    <div style={{ padding: '4px 18px 14px', borderTop: '1px solid rgba(243,235,221,0.04)' }}>
+      <div className="topic-row-obj header-row" style={{ padding: '10px 0', borderBottom: '1px solid rgba(243,235,221,0.04)' }}>
+        <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600 }}>TÓPICO</div>
         {FLAGS_OBJ.map(f => (
-          <div key={f} style={{ fontSize: 10, letterSpacing: '0.04em', color: 'var(--text-dim)', textAlign: 'center', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, lineHeight: 1.15 }}>
+          <div key={f} style={{ fontSize: 10, letterSpacing: '0.04em', color: 'var(--text-dim)', textAlign: 'center', fontFamily: 'var(--font-num)', fontWeight: 700, lineHeight: 1.15 }}>
             <div>{FLAG_LABELS_OBJ[f].l1}</div>
             {FLAG_LABELS_OBJ[f].l2 && <div>{FLAG_LABELS_OBJ[f].l2}</div>}
           </div>
         ))}
-        <div style={{ fontSize: 10, letterSpacing: '0.04em', color: 'var(--text-dim)', textAlign: 'right', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, lineHeight: 1.15 }}>
+        <div style={{ fontSize: 10, letterSpacing: '0.04em', color: 'var(--text-dim)', textAlign: 'right', fontFamily: 'var(--font-num)', fontWeight: 700, lineHeight: 1.15 }}>
           <div>% acerto</div><div>· tempo</div>
         </div>
       </div>
@@ -315,8 +315,8 @@ return (
 onClick={() => setOpen(o => !o)}
 style={{
 fontSize: 10, padding: '3px 8px', borderRadius: 4,
-background: 'rgba(91,71,184,0.1)', color: '#5a1fa0',
-letterSpacing: '0.08em', border: '1px solid rgba(91,71,184,0.3)',
+background: 'rgba(183,170,255,0.1)', color: '#C7A2E0',
+letterSpacing: '0.08em', border: '1px solid rgba(183,170,255,0.3)',
 fontWeight: 700, cursor: 'pointer',
 }}>
 PESO {weight}
@@ -331,7 +331,7 @@ display: 'flex', gap: 2, zIndex: 5,
 onClick={() => { onChange(w); setOpen(false); }}
 style={{
 width: 26, height: 26, borderRadius: 4, border: 'none', cursor: 'pointer',
-background: w === weight ? 'rgba(91,71,184,0.2)' : 'transparent',
+background: w === weight ? 'rgba(183,170,255,0.2)' : 'transparent',
 color: w === weight ? '#5a1fa0' : 'var(--text-muted)',
 fontWeight: 700, fontSize: 12,
 }}>
@@ -373,10 +373,10 @@ style={{ fontSize: 13, color: complete ? 'var(--esmeralda)' : 'var(--text-primar
 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, minWidth: 0 }}>
   {accPct !== null
     ? <span className={`acc-chip ${accCls}`} title={`${metrics.correct} acertos / ${totalQ} questões`}>{accPct.toFixed(0)}%</span>
-    : <span style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>—</span>
+    : <span style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>—</span>
   }
   {hoursStr && (
-    <span className="num" style={{ fontSize: 10, color: 'var(--text-dim)', fontWeight: 700 }}>⏱ {hoursStr}</span>
+    <span className="num" style={{ fontSize: 10, color: 'var(--text-dim)', fontWeight: 700 }}><Glyph e="⏱" /> {hoursStr}</span>
   )}
 </div>
 </div>
@@ -435,7 +435,7 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
   return (
     <div onClick={onClose} style={{
       position: 'fixed', inset: 0, zIndex: 95,
-      background: 'rgba(30,32,48,0.55)', backdropFilter: 'blur(10px)',
+      background: 'radial-gradient(ellipse at 50% 30%, rgba(42,31,92,0.55), rgba(7,6,13,0.86))', backdropFilter: 'blur(10px)',
       display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
       padding: 20, overflowY: 'auto',
     }}>
@@ -446,7 +446,7 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
         <button onClick={onClose} className="btn-ghost" style={{ position: 'absolute', top: 12, right: 12 }}>
           <I.close size={13} />
         </button>
-        <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--tinta)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 800 }}>
+        <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--tinta)', fontFamily: 'var(--font-label)', fontWeight: 800 }}>
           CALCULADORA DE PESO
         </div>
         <div className="font-display gradient-neon" style={{ fontSize: 22, fontWeight: 700, marginTop: 4, marginBottom: 4 }}>
@@ -463,10 +463,10 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
           gap: 8,
           alignItems: 'end',
           padding: '0 8px 8px',
-          borderBottom: '2px solid rgba(30,32,48,0.08)',
+          borderBottom: '2px solid rgba(243,235,221,0.08)',
           marginBottom: 4,
         }}>
-          <div style={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--text-dim)' }}>
+          <div style={{ fontSize: 10, fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--text-dim)' }}>
             DISCIPLINA
           </div>
           {[
@@ -476,20 +476,20 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
           ].map(({ label, hint, icon }) => (
             <div key={label} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
-                {icon} {label}
+                <Glyph e={icon} /> {label}
               </div>
-              <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+              <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>
                 {hint}
               </div>
             </div>
           ))}
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>⚖️ Peso</div>
-            <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>manual</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}><Glyph e="⚖️" /> Peso</div>
+            <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>manual</div>
           </div>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>Resultado</div>
-            <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>calculado</div>
+            <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>calculado</div>
           </div>
         </div>
 
@@ -507,11 +507,11 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
                 alignItems: 'center',
                 padding: '8px 8px',
                 borderRadius: 8,
-                background: si % 2 === 0 ? 'rgba(30,32,48,0.025)' : 'transparent',
+                background: si % 2 === 0 ? 'rgba(243,235,221,0.025)' : 'transparent',
                 transition: 'background 150ms',
               }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,184,212,0.06)'}
-              onMouseLeave={e => e.currentTarget.style.background = si % 2 === 0 ? 'rgba(30,32,48,0.025)' : 'transparent'}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(143,184,255,0.06)'}
+              onMouseLeave={e => e.currentTarget.style.background = si % 2 === 0 ? 'rgba(243,235,221,0.025)' : 'transparent'}
               >
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={s.name}>
                   {s.name}
@@ -523,14 +523,14 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
                     onChange={e => setField(s.id, 'questoes', Math.max(0, parseInt(e.target.value) || 0))}
                     style={{
                       width: '100%', boxSizing: 'border-box',
-                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(0,184,212,0.25)',
-                      background: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 700,
+                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(143,184,255,0.25)',
+                      background: 'rgba(22,19,40,0.8)', fontSize: 14, fontWeight: 700,
                       color: 'var(--grafite)', textAlign: 'center', outline: 'none',
-                      fontFamily: 'JetBrains Mono, monospace',
+                      fontFamily: 'var(--font-num)',
                       transition: 'border-color 150ms',
                     }}
                     onFocus={e => e.target.style.borderColor = 'var(--ciano)'}
-                    onBlur={e => e.target.style.borderColor = 'rgba(0,184,212,0.25)'}
+                    onBlur={e => e.target.style.borderColor = 'rgba(143,184,255,0.25)'}
                   />
                 </div>
 
@@ -541,15 +541,15 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
                     style={{
                       width: '100%', boxSizing: 'border-box',
                       padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(249,115,22,0.25)',
-                      background: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 700,
+                      background: 'rgba(22,19,40,0.8)', fontSize: 14, fontWeight: 700,
                       color: 'var(--grafite)', textAlign: 'center', outline: 'none',
-                      fontFamily: 'JetBrains Mono, monospace',
+                      fontFamily: 'var(--font-num)',
                       transition: 'border-color 150ms',
                     }}
                     onFocus={e => e.target.style.borderColor = '#F97316'}
                     onBlur={e => e.target.style.borderColor = 'rgba(249,115,22,0.25)'}
                   />
-                  <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>
                     {'★'.repeat(v.dificuldade)}{'☆'.repeat(5 - v.dificuldade)}
                   </div>
                 </div>
@@ -560,16 +560,16 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
                     onChange={e => setField(s.id, 'extensao', Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
                     style={{
                       width: '100%', boxSizing: 'border-box',
-                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(91,71,184,0.25)',
-                      background: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 700,
+                      padding: '7px 10px', borderRadius: 8, border: '1.5px solid rgba(183,170,255,0.25)',
+                      background: 'rgba(22,19,40,0.8)', fontSize: 14, fontWeight: 700,
                       color: 'var(--grafite)', textAlign: 'center', outline: 'none',
-                      fontFamily: 'JetBrains Mono, monospace',
+                      fontFamily: 'var(--font-num)',
                       transition: 'border-color 150ms',
                     }}
-                    onFocus={e => e.target.style.borderColor = '#5B47B8'}
-                    onBlur={e => e.target.style.borderColor = 'rgba(91,71,184,0.25)'}
+                    onFocus={e => e.target.style.borderColor = '#B7AAFF'}
+                    onBlur={e => e.target.style.borderColor = 'rgba(183,170,255,0.25)'}
                   />
-                  <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>
                     {'▓'.repeat(v.extensao)}{'░'.repeat(5 - v.extensao)}
                   </div>
                 </div>
@@ -581,11 +581,11 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
                     style={{
                       width: '100%', boxSizing: 'border-box',
                       padding: '7px 6px', borderRadius: 8,
-                      border: `1.5px solid ${isManual ? `${info.color}55` : 'rgba(30,32,48,0.15)'}`,
-                      background: isManual ? `${info.color}10` : 'rgba(255,255,255,0.8)',
-                      fontSize: 13, fontWeight: 800, color: isManual ? info.color : 'var(--text-muted)',
+                      border: `1.5px solid ${isManual ? `${info.color}55` : 'rgba(243,235,221,0.15)'}`,
+                      background: isManual ? `${info.color}10` : 'rgba(22,19,40,0.8)',
+                      fontSize: 13, fontWeight: 800, color: isManual ? info.color: 'var(--text-muted)',
                       textAlign: 'center', outline: 'none', cursor: 'pointer',
-                      fontFamily: 'JetBrains Mono, monospace',
+                      fontFamily: 'var(--font-num)',
                     }}>
                     <option value="">auto</option>
                     {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
@@ -600,7 +600,7 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
                     background: `${info.color}14`,
                     border: `1px solid ${info.color}44`,
                     color: info.color, fontWeight: 800, fontSize: 11,
-                    fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.04em',
+                    fontFamily: 'var(--font-num)', letterSpacing: '0.04em',
                     whiteSpace: 'nowrap',
                   }}>
                     <strong style={{ fontSize: 14 }}>{w}</strong>
@@ -612,16 +612,16 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
           })}
         </div>
 
-        <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.30)', fontSize: 12, color: '#92400E', fontWeight: 600 }}>
-          ⚠️ <strong>Não negligencie! Cada ponto conta.</strong> Disciplinas de baixo peso ainda decidem aprovações.
+        <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(255,176,87,0.08)', border: '1px solid rgba(255,176,87,0.30)', fontSize: 12, color: '#EEB791', fontWeight: 600 }}>
+          <Glyph e="⚠️" /> <strong>Não negligencie! Cada ponto conta.</strong> Disciplinas de baixo peso ainda decidem aprovações.
         </div>
 
-        <div style={{ marginTop: 12, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.06em' }}>
+        <div style={{ marginTop: 12, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 700, letterSpacing: '0.06em' }}>
           PRÉVIA DA NOVA ORDEM (DECRESCENTE)
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
           {orderedPreview.slice(0, 10).map((s, i) => (
-            <div key={s.id} style={{ padding: '3px 9px', borderRadius: 99, background: 'rgba(30,32,48,0.04)', border: '1px solid rgba(30,32,48,0.08)', fontSize: 11, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <div key={s.id} style={{ padding: '3px 9px', borderRadius: 99, background: 'rgba(243,235,221,0.04)', border: '1px solid rgba(243,235,221,0.08)', fontSize: 11, fontWeight: 700, color: 'var(--text-primary)' }}>
               {i+1}. {s.name} <span style={{ color: WEIGHT_INFO[s._w].color, fontWeight: 800 }}>[P{s._w}]</span>
             </div>
           ))}
@@ -632,8 +632,8 @@ function WeightCalculatorModal({ open, subjects, onClose, onApply }) {
 
         <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
           <button className="btn-ghost" onClick={onClose} style={{ flex: '0 0 auto' }}>Cancelar</button>
-          <button className="btn-neon" onClick={handleApply} style={{ flex: 1, justifyContent: 'center', fontSize: 13, background: 'linear-gradient(135deg, var(--petroleo), var(--ciano))', color: 'white', borderColor: 'transparent' }}>
-            ⚖️ Aplicar pesos e reorganizar
+          <button className="btn-neon" onClick={handleApply} style={{ flex: 1, justifyContent: 'center', fontSize: 13, background: 'var(--grad-primary)', color: 'var(--on-primary)', borderColor: 'transparent' }}>
+            <Glyph e="⚖️" /> Aplicar pesos e reorganizar
           </button>
         </div>
       </div>

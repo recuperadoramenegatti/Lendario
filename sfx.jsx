@@ -1,4 +1,4 @@
-// TOGA — SFX Engine
+// Lendário — SFX Engine
 // Sons sintetizados via Web Audio (nenhum arquivo externo).
 // • Master gain com mudo persistente (localStorage 'toga_sfx_muted')
 // • Reverb leve gerado por impulso de ruído → sons "mágicos" e cheios

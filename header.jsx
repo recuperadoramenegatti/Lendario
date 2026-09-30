@@ -1,73 +1,80 @@
-// Header — Ultra Premium v2
+// Lendário — Cabeçalho (Biblioteca Arcana)
+// Marca + selo de progresso do edital, seletor Objetiva/Discursiva e os chips
+// de status (nível, cristais, baú pendente, chama da constância, som).
+function ProgressSeal({ percent = 0, size = 46 }) {
+  const r = size / 2 - 4, c = 2 * Math.PI * r;
+  const p = Math.max(0, Math.min(100, percent));
+  return (
+    <div className="ld-seal" style={{ position: 'relative', width: size, height: size, flexShrink: 0 }} title={`Edital concluído: ${p.toFixed(0)}%`}>
+      <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} aria-hidden="true">
+        <defs>
+          <linearGradient id="ld-seal-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FFF1C9" /><stop offset="1" stopColor="#B5843A" /></linearGradient>
+        </defs>
+        <circle cx={size / 2} cy={size / 2} r={r + 2.5} fill="none" stroke="rgba(232,196,122,0.25)" strokeWidth="1" strokeDasharray="1 3" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="rgba(20,17,36,0.9)" stroke="rgba(255,255,255,0.08)" strokeWidth="3.5" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="url(#ld-seal-g)" strokeWidth="3.5" strokeLinecap="round"
+          strokeDasharray={c} strokeDashoffset={c * (1 - p / 100)} transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          style={{ transition: 'stroke-dashoffset 900ms cubic-bezier(.2,.8,.2,1)', filter: 'drop-shadow(0 0 4px rgba(232,196,122,0.6))' }} />
+      </svg>
+      <span className="num" style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', fontSize: 11.5, fontWeight: 800, color: '#F7E2A8' }}>{p.toFixed(0)}%</span>
+    </div>
+  );
+}
+
+function StreakChip({ streak = 0 }) {
+  const mult = window.DG && window.DG.comboMultiplier ? window.DG.comboMultiplier(streak) : 1;
+  return (
+    <div className="ld-chip" title={`Constância: ${streak} dia${streak === 1 ? '' : 's'} útei${streak === 1 ? 'l' : 's'} seguidos${mult > 1 ? ` · Chama do Dragão ×${String(mult).replace('.', ',')}` : ''}`}
+      style={{ borderColor: streak > 0 ? 'rgba(255,154,90,0.35)' : undefined, background: streak > 0 ? 'rgba(255,154,90,0.07)' : undefined }}>
+      <span className={streak > 0 ? 'ld-flame' : ''} style={{ display: 'inline-flex' }}>
+        <G name="flame" size={17} color={streak > 0 ? '#FF9A5A' : '#6E6784'} style={{ filter: streak > 0 ? 'drop-shadow(0 0 6px rgba(255,154,90,0.7))' : 'none' }} />
+      </span>
+      <span className="num" style={{ color: streak > 0 ? '#FFC39A' : '#9C95B4' }}>{streak}</span>
+      {mult > 1 ? <span className="ld-combo">×{String(mult).replace('.', ',')}</span> : <small>DIAS</small>}
+    </div>
+  );
+}
+
 function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenLair, onOpenChest }) {
   const level = window.DA.getLevelInfo(shared.xp);
   return (
     <header className="header-sticky">
-      <div style={{
+      <div className="ld-header-row" style={{
         maxWidth: 1400, margin: '0 auto',
         padding: '12px 28px',
-        display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+        display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap',
       }}>
-        <ShieldBadge percent={totalPct} size={44} />
+        <div className="ld-header-brand" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <LogoMark size={40} title="Lendário" className="ld-float" />
+          <Wordmark size={17} />
+        </div>
 
-        <div style={{ flex: 1, minWidth: 160 }}>
-          <div className="font-display gradient-neon" style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.03em' }}>
-            TOGA
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2, fontSize: 11, color: 'var(--text-muted)' }}>
-            <span style={{
-              color: level.tier.color, fontWeight: 700, letterSpacing: '0.03em',
-              fontSize: 10,
-            }}>{level.tier.name}</span>
-            <span style={{ color: 'var(--text-dim)', fontSize: 10 }}>·</span>
-            <span style={{ color: 'var(--text-dim)', fontSize: 10 }}>Progresso {totalPct.toFixed(0)}%</span>
+        <div className="ld-header-progress" style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 170 }}>
+          <ProgressSeal percent={totalPct} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 9.5, letterSpacing: '0.24em', color: '#9C95B4', fontWeight: 700 }}>RUMO À POSSE</span>
+            <span style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+              <span className="font-display" style={{ fontSize: 20, fontWeight: 700, lineHeight: 1, color: level.tier.color }}>{level.tier.name}</span>
+              <span style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>edital {totalPct.toFixed(0)}%</span>
+            </span>
           </div>
         </div>
 
-        {/* Mode toggle */}
-        <div className="mode-toggle">
-          <button className={mode === 'objetiva' ? 'active objetiva' : ''} onClick={() => setMode('objetiva')}>
+        <div className="mode-toggle" role="group" aria-label="Modo de estudo">
+          <button className={mode === 'objetiva' ? 'active objetiva' : ''} onClick={() => setMode('objetiva')} aria-pressed={mode === 'objetiva'}>
             Objetiva
           </button>
-          <button className={mode === 'discursiva' ? 'active discursiva' : ''} onClick={() => setMode('discursiva')}>
+          <button className={mode === 'discursiva' ? 'active discursiva' : ''} onClick={() => setMode('discursiva')} aria-pressed={mode === 'discursiva'}>
             Discursiva
           </button>
         </div>
 
-        {/* Nível + XP (avatar do dragão) */}
         {window.LevelChip ? <LevelChip shared={shared} onClick={onOpenLair} /> : (
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          padding: '7px 13px', borderRadius: 10,
-          background: 'rgba(91,71,184,0.07)',
-          border: '1px solid rgba(91,71,184,0.18)',
-          boxShadow: '0 0 0 1px rgba(255,255,255,0.6) inset',
-        }}>
-          <span style={{ color: 'var(--tinta)', fontSize: 13, filter: 'drop-shadow(0 0 4px rgba(123,103,216,0.6))' }}>⚡</span>
-          <span className="num" style={{ fontSize: 13, fontWeight: 700, color: 'var(--tinta)', letterSpacing: '-0.01em' }}>
-            {shared.xp.toLocaleString('pt-BR')}
-          </span>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.12em', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>XP</span>
-        </div>
-
+          <div className="ld-chip"><G name="spark" size={15} color="#E8C47A" /><span className="num" style={{ color: '#F7E2A8' }}>{shared.xp.toLocaleString('pt-BR')}</span><small>XP</small></div>
         )}
-
-        {/* Cristais arcanos (moeda do dragão) */}
         {window.GemCounterChip && <GemCounterChip gems={shared.dragon ? shared.dragon.gems : 0} onClick={onOpenLair} />}
         {window.PendingChestChip && <PendingChestChip shared={shared} onOpen={onOpenChest} />}
-
-        {/* Constância chip */}
-        <div title="Constância atual (sequência de dias úteis estudados)" style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          padding: '7px 13px', borderRadius: 10,
-          background: 'rgba(245,158,11,0.07)',
-          border: '1px solid rgba(245,158,11,0.22)',
-          boxShadow: '0 0 0 1px rgba(255,255,255,0.6) inset',
-        }}>
-          <span style={{ fontSize: 13, filter: 'drop-shadow(0 0 4px rgba(255,193,7,0.6))' }}>🔥</span>
-          <span className="num" style={{ fontSize: 13, fontWeight: 700, color: 'var(--ambar)', letterSpacing: '-0.01em' }}>{shared.streak}</span>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.12em', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>CONSTÂNCIA</span>
-        </div>
+        <StreakChip streak={shared.streak} />
         {window.SoundToggle && <SoundToggle />}
       </div>
     </header>
@@ -75,3 +82,4 @@ function GlobalHeader({ shared, mode, setMode, totalPct, onOpenSettings, onOpenL
 }
 
 window.GlobalHeader = GlobalHeader;
+window.ProgressSeal = ProgressSeal;

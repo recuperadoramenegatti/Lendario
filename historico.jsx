@@ -1,4 +1,4 @@
-// TOGA — Aba Histórico (lista de sessões agrupadas por dia)
+// Lendário — Aba Histórico (lista de sessões agrupadas por dia)
 
 function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
   const logs = shared.dailyLogs || [];
@@ -11,8 +11,8 @@ function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
   if (sortedDays.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 24px' }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>📜</div>
-        <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--petroleo)', marginBottom: 8 }}>
+        <div style={{ fontSize: 48, marginBottom: 12 }}><Glyph e="📜" /></div>
+        <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-heading)', marginBottom: 8 }}>
           Nenhum registro ainda
         </div>
         <div style={{ fontSize: 14, color: 'var(--text-muted)', maxWidth: 360, margin: '0 auto' }}>
@@ -38,7 +38,7 @@ function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--petroleo)', marginBottom: 4 }}>
+      <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-heading)', marginBottom: 4 }}>
         Histórico de sessões
       </div>
       <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 6 }}>
@@ -52,13 +52,13 @@ function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
         const totalR = (day.reviews || 0);
         return (
           <div key={day.date} className="glass" style={{ padding: 16 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8, marginBottom: 10, paddingBottom: 8, borderBottom: '1px solid rgba(42,45,58,0.08)' }}>
-              <div className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--petroleo)', textTransform: 'capitalize' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8, marginBottom: 10, paddingBottom: 8, borderBottom: '1px solid rgba(243,235,221,0.08)' }}>
+              <div className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-heading)', textTransform: 'capitalize' }}>
                 {fmtDate(day.date)}
               </div>
-              <div style={{ display: 'flex', gap: 12, fontSize: 11, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
-                {totalH > 0 && <span style={{ color: 'var(--ciano)' }}>⏱ {fmtHours(totalH)}</span>}
-                {totalQ > 0 && <span style={{ color: 'var(--esmeralda)' }}>❓ {totalQ}</span>}
+              <div style={{ display: 'flex', gap: 12, fontSize: 11, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
+                {totalH > 0 && <span style={{ color: 'var(--ciano)' }}><Glyph e="⏱" /> {fmtHours(totalH)}</span>}
+                {totalQ > 0 && <span style={{ color: 'var(--esmeralda)' }}><Glyph e="❓" /> {totalQ}</span>}
                 {totalR > 0 && <span style={{ color: 'var(--tinta)' }}>🃏 {totalR}</span>}
               </div>
             </div>
@@ -77,9 +77,9 @@ function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
                 return (
                   <div key={i} style={{
                     padding: '10px 12px',
-                    background: 'rgba(255,255,255,0.5)',
+                    background: 'rgba(22,19,40,0.5)',
                     borderRadius: 10,
-                    border: '1px solid rgba(42,45,58,0.06)',
+                    border: '1px solid rgba(243,235,221,0.06)',
                     display: 'flex', flexDirection: 'column', gap: 4,
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
@@ -98,17 +98,17 @@ function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
                           <span style={{
                             fontSize: 9, fontWeight: 700, letterSpacing: '0.08em',
                             padding: '2px 7px', borderRadius: 99,
-                            background: 'rgba(11,61,92,0.08)', color: 'var(--petroleo)',
+                            background: 'rgba(74,54,196,0.08)', color: 'var(--text-heading)',
                             textTransform: 'uppercase',
                           }}>
                             {e.studyType}
                           </span>
                         )}
                         {e.source === 'pomodoro' && (
-                          <span style={{ fontSize: 11, color: 'var(--tinta)' }}>🛡</span>
+                          <span style={{ fontSize: 11, color: 'var(--tinta)' }}><Glyph e="🛡" /></span>
                         )}
                       </div>
-                      <div style={{ display: 'flex', gap: 10, fontSize: 11, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: 10, fontSize: 11, fontFamily: 'var(--font-num)', fontWeight: 600, alignItems: 'center' }}>
                         {(e.hours || 0) > 0 && <span style={{ color: 'var(--ciano)' }}>{fmtHours(e.hours)}</span>}
                         {(e.questions || 0) > 0 && <span style={{ color: 'var(--esmeralda)' }}>{e.questions}q</span>}
                         {accPct !== null && (
@@ -119,14 +119,14 @@ function HistoricoTab({ shared, onEditEntry, onDeleteEntry }) {
                         {(e.reviews || 0) > 0 && <span style={{ color: 'var(--tinta)' }}>{e.reviews}r</span>}
                         {onEditEntry && (
                           <button onClick={handleEdit} title="Editar"
-                            style={{ background: 'transparent', border: '1px solid rgba(42,45,58,0.15)', borderRadius: 6, padding: '2px 7px', cursor: 'pointer', fontSize: 11, color: 'var(--petroleo)' }}>
+                            style={{ background: 'transparent', border: '1px solid rgba(243,235,221,0.15)', borderRadius: 6, padding: '2px 7px', cursor: 'pointer', fontSize: 11, color: 'var(--text-heading)' }}>
                             ✎
                           </button>
                         )}
                         {onDeleteEntry && (
                           <button onClick={handleDel} title="Excluir"
-                            style={{ background: 'transparent', border: '1px solid rgba(232,93,93,0.3)', borderRadius: 6, padding: '2px 7px', cursor: 'pointer', fontSize: 11, color: 'var(--coral)' }}>
-                            🗑
+                            style={{ background: 'transparent', border: '1px solid rgba(255,122,138,0.3)', borderRadius: 6, padding: '2px 7px', cursor: 'pointer', fontSize: 11, color: 'var(--coral)' }}>
+                            <Glyph e="🗑" />
                           </button>
                         )}
                       </div>

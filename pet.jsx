@@ -29,7 +29,7 @@ style={{ animation: 'pet-egg-shake 3.6s ease-in-out infinite', overflow: 'visibl
 <stop offset="100%" stopColor={accent} stopOpacity="0.7" />
 </radialGradient>
 </defs>
-<ellipse cx="100" cy="180" rx="42" ry="6" fill="rgba(12,13,18,0.15)" />
+<ellipse cx="100" cy="180" rx="42" ry="6" fill="rgba(243,235,221,0.15)" />
 <path d="M100 35 C 65 35, 45 95, 50 135 C 55 170, 75 185, 100 185 C 125 185, 145 170, 150 135 C 155 95, 135 35, 100 35 Z"
 fill="url(#egg1-grad)" stroke={accent} strokeWidth="2" strokeOpacity="0.4"
 style={{ filter: `drop-shadow(0 0 8px ${glow}66)` }} />
@@ -65,7 +65,7 @@ style={{ animation: 'pet-egg-crack 1.8s ease-in-out infinite', overflow: 'visibl
 <stop offset="100%" stopColor={accent} stopOpacity="0" />
 </radialGradient>
 </defs>
-<ellipse cx="100" cy="180" rx="42" ry="6" fill="rgba(12,13,18,0.15)" />
+<ellipse cx="100" cy="180" rx="42" ry="6" fill="rgba(243,235,221,0.15)" />
 {/* glow leaking out */}
 <ellipse cx="100" cy="100" rx="52" ry="62" fill="url(#egg2-inner)" opacity="0.7"
 style={{ animation: 'pet-glow-pulse 1.4s ease-in-out infinite' }} />
@@ -154,7 +154,7 @@ style={{ overflow: 'visible' }}>
   )}
 
   {/* Ground shadow */}
-  <ellipse cx="100" cy="182" rx={38 * bodyScale} ry="5" fill="rgba(12,13,18,0.18)" />
+  <ellipse cx="100" cy="182" rx={38 * bodyScale} ry="5" fill="rgba(243,235,221,0.18)" />
 
   {/* Wrap entire dragon in animated group */}
   <g style={{ animation: breathAnim, transformOrigin: 'center 130px' }}>
@@ -212,10 +212,10 @@ style={{ overflow: 'visible' }}>
         <path d="M 70 142 Q 75 175, 60 188 L 140 188 Q 125 175, 130 142 Z"
           fill="#1a0a3a" stroke="#5a1fa0" strokeWidth="1" opacity="0.92" />
         {/* Gold trim */}
-        <path d="M 70 142 Q 75 175, 60 188" fill="none" stroke="#ffc107" strokeWidth="1.5" />
-        <path d="M 130 142 Q 125 175, 140 188" fill="none" stroke="#ffc107" strokeWidth="1.5" />
+        <path d="M 70 142 Q 75 175, 60 188" fill="none" stroke="#FFD27A" strokeWidth="1.5" />
+        <path d="M 130 142 Q 125 175, 140 188" fill="none" stroke="#FFD27A" strokeWidth="1.5" />
         {/* Collar */}
-        <path d="M 80 142 L 100 152 L 120 142 Z" fill="#ffc107" opacity="0.9" />
+        <path d="M 80 142 L 100 152 L 120 142 Z" fill="#FFD27A" opacity="0.9" />
       </g>
     )}
 
@@ -268,8 +268,8 @@ style={{ overflow: 'visible' }}>
     {/* Cheek blush */}
     {!sick && (
       <>
-        <ellipse cx="78" cy="112" rx="5" ry="3" fill="rgba(232,93,93,0.35)" opacity="0.55" />
-        <ellipse cx="122" cy="112" rx="5" ry="3" fill="rgba(232,93,93,0.35)" opacity="0.55" />
+        <ellipse cx="78" cy="112" rx="5" ry="3" fill="rgba(255,122,138,0.35)" opacity="0.55" />
+        <ellipse cx="122" cy="112" rx="5" ry="3" fill="rgba(255,122,138,0.35)" opacity="0.55" />
       </>
     )}
 
@@ -296,7 +296,7 @@ style={{ overflow: 'visible' }}>
     {/* Book (stage 7+) — held in hands */}
     {showBook && (
       <g transform="translate(135 152)">
-        <rect x="-12" y="-8" width="24" height="16" rx="1.5" fill="#ffc107" stroke="#5a1fa0" strokeWidth="1.5" />
+        <rect x="-12" y="-8" width="24" height="16" rx="1.5" fill="#FFD27A" stroke="#5a1fa0" strokeWidth="1.5" />
         <rect x="-10" y="-6" width="20" height="12" rx="1" fill="white" />
         <line x1="0" y1="-6" x2="0" y2="6" stroke="#5a1fa0" strokeWidth="0.8" />
         <text x="0" y="2" fontSize="6" fill="#5a1fa0" fontWeight="700" textAnchor="middle" fontFamily="serif">⚖</text>
@@ -350,7 +350,7 @@ return (
 <div className="glass" style={{
 padding: 18, display: 'flex', alignItems: 'center', gap: 18,
 position: 'relative', overflow: 'visible',
-borderColor: sick ? 'rgba(245,158,11,0.4)' : undefined,
+borderColor: sick ? 'rgba(255,176,87,0.4)' : undefined,
 background: sick
 ? 'linear-gradient(135deg, rgba(255,250,240,0.85), rgba(255,235,210,0.8))'
 : undefined,
@@ -374,12 +374,12 @@ background: sick
       {sick && (
         <span className="num" style={{
           fontSize: 9, padding: '2px 7px', borderRadius: 4,
-          background: 'rgba(245,158,11,0.18)', color: '#a14e0c',
+          background: 'rgba(255,176,87,0.18)', color: '#EEBB8F',
           fontWeight: 700, letterSpacing: '0.1em',
-          border: '1px solid rgba(245,158,11,0.5)',
+          border: '1px solid rgba(255,176,87,0.5)',
           animation: 'amber-pulse 2s ease-in-out infinite',
         }}>
-          🤒 DOENTINHO
+          <Glyph e="🤒" /> DOENTINHO
         </span>
       )}
     </div>
@@ -395,11 +395,11 @@ background: sick
     {/* XP progress to next stage */}
     {info.next && (
       <div style={{ marginTop: 10 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--text-dim)', marginBottom: 3, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--text-dim)', marginBottom: 3, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
           <span>até <span style={{ color: info.next.accent }}>{info.next.name}</span></span>
           <span className="num">{xp.toLocaleString('pt-BR')} / {info.next.minXp.toLocaleString('pt-BR')} XP</span>
         </div>
-        <div style={{ height: 6, background: 'rgba(12,13,18,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+        <div style={{ height: 6, background: 'rgba(243,235,221,0.06)', borderRadius: 4, overflow: 'hidden' }}>
           <div style={{
             height: '100%', width: `${info.progress * 100}%`,
             background: `linear-gradient(90deg, ${info.accent}, ${info.glow})`,
@@ -412,7 +412,7 @@ background: sick
 
     {/* Last study indicator */}
     {daysOffText && (
-      <div style={{ marginTop: 8, fontSize: 10.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+      <div style={{ marginTop: 8, fontSize: 10.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>
         {daysOffText}
       </div>
     )}
@@ -439,7 +439,7 @@ return () => clearTimeout(t);
 return (
 <div style={{
 position: 'fixed', inset: 0, zIndex: 200,
-background: 'radial-gradient(ellipse at center, rgba(91,71,184,0.4), rgba(12,13,18,0.85))',
+background: 'radial-gradient(ellipse at center, rgba(183,170,255,0.4), rgba(12,13,18,0.85))',
 backdropFilter: 'blur(12px)',
 display: 'grid', placeItems: 'center', padding: 24,
 animation: 'fade-in 400ms ease-out',
@@ -450,10 +450,10 @@ animation: 'slide-up 500ms cubic-bezier(0.2,0.8,0.2,1)',
 }}>
 <div style={{
 fontSize: 11, letterSpacing: '0.4em', color: toInfo.glow, marginBottom: 16,
-fontFamily: 'JetBrains Mono, monospace', fontWeight: 700,
+fontFamily: 'var(--font-label)', fontWeight: 700,
 textShadow: `0 0 14px ${toInfo.glow}`,
 }}>
-✨ EVOLUÇÃO ✨
+<Glyph e="✨" /> EVOLUÇÃO <Glyph e="✨" />
 </div>
 
     {/* Big pet sprite with glow halo */}
@@ -477,7 +477,7 @@ textShadow: `0 0 14px ${toInfo.glow}`,
     {/* Stage transition text */}
     <div style={{
       fontSize: 11, color: 'rgba(255,255,255,0.55)',
-      fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.18em', fontWeight: 600,
+      fontFamily: 'var(--font-label)', letterSpacing: '0.18em', fontWeight: 600,
       marginBottom: 4,
     }}>
       FASE {fromStage} <span style={{ color: toInfo.glow, padding: '0 8px' }}>→</span> FASE {toStage}
@@ -510,7 +510,7 @@ textShadow: `0 0 14px ${toInfo.glow}`,
       background: `linear-gradient(135deg, ${toInfo.color}, ${toInfo.accent})`,
       color: 'white', cursor: 'pointer',
       boxShadow: `0 6px 30px ${toInfo.glow}99, 0 0 20px ${toInfo.glow}55`,
-      fontFamily: 'Space Grotesk, sans-serif',
+      fontFamily: 'var(--font-display)',
       textShadow: '0 1px 3px rgba(0,0,0,0.4)',
     }}>
       CONTINUAR JORNADA →
@@ -533,8 +533,8 @@ position: 'fixed', left: x, top: y, zIndex: 70,
 pointerEvents: 'none',
 fontSize: 16, fontWeight: 700,
 color: amount > 0 ? 'var(--esmeralda)' : 'var(--coral)',
-textShadow: amount > 0 ? '0 0 10px rgba(0,168,107,0.7)' : '0 0 10px rgba(232,93,93,0.7)',
-fontFamily: 'JetBrains Mono, monospace',
+textShadow: amount > 0 ? '0 0 10px rgba(79,209,165,0.7)' : '0 0 10px rgba(255,122,138,0.7)',
+fontFamily: 'var(--font-num)',
 animation: 'xp-float 1.1s ease-out forwards',
 }}>
 {amount > 0 ? '+' : ''}{amount} XP

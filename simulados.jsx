@@ -1,13 +1,13 @@
-// TOGA — Aba Simulados — Dashboard + Cadastro + Histórico
+// Lendário — Aba Simulados — Dashboard + Cadastro + Histórico
 // Independente para Objetiva e Discursiva (filtra pelo `mode` atual).
 
 const SIM_BANCAS = ['CESPE/CEBRASPE', 'FCC', 'FGV', 'VUNESP', 'IBFC', 'IADES', 'AOCP', 'Quadrix', 'Própria', 'Outra'];
 
 function accColorTier(pct) {
-  if (pct >= 80) return { color: '#0369A1', glow: 'rgba(56,189,248,0.55)', label: 'Excelente' }; // azul brilhante
-  if (pct >= 70) return { color: '#065F46', glow: 'rgba(0,168,107,0.50)', label: 'Bom' };          // verde
-  if (pct >= 60) return { color: '#92400E', glow: 'rgba(245,158,11,0.50)', label: 'Atenção' };     // amarelo
-  return { color: '#B91C1C', glow: 'rgba(232,93,93,0.55)', label: 'Crítico' };                     // vermelho
+  if (pct >= 80) return { color: '#98CAE0', glow: 'rgba(56,189,248,0.55)', label: 'Excelente' }; // azul brilhante
+  if (pct >= 70) return { color: '#9BE9C9', glow: 'rgba(79,209,165,0.50)', label: 'Bom' };          // verde
+  if (pct >= 60) return { color: '#EEB791', glow: 'rgba(255,176,87,0.50)', label: 'Atenção' };     // amarelo
+  return { color: '#EE9E95', glow: 'rgba(255,122,138,0.55)', label: 'Crítico' };                     // vermelho
 }
 function accBarBg(pct) {
   if (pct >= 80) return 'linear-gradient(90deg, #38BDF8, #0EA5E9)';
@@ -69,8 +69,8 @@ function PerformanceLineChart({ sims }) {
         const y = H - P - (v / max) * (H - 2 * P);
         return (
           <g key={v}>
-            <line x1={P} y1={y} x2={W - P} y2={y} stroke="rgba(30,32,48,0.06)" strokeDasharray="2 4" />
-            <text x={P - 4} y={y + 3} textAnchor="end" fontSize="8" fill="rgba(90,100,120,0.6)" fontFamily="JetBrains Mono">{v}</text>
+            <line x1={P} y1={y} x2={W - P} y2={y} stroke="rgba(243,235,221,0.06)" strokeDasharray="2 4" />
+            <text x={P - 4} y={y + 3} textAnchor="end" fontSize="8" fill="rgba(179,171,199,0.6)" fontFamily="Manrope, sans-serif">{v}</text>
           </g>
         );
       })}
@@ -110,7 +110,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
         <div style={{ flex: 1, minWidth: 220 }}>
-          <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--petroleo)' }}>
+          <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-heading)' }}>
             Simulados <span style={{ color: modeColor }}>· {modeLabel}</span>
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
@@ -119,7 +119,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
         </div>
         <button onClick={() => setFormOpen(true)} className="btn-neon" style={{
           padding: '9px 18px', fontSize: 13,
-          background: 'linear-gradient(135deg, var(--petroleo), var(--ciano))', borderColor: 'transparent', color: 'white',
+          background: 'var(--grad-primary)', borderColor: 'transparent', color: 'var(--on-primary)',
         }}>
           <I.plus size={13} stroke={2.5} /> Novo Simulado
         </button>
@@ -130,7 +130,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
 
         {/* Card 1 — Simulados Realizados */}
         <div className="glass" style={{ padding: '16px 18px' }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>
             SIMULADOS REALIZADOS
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
@@ -139,14 +139,14 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
               {filtered.length === 1 ? 'simulado' : 'simulados'}
             </span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
             no modo {modeLabel.toLowerCase()}
           </div>
         </div>
 
         {/* Card 2 — Último Simulado */}
         <div className="glass" style={{ padding: '16px 18px' }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>
             ÚLTIMO SIMULADO
           </div>
           {last && lastTotals ? (
@@ -154,14 +154,14 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
               <div className="font-display" style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
                 {last.name || 'Sem nome'}
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
                 {fmtDateShort(last.date)}
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
                 <span className="num" style={{ fontSize: 34, fontWeight: 800, color: lastTier.color, letterSpacing: '-0.03em', filter: `drop-shadow(0 0 6px ${lastTier.glow})` }}>
                   {lastTotals.accuracy.toFixed(0)}<span style={{ fontSize: 14, opacity: 0.7 }}>%</span>
                 </span>
-                <div style={{ display: 'flex', gap: 10, fontSize: 11, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+                <div style={{ display: 'flex', gap: 10, fontSize: 11, fontFamily: 'var(--font-num)', fontWeight: 700 }}>
                   <span style={{ color: 'var(--esmeralda)' }}>✓ {lastTotals.correct}</span>
                   <span style={{ color: 'var(--coral)' }}>✗ {lastTotals.wrong}</span>
                 </div>
@@ -175,10 +175,10 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
         {/* Card 3 — Seu Desempenho (gráfico rosa) */}
         <div className="glass" style={{
           padding: '16px 18px',
-          background: 'linear-gradient(145deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6)), radial-gradient(ellipse at 0% 0%, rgba(236,72,153,0.10), transparent 60%)',
+          background: 'linear-gradient(145deg, rgba(22,19,40,0.85), rgba(22,19,40,0.6)), radial-gradient(ellipse at 0% 0%, rgba(236,72,153,0.10), transparent 60%)',
           border: '1px solid rgba(236,72,153,0.22)',
         }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 6 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 6 }}>
             SEU DESEMPENHO
           </div>
           <PerformanceLineChart sims={filtered} />
@@ -188,7 +188,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
       {/* Histórico */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-          <div className="font-display" style={{ fontSize: 16, fontWeight: 700, color: 'var(--petroleo)' }}>
+          <div className="font-display" style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-heading)' }}>
             Histórico de simulados
           </div>
           <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
@@ -198,7 +198,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
 
         {sorted.length === 0 ? (
           <div className="glass" style={{ padding: 28, textAlign: 'center' }}>
-            <div style={{ fontSize: 40, marginBottom: 8 }}>🎯</div>
+            <div style={{ fontSize: 40, marginBottom: 8 }}><Glyph e="🎯" /></div>
             <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>Sem simulados por enquanto</div>
             <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
               Clique em <strong>Novo Simulado</strong> para registrar seu primeiro.
@@ -220,13 +220,13 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
                 <div style={{ minWidth: 0, flex: 1 }}>
                   <div className="font-display" style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
                     {sim.name || 'Sem nome'}
-                    {sim.banca && <span style={{ marginLeft: 8, fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: 'rgba(30,32,48,0.05)' }}>{sim.banca}</span>}
+                    {sim.banca && <span style={{ marginLeft: 8, fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: 'rgba(243,235,221,0.05)' }}>{sim.banca}</span>}
                   </div>
-                  <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
                     {fmtDateLong(sim.date)} · ⏱ {fmtTimeMin(sim.timeMinutes)}
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 14, fontSize: 12, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 14, fontSize: 12, fontFamily: 'var(--font-num)', fontWeight: 700, alignItems: 'center' }}>
                   <span style={{ color: 'var(--text-muted)' }}>Q: <span className="num" style={{ color: 'var(--text-primary)', fontWeight: 800 }}>{tot.questions}</span></span>
                   <span style={{ color: 'var(--esmeralda)' }}>✓ {tot.correct}</span>
                   <span style={{ color: 'var(--coral)' }}>✗ {tot.wrong}</span>
@@ -244,14 +244,14 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
               </div>
 
               {isOpen && (
-                <div style={{ padding: '0 18px 16px', borderTop: '1px solid rgba(30,32,48,0.05)' }}>
+                <div style={{ padding: '0 18px 16px', borderTop: '1px solid rgba(243,235,221,0.05)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6, padding: '10px 0 6px' }}>
-                    <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+                    <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>
                       DESEMPENHO POR DISCIPLINA
                     </div>
                     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      {sim.estilo && <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>{sim.estilo}</span>}
-                      <button className="btn-ghost" style={{ fontSize: 11, color: 'var(--coral)', borderColor: 'rgba(232,93,93,0.35)' }}
+                      {sim.estilo && <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 700 }}>{sim.estilo}</span>}
+                      <button className="btn-ghost" style={{ fontSize: 11, color: 'var(--coral)', borderColor: 'rgba(255,122,138,0.35)' }}
                         onClick={() => {
                           if (window.confirm('Excluir este simulado? Esta ação não pode ser desfeita.')) onRemoveSimulado(sim.id);
                         }}>
@@ -271,7 +271,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
                           <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.name}</div>
                           <div className="num" style={{ fontSize: 11, color: 'var(--esmeralda)', fontWeight: 800, textAlign: 'center' }}>✓ {d.correct}</div>
                           <div className="num" style={{ fontSize: 11, color: 'var(--coral)', fontWeight: 800, textAlign: 'center' }}>✗ {d.wrong}</div>
-                          <div style={{ height: 10, background: 'rgba(30,32,48,0.05)', borderRadius: 99, overflow: 'hidden' }}>
+                          <div style={{ height: 10, background: 'rgba(243,235,221,0.05)', borderRadius: 99, overflow: 'hidden' }}>
                             <div style={{
                               height: '100%', width: `${Math.min(100, acc)}%`,
                               background: accBarBg(acc),
@@ -286,7 +286,7 @@ function SimuladosTab({ shared, objState, discState, mode, onAddSimulado, onRemo
                     })}
                   </div>
                   {sim.comments && (
-                    <div style={{ marginTop: 10, padding: '10px 12px', borderRadius: 8, background: 'rgba(30,32,48,0.04)', fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>
+                    <div style={{ marginTop: 10, padding: '10px 12px', borderRadius: 8, background: 'rgba(243,235,221,0.04)', fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>
                       "{sim.comments}"
                     </div>
                   )}
@@ -383,8 +383,8 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
   const inputStyle = {
     width: '100%', boxSizing: 'border-box',
     padding: '8px 10px', borderRadius: 8,
-    border: '1px solid rgba(30,32,48,0.13)',
-    background: 'rgba(255,255,255,0.75)',
+    border: '1px solid rgba(243,235,221,0.13)',
+    background: 'rgba(22,19,40,0.75)',
     fontSize: 13, color: 'var(--grafite)',
     fontFamily: 'inherit', outline: 'none',
   };
@@ -393,7 +393,7 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
   return (
     <div onClick={onClose} style={{
       position: 'fixed', inset: 0, zIndex: 95,
-      background: 'rgba(11,61,92,0.50)', backdropFilter: 'blur(10px)',
+      background: 'radial-gradient(ellipse at 50% 30%, rgba(42,31,92,0.55), rgba(7,6,13,0.86))', backdropFilter: 'blur(10px)',
       display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
       padding: 16, overflowY: 'auto', WebkitOverflowScrolling: 'touch',
     }}>
@@ -403,7 +403,7 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
           <I.close size={13} />
         </button>
         <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.25em', color: 'var(--tinta)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 800 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.25em', color: 'var(--tinta)', fontFamily: 'var(--font-label)', fontWeight: 800 }}>
             NOVO SIMULADO · {mode === 'objetiva' ? 'OBJETIVA' : 'DISCURSIVA'}
           </div>
           <div className="font-display gradient-neon" style={{ fontSize: 22, fontWeight: 700, marginTop: 3 }}>
@@ -446,8 +446,8 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
         </div>
 
         {/* Disciplines table */}
-        <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(30,32,48,0.07)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 90px 90px', gap: 8, padding: '10px 12px', background: 'rgba(30,32,48,0.04)', fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, color: 'var(--text-dim)', letterSpacing: '0.08em' }}>
+        <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(243,235,221,0.07)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 90px 90px', gap: 8, padding: '10px 12px', background: 'rgba(243,235,221,0.04)', fontSize: 10, fontFamily: 'var(--font-label)', fontWeight: 800, color: 'var(--text-dim)', letterSpacing: '0.08em' }}>
             <div>DISCIPLINA</div>
             <div style={{ textAlign: 'center' }}>Qtd Q. ✎</div>
             <div style={{ textAlign: 'center', color: 'var(--esmeralda)' }}>✓ ACERTOS</div>
@@ -460,7 +460,7 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
               </div>
             )}
             {rows.map((r, i) => (
-              <div key={r.subjectId || i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 90px 90px', gap: 8, padding: '6px 12px', borderTop: '1px solid rgba(30,32,48,0.04)', alignItems: 'center' }}>
+              <div key={r.subjectId || i} style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 90px 90px', gap: 8, padding: '6px 12px', borderTop: '1px solid rgba(243,235,221,0.04)', alignItems: 'center' }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={r.name}>{r.name}</div>
                 <input type="number" min={0} placeholder="0" value={r.questions}
                   onChange={e => updateRow(i, 'questions', e.target.value)}
@@ -479,16 +479,16 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
         {/* Total + comments */}
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.5fr)', gap: 12, marginTop: 14 }}>
           <div className="glass" style={{ padding: '14px 16px',
-            background: `linear-gradient(145deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6)), radial-gradient(ellipse at 0% 0%, ${tier.color}14, transparent 60%)`,
+            background: `linear-gradient(145deg, rgba(22,19,40,0.85), rgba(22,19,40,0.6)), radial-gradient(ellipse at 0% 0%, ${tier.color}14, transparent 60%)`,
             border: `1px solid ${tier.color}33`,
           }}>
-            <div style={{ fontSize: 10, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, marginBottom: 4 }}>
+            <div style={{ fontSize: 10, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 800, marginBottom: 4 }}>
               RESULTADO TOTAL
             </div>
             <div className="num" style={{ fontSize: 36, fontWeight: 800, color: tier.color, letterSpacing: '-0.03em', filter: `drop-shadow(0 0 6px ${tier.glow})` }}>
               {accuracy.toFixed(0)}%
             </div>
-            <div style={{ fontSize: 11, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginTop: 4 }}>
+            <div style={{ fontSize: 11, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 700, marginTop: 4 }}>
               {totals.correct} ✓ · {totals.wrong} ✗ · {totals.questions} Q
             </div>
           </div>
@@ -504,8 +504,8 @@ function SimuladoFormModal({ open, mode, subjects, onClose, onSave }) {
           <button className="btn-ghost" onClick={onClose}>Cancelar</button>
           <button className="btn-neon" onClick={handleSave} style={{
             flex: 1, justifyContent: 'center', padding: '12px', fontSize: 13,
-            background: 'linear-gradient(135deg, var(--petroleo), var(--ciano))',
-            borderColor: 'transparent', color: 'white',
+            background: 'var(--grad-primary)',
+            borderColor: 'transparent', color: 'var(--on-primary)',
           }}>
             <I.check size={13} stroke={2.5} /> Salvar simulado
           </button>
