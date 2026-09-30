@@ -83,16 +83,16 @@ const ONBOARDING_STEPS = [
   },
   {
     id: 'pet',
-    title: 'Dragão da Sabedoria',
-    subtitle: 'Seu dragão evolui com cada estudo',
-    body: 'Toda sessão gera XP, gemas e às vezes baús mágicos. Seu dragão sente seus estudos: a Chama cresce com horas, a Sabedoria com questões e o Vínculo com a constância.',
+    title: 'Seu Dragãozinho Arcano',
+    subtitle: 'Um companheiro mágico que cresce com você',
+    body: 'Cada hora de estudo vira XP e cristais. Seu dragão sente o que você faz: horas enchem a Mana, questões o Saber e a constância o Afeto.',
     visual: 'pet',
     icon: '🐉',
     bullets: [
-      'Ovo Arcano → Filhote → Erudito → Dragão Lendário (8 fases)',
-      'Missões do dia, bônus de constância e conquistas compartilháveis',
-      'Gemas compram chapéus, óculos e peles no guarda-roupa',
-      'Adoece após 3 dias sem estudar — cura com 2 dias seguidos'
+      'Ovo Arcano → Filhote → Sábio → Dragão Lendário (8 fases)',
+      'Missões diárias, baú do dia e conquistas para compartilhar',
+      'Loja de acessórios e cenários no Covil do Dragão',
+      'Adoece se você ficar 3 dias sem estudar — cura com 2 dias seguidos'
     ],
   },
   {
