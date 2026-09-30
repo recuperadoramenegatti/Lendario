@@ -1,14 +1,14 @@
-// TOGA — Onboarding Flow · Apple-like · Ultra Premium
+// Lendário — Onboarding Flow · Apple-like · Ultra Premium
 // Step-by-step intro that appears only once, with Skip button on all screens
 
 const ONBOARDING_STEPS = [
   {
     id: 'welcome',
-    title: 'Bem-vindo ao TOGA',
+    title: 'Bem-vindo ao Lendário',
     subtitle: 'Assuma o controle da sua aprovação',
     body: 'Um sistema de estudos verdadeiramente personalizável. Não somos um curso — somos sua ferramenta estratégica.',
     visual: 'welcome',
-    icon: '⚖️',
+    icon: '🐉',
     bullets: null,
   },
   {
@@ -142,7 +142,7 @@ function OnboardingModal({ onDone }) {
       onClick={handleSkip}
       style={{
         position: 'fixed', inset: 0, zIndex: 999,
-        background: 'rgba(11,61,92,0.50)',
+        background: 'radial-gradient(ellipse at 50% 30%, rgba(42,31,92,0.55), rgba(7,6,13,0.86))',
         backdropFilter: 'blur(20px) saturate(120%)',
         WebkitBackdropFilter: 'blur(20px) saturate(120%)',
         display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
@@ -170,8 +170,8 @@ function OnboardingModal({ onDone }) {
           50% { transform: translateY(-8px); }
         }
         @keyframes onboarding-pulse-glow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(0,184,212,0), 0 20px 60px rgba(11,61,92,0.25); }
-          50% { box-shadow: 0 0 0 12px rgba(0,184,212,0.15), 0 20px 60px rgba(11,61,92,0.35); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(143,184,255,0), 0 20px 60px rgba(74,54,196,0.25); }
+          50% { box-shadow: 0 0 0 12px rgba(143,184,255,0.15), 0 20px 60px rgba(74,54,196,0.35); }
         }
         @keyframes onboarding-icon-bounce {
           0%, 100% { transform: scale(1); }
@@ -179,13 +179,13 @@ function OnboardingModal({ onDone }) {
         }
         .onboarding-card { padding: 40px 44px 32px; }
         .onboarding-cta { width: 100%; padding: 14px 24px; border-radius: 14px; border: none;
-          background: linear-gradient(135deg, var(--petroleo) 0%, var(--ciano) 100%);
+          background: var(--grad-primary);
           color: white; font-size: 15px; font-weight: 700; cursor: pointer;
-          box-shadow: 0 8px 24px rgba(0,184,212,0.30), 0 0 0 1px rgba(255,255,255,0.15) inset;
+          box-shadow: 0 8px 24px rgba(143,184,255,0.30), 0 0 0 1px rgba(255,255,255,0.15) inset;
           transition: transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms;
           letter-spacing: 0.02em;
           touch-action: manipulation;
-          -webkit-tap-highlight-color: rgba(0,184,212,0.25);
+          -webkit-tap-highlight-color: rgba(143,184,255,0.25);
           position: relative;
           z-index: 10;
         }
@@ -208,7 +208,7 @@ function OnboardingModal({ onDone }) {
           width: '100%', maxWidth: 560, borderRadius: 24,
           position: 'relative',
           margin: 'auto 0',
-          boxShadow: '0 20px 60px rgba(11,61,92,0.25), 0 0 0 1px rgba(255,255,255,0.8) inset',
+          boxShadow: '0 20px 60px rgba(74,54,196,0.25), 0 0 0 1px rgba(255,255,255,0.06) inset',
           animation: exiting ? 'fade-out 300ms ease-out forwards' : `onboarding-card-in 600ms cubic-bezier(0.16,1,0.3,1)`,
         }}
       >
@@ -232,9 +232,9 @@ function OnboardingModal({ onDone }) {
               width: i === step ? 28 : 8, height: 8, borderRadius: 99,
               background: i === step
                 ? 'linear-gradient(90deg, var(--ciano), var(--petroleo))'
-                : 'rgba(30,32,48,0.12)',
+                : 'rgba(243,235,221,0.12)',
               transition: 'all 400ms cubic-bezier(0.16,1,0.3,1)',
-              boxShadow: i === step ? '0 0 12px rgba(0,184,212,0.4)' : 'none',
+              boxShadow: i === step ? '0 0 12px rgba(143,184,255,0.4)' : 'none',
             }} />
           ))}
         </div>
@@ -243,15 +243,15 @@ function OnboardingModal({ onDone }) {
         <div style={{
           fontSize: 56, textAlign: 'center', marginBottom: 20,
           animation: 'onboarding-float 3s ease-in-out infinite',
-          filter: 'drop-shadow(0 4px 16px rgba(0,184,212,0.25))',
+          filter: 'drop-shadow(0 4px 16px rgba(143,184,255,0.25))',
         }}>
-          {current.icon}
+          <Glyph e={current.icon} />
         </div>
 
         {/* Title */}
         <div className="font-display" style={{
           fontSize: 28, fontWeight: 700, textAlign: 'center',
-          background: 'linear-gradient(135deg, var(--petroleo) 0%, var(--ciano) 100%)',
+          background: 'var(--grad-primary)',
           WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
           marginBottom: 8, letterSpacing: '-0.02em',
         }}>
@@ -290,7 +290,7 @@ function OnboardingModal({ onDone }) {
                   width: 6, height: 6, borderRadius: '50%',
                   background: 'linear-gradient(135deg, var(--ciano), var(--petroleo))',
                   flexShrink: 0,
-                  boxShadow: '0 0 6px rgba(0,184,212,0.5)',
+                  boxShadow: '0 0 6px rgba(143,184,255,0.5)',
                 }} />
                 <span style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>
                   {b}
@@ -304,10 +304,10 @@ function OnboardingModal({ onDone }) {
         {current.visual && current.visual !== 'welcome' && (
           <div style={{
             height: 80, borderRadius: 12, marginBottom: 20,
-            background: `radial-gradient(ellipse at 50% 30%, rgba(0,184,212,0.08), transparent 70%)`,
-            border: '1px solid rgba(0,184,212,0.15)',
+            background: `radial-gradient(ellipse at 50% 30%, rgba(143,184,255,0.08), transparent 70%)`,
+            border: '1px solid rgba(143,184,255,0.15)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-label)',
             fontWeight: 600, letterSpacing: '0.12em',
             pointerEvents: 'none',
             userSelect: 'none',
@@ -331,7 +331,7 @@ function OnboardingModal({ onDone }) {
         <div style={{
           textAlign: 'center', marginTop: 16,
           fontSize: 11, color: 'var(--text-dim)',
-          fontFamily: 'JetBrains Mono, monospace', fontWeight: 600,
+          fontFamily: 'var(--font-label)', fontWeight: 600,
           letterSpacing: '0.1em',
         }}>
           {step + 1} DE {ONBOARDING_STEPS.length}

@@ -1,22 +1,22 @@
-// TOGA — Desempenho em Concursos
+// Lendário — Desempenho em Concursos
 
 const BANCAS_CONCURSO = ['CESPE/CEBRASPE','FCC','FGV','VUNESP','IBFC','IADES','AOCP','Quadrix','FUNDATEC','FEPESE','NC-UFPR','FAFIPA','Própria','Outra'];
 
 // App palette hex values (mirrors CSS custom properties)
 const CC = {
-  ciano:     '#00B8D4',
-  esmeralda: '#00A86B',
-  tinta:     '#5B47B8',
-  ambar:     '#F59E0B',
-  coral:     '#E85D5D',
-  petroleo:  '#0B3D5C',
-  dourado:   '#C9A961',
-  grafite:   '#1E2030',
-  ardosia:   '#5A6478',
+  ciano:     '#8FB8FF',
+  esmeralda: '#4FD1A5',
+  tinta:     '#B7AAFF',
+  ambar:     '#FFB057',
+  coral:     '#FF7A8A',
+  petroleo:  '#4A36C4',
+  dourado:   '#E8C47A',
+  grafite:   '#F3EBDD',
+  ardosia:   '#B3ABC7',
 };
 
 // Multi-series chart colors using app palette
-const CHART_SERIES = ['#00B8D4','#5B47B8','#00A86B','#F59E0B','#C9A961','#E85D5D','#0B3D5C','#FF7A1A'];
+const CHART_SERIES = ['#8FB8FF','#B7AAFF','#4FD1A5','#FFB057','#E8C47A','#FF7A8A','#4A36C4','#FF7A1A'];
 
 function discPct(d) {
   if (!d || !d.total || d.total <= 0) return 0;
@@ -171,8 +171,8 @@ function ProvaSummaryChart({ provas }) {
         </defs>
         {yTicks.map(v => (
           <g key={v}>
-            <line x1={PAD.l} y1={ys(v)} x2={W - PAD.r} y2={ys(v)} stroke="rgba(30,32,48,0.07)" strokeWidth="1" />
-            <text x={PAD.l - 5} y={ys(v) + 4} fontSize="9" fill="#5A6478" textAnchor="end" fontFamily="JetBrains Mono, monospace" fontWeight="600">{v}%</text>
+            <line x1={PAD.l} y1={ys(v)} x2={W - PAD.r} y2={ys(v)} stroke="rgba(243,235,221,0.07)" strokeWidth="1" />
+            <text x={PAD.l - 5} y={ys(v) + 4} fontSize="9" fill="#B3ABC7" textAnchor="end" fontFamily="Manrope, sans-serif" fontWeight="600">{v}%</text>
           </g>
         ))}
         {/* Cutoff line */}
@@ -182,18 +182,18 @@ function ProvaSummaryChart({ provas }) {
         {data.map((d, i) => (
           <g key={i}>
             <circle cx={xs(i)} cy={ys(d.pct)} r="5" fill="white" stroke={d.passou ? CC.esmeralda : CC.ciano} strokeWidth="2.5" />
-            <text x={xs(i)} y={H - PAD.b + 14} fontSize="9" fill="#5A6478" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight="600">{fmtD(d.date)}</text>
+            <text x={xs(i)} y={H - PAD.b + 14} fontSize="9" fill="#B3ABC7" textAnchor="middle" fontFamily="Manrope, sans-serif" fontWeight="600">{fmtD(d.date)}</text>
           </g>
         ))}
       </svg>
       <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 4 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <div style={{ width: 18, height: 3, background: `linear-gradient(90deg,${CC.ciano},${CC.tinta})`, borderRadius: 2 }} />
-          <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>SEU DESEMPENHO</span>
+          <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>SEU DESEMPENHO</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <div style={{ width: 18, height: 2, borderTop: `2px dashed ${CC.ambar}`, opacity: 0.7 }} />
-          <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>CORTE %</span>
+          <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>CORTE %</span>
         </div>
       </div>
     </div>
@@ -237,12 +237,12 @@ function DisciplineLineChart({ provas }) {
         <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', maxWidth: W, display: 'block' }}>
           {gridVals.map(v => (
             <g key={v}>
-              <line x1={PAD.l} y1={ys(v)} x2={W - PAD.r} y2={ys(v)} stroke="rgba(30,32,48,0.07)" strokeWidth="1" strokeDasharray={v === 65 || v === 80 ? '4,3' : undefined} />
-              <text x={PAD.l - 4} y={ys(v) + 4} fontSize="9" fill="#5A6478" textAnchor="end" fontFamily="JetBrains Mono, monospace">{v}%</text>
+              <line x1={PAD.l} y1={ys(v)} x2={W - PAD.r} y2={ys(v)} stroke="rgba(243,235,221,0.07)" strokeWidth="1" strokeDasharray={v === 65 || v === 80 ? '4,3' : undefined} />
+              <text x={PAD.l - 4} y={ys(v) + 4} fontSize="9" fill="#B3ABC7" textAnchor="end" fontFamily="Manrope, sans-serif">{v}%</text>
             </g>
           ))}
           {chrono.map((p, i) => (
-            <text key={i} x={xs(i)} y={H - PAD.b + 14} fontSize="9" fill="#5A6478" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight="600">{fmtD(p.date)}</text>
+            <text key={i} x={xs(i)} y={H - PAD.b + 14} fontSize="9" fill="#B3ABC7" textAnchor="middle" fontFamily="Manrope, sans-serif" fontWeight="600">{fmtD(p.date)}</text>
           ))}
           {series.map(({ nome, arr }, si) => {
             const color = CHART_SERIES[si % CHART_SERIES.length];
@@ -264,7 +264,7 @@ function DisciplineLineChart({ provas }) {
           return (
             <div key={nome} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{ width: 16, height: 3, background: color, borderRadius: 2 }} />
-              <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600, fontFamily: 'var(--font-num)' }}>
                 {nome.length > 22 ? nome.slice(0, 20) + '…' : nome}
               </span>
             </div>
@@ -310,16 +310,16 @@ function CdpRadarChart({ provas }) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', maxWidth: W, display: 'block', margin: '0 auto' }}>
       {/* Grid polygons */}
-      {polyPts.map((pts, li) => <polygon key={li} points={pts} fill="none" stroke="rgba(30,32,48,0.08)" strokeWidth="1" />)}
+      {polyPts.map((pts, li) => <polygon key={li} points={pts} fill="none" stroke="rgba(243,235,221,0.08)" strokeWidth="1" />)}
       {/* Grid % labels */}
       {levels.map((lvl, li) => {
         const p = pt(lvl * R, 0);
-        return <text key={li} x={CX + 3} y={CY - lvl * R + 4} fontSize="8" fill="rgba(90,100,120,0.5)" fontFamily="JetBrains Mono, monospace">{(lvl * 100).toFixed(0)}%</text>;
+        return <text key={li} x={CX + 3} y={CY - lvl * R + 4} fontSize="8" fill="rgba(179,171,199,0.5)" fontFamily="Manrope, sans-serif">{(lvl * 100).toFixed(0)}%</text>;
       })}
       {/* Axis lines */}
       {disciplines.slice(0, N).map((d, i) => {
         const p = pt(R, i);
-        return <line key={i} x1={CX} y1={CY} x2={p.x} y2={p.y} stroke="rgba(30,32,48,0.08)" strokeWidth="1" />;
+        return <line key={i} x1={CX} y1={CY} x2={p.x} y2={p.y} stroke="rgba(243,235,221,0.08)" strokeWidth="1" />;
       })}
       {/* Data polygon */}
       <polygon points={dataPoly} fill={CC.ciano + '18'} stroke={CC.ciano} strokeWidth="2" strokeLinejoin="round" />
@@ -334,7 +334,7 @@ function CdpRadarChart({ provas }) {
         const anchor = p.x < CX - 6 ? 'end' : p.x > CX + 6 ? 'start' : 'middle';
         const label = d.nome.length > 14 ? d.nome.slice(0, 12) + '…' : d.nome;
         return (
-          <text key={i} x={p.x} y={p.y + 4} fontSize="9.5" fill="#5A6478" textAnchor={anchor} fontFamily="JetBrains Mono, monospace" fontWeight="600">
+          <text key={i} x={p.x} y={p.y + 4} fontSize="9.5" fill="#B3ABC7" textAnchor={anchor} fontFamily="Manrope, sans-serif" fontWeight="600">
             {label}
           </text>
         );
@@ -362,12 +362,12 @@ function PerformanceHeatmap({ provas }) {
   }).sort((a, b) => b.avg - a.avg);
 
   const heatBg = pct => {
-    if (pct === null) return 'rgba(30,32,48,0.04)';
-    if (pct >= 80) return 'rgba(0,168,107,0.18)';
-    if (pct >= 65) return 'rgba(0,184,212,0.15)';
-    if (pct >= 50) return 'rgba(91,71,184,0.13)';
-    if (pct >= 35) return 'rgba(245,158,11,0.15)';
-    return 'rgba(232,93,93,0.13)';
+    if (pct === null) return 'rgba(243,235,221,0.04)';
+    if (pct >= 80) return 'rgba(79,209,165,0.18)';
+    if (pct >= 65) return 'rgba(143,184,255,0.15)';
+    if (pct >= 50) return 'rgba(183,170,255,0.13)';
+    if (pct >= 35) return 'rgba(255,176,87,0.15)';
+    return 'rgba(255,122,138,0.13)';
   };
   const heatText = pct => {
     if (pct === null) return 'var(--text-dim)';
@@ -383,7 +383,7 @@ function PerformanceHeatmap({ provas }) {
       {/* Header */}
       <div style={{ display: 'flex', marginBottom: 6, paddingLeft: 140 }}>
         {chrono.map((p, i) => (
-          <div key={i} style={{ width: 52, flexShrink: 0, textAlign: 'center', fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, lineHeight: 1.3 }}>
+          <div key={i} style={{ width: 52, flexShrink: 0, textAlign: 'center', fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600, lineHeight: 1.3 }}>
             {fmtD(p.date)}<br />
             <span style={{ opacity: 0.7 }}>{(p.orgao || p.cargo || '').slice(0, 7)}</span>
           </div>
@@ -411,10 +411,10 @@ function PerformanceHeatmap({ provas }) {
         </div>
       ))}
       <div style={{ display: 'flex', gap: 10, marginTop: 10, flexWrap: 'wrap' }}>
-        {[['≥80%', CC.esmeralda, 'rgba(0,168,107,0.18)'], ['65–80%', CC.ciano, 'rgba(0,184,212,0.15)'], ['50–65%', CC.tinta, 'rgba(91,71,184,0.13)'], ['35–50%', CC.ambar, 'rgba(245,158,11,0.15)'], ['<35%', CC.coral, 'rgba(232,93,93,0.13)']].map(([label, color, bg]) => (
+        {[['≥80%', CC.esmeralda, 'rgba(79,209,165,0.18)'], ['65–80%', CC.ciano, 'rgba(143,184,255,0.15)'], ['50–65%', CC.tinta, 'rgba(183,170,255,0.13)'], ['35–50%', CC.ambar, 'rgba(255,176,87,0.15)'], ['<35%', CC.coral, 'rgba(255,122,138,0.13)']].map(([label, color, bg]) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{ width: 14, height: 14, borderRadius: 3, background: bg, border: `1px solid ${color}44` }} />
-            <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{label}</span>
+            <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>{label}</span>
           </div>
         ))}
       </div>
@@ -450,11 +450,11 @@ function DisciplineAvgChart({ provas }) {
               <span style={{ flex: 1, fontSize: 11.5, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.nome}</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
                 <span className="num" style={{ fontSize: 12, fontWeight: 800, color }}>{e.avg.toFixed(0)}%</span>
-                {hasRange && <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>({e.min.toFixed(0)}–{e.max.toFixed(0)}%)</span>}
-                {e.count >= 2 && <span style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>·{e.count}×</span>}
+                {hasRange && <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>({e.min.toFixed(0)}–{e.max.toFixed(0)}%)</span>}
+                {e.count >= 2 && <span style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>·{e.count}×</span>}
               </span>
             </div>
-            <div style={{ position: 'relative', height: 8, background: 'rgba(30,32,48,0.07)', borderRadius: 99 }}>
+            <div style={{ position: 'relative', height: 8, background: 'rgba(243,235,221,0.07)', borderRadius: 99 }}>
               {hasRange && <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${e.min}%`, width: `${e.max - e.min}%`, background: `${color}18`, borderRadius: 99 }} />}
               <div style={{ height: '100%', width: `${e.avg}%`, background: `linear-gradient(90deg,${color}80,${color})`, borderRadius: 99, transition: `width 700ms ${i * 50}ms cubic-bezier(0.16,1,0.3,1)` }} />
             </div>
@@ -500,26 +500,26 @@ function BancaAnalysisSection({ provas }) {
           <div key={banca} className="glass" style={{ padding: '14px 16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
               <div>
-                <div className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--petroleo)' }}>{banca}</div>
-                <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', marginTop: 2 }}>
+                <div className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-heading)' }}>{banca}</div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', marginTop: 2 }}>
                   {count} {count === 1 ? 'prova' : 'provas'} · {passou} aprovado{passou !== 1 ? 's' : ''}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="num" style={{ fontSize: 22, fontWeight: 800, color, lineHeight: 1 }}>{avgDes.toFixed(0)}%</div>
                 {trend !== null && (
-                  <div style={{ fontSize: 10, color: trend >= 0 ? CC.esmeralda : CC.ambar, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ fontSize: 10, color: trend >= 0 ? CC.esmeralda : CC.ambar, fontWeight: 700, fontFamily: 'var(--font-num)' }}>
                     {trend >= 0 ? '↑' : '↓'}{Math.abs(trend).toFixed(1)}%
                   </div>
                 )}
               </div>
             </div>
-            <div style={{ height: 6, background: 'rgba(30,32,48,0.07)', borderRadius: 99, marginBottom: 10 }}>
+            <div style={{ height: 6, background: 'rgba(243,235,221,0.07)', borderRadius: 99, marginBottom: 10 }}>
               <div style={{ height: '100%', width: `${Math.min(100, avgDes)}%`, background: `linear-gradient(90deg,${color}80,${color})`, borderRadius: 99 }} />
             </div>
             {discs.length >= 2 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 2 }}>DISCIPLINAS</div>
+                <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 2 }}>DISCIPLINAS</div>
                 {discs.slice(0, 4).map(d => (
                   <div key={d.nome} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     <div style={{ width: 6, height: 6, borderRadius: 2, background: discColor(d.avg), flexShrink: 0 }} />
@@ -579,32 +579,32 @@ function CrossAnalysisSection({ provas }) {
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
         <thead>
           <tr>
-            <th style={{ textAlign: 'left', padding: '6px 12px 6px 0', fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', minWidth: 130 }}>DISCIPLINA</th>
+            <th style={{ textAlign: 'left', padding: '6px 12px 6px 0', fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-num)', minWidth: 130 }}>DISCIPLINA</th>
             {bancas.map(b => (
-              <th key={b} style={{ textAlign: 'center', padding: '6px 8px', fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', whiteSpace: 'nowrap' }}>
+              <th key={b} style={{ textAlign: 'center', padding: '6px 8px', fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-num)', whiteSpace: 'nowrap' }}>
                 {b.length > 12 ? b.slice(0, 10) + '…' : b}
               </th>
             ))}
-            <th style={{ textAlign: 'center', padding: '6px 8px', fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>MÉDIA</th>
+            <th style={{ textAlign: 'center', padding: '6px 8px', fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-num)' }}>MÉDIA</th>
           </tr>
         </thead>
         <tbody>
           {matrix.map(({ nome, cells, avg }) => (
-            <tr key={nome} style={{ borderTop: '1px solid rgba(30,32,48,0.06)' }}>
+            <tr key={nome} style={{ borderTop: '1px solid rgba(243,235,221,0.06)' }}>
               <td style={{ padding: '8px 12px 8px 0', fontSize: 11.5, fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
                 {nome.length > 24 ? nome.slice(0, 22) + '…' : nome}
               </td>
               {cells.map((pct, i) => (
                 <td key={i} style={{ textAlign: 'center', padding: '8px 6px' }}>
                   {pct !== null ? (
-                    <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 99, background: `${discColor(pct)}18`, color: discColor(pct), fontWeight: 700, fontSize: 10.5, fontFamily: 'JetBrains Mono, monospace' }}>
+                    <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 99, background: `${discColor(pct)}18`, color: discColor(pct), fontWeight: 700, fontSize: 10.5, fontFamily: 'var(--font-num)' }}>
                       {pct.toFixed(0)}%
                     </span>
                   ) : <span style={{ color: 'var(--text-dim)', fontSize: 10 }}>—</span>}
                 </td>
               ))}
               <td style={{ textAlign: 'center', padding: '8px 6px' }}>
-                <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 99, background: `${discColor(avg)}25`, color: discColor(avg), fontWeight: 800, fontSize: 11, fontFamily: 'JetBrains Mono, monospace' }}>
+                <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 99, background: `${discColor(avg)}25`, color: discColor(avg), fontWeight: 800, fontSize: 11, fontFamily: 'var(--font-num)' }}>
                   {avg.toFixed(0)}%
                 </span>
               </td>
@@ -624,19 +624,19 @@ function ConcursosInsightsPanel({ provas }) {
   if (items.length === 0) return null;
   return (
     <div className="glass anim-slide-up" style={{ padding: '16px 18px' }}>
-      <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 12 }}>INSIGHTS DA SUA JORNADA</div>
+      <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 12 }}>INSIGHTS DA SUA JORNADA</div>
       <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
         {items.map(ins => (
           <div key={ins.id} style={{
             flexShrink: 0, width: 148, padding: '12px 14px',
             borderRadius: 12,
-            background: ins.hl ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.7)',
+            background: ins.hl ? 'rgba(22,19,40,0.95)' : 'rgba(22,19,40,0.7)',
             border: `1px solid ${ins.color}28`,
             boxShadow: ins.hl ? `0 3px 12px ${ins.color}18` : 'none',
           }}>
-            <div style={{ fontSize: 22, marginBottom: 5, lineHeight: 1 }}>{ins.icon}</div>
+            <div style={{ fontSize: 22, marginBottom: 5, lineHeight: 1 }}><Glyph e={ins.icon} /></div>
             <div className="num" style={{ fontSize: 21, fontWeight: 800, color: ins.color, letterSpacing: '-0.02em', lineHeight: 1 }}>{ins.value}</div>
-            <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.08em', marginTop: 4, textTransform: 'uppercase' }}>{ins.label}</div>
+            <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', letterSpacing: '0.08em', marginTop: 4, textTransform: 'uppercase' }}>{ins.label}</div>
             <div style={{ fontSize: 10.5, color: 'var(--text-dim)', fontWeight: 600, marginTop: 3, lineHeight: 1.35 }}>{ins.desc}</div>
           </div>
         ))}
@@ -657,8 +657,8 @@ function CdpSection({ label, icon, children, defaultOpen = true }) {
         onClick={() => setOpen(v => !v)}
         style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 8, width: '100%', marginBottom: open ? 14 : 0 }}
       >
-        <span style={{ fontSize: 13 }}>{icon}</span>
-        <span style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, flex: 1, textAlign: 'left' }}>{label}</span>
+        <span style={{ fontSize: 13 }}><Glyph e={icon} /></span>
+        <span style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, flex: 1, textAlign: 'left' }}>{label}</span>
         <span style={{ fontSize: 11, color: 'var(--text-dim)', transform: open ? 'none' : 'rotate(-90deg)', display: 'inline-block', transition: 'transform 200ms' }}>▾</span>
       </button>
       {open && children}
@@ -685,34 +685,34 @@ function ProvaCard({ p, onEdit, onRemove }) {
   const dateStr = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: '2-digit' }) : '';
 
   return (
-    <div className="glass" style={{ padding: '14px 16px', borderLeft: `3px solid ${passou ? CC.esmeralda : CC.ciano}` }}>
+    <div className="glass" style={{ padding: '14px 16px' }}>
       {/* Row 1: title + performance % */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 6 }}>
         <div style={{ minWidth: 0, flex: 1 }}>
-          <div className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--petroleo)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <div className="font-display" style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-heading)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {provaTitle(p)}
           </div>
           <div style={{ display: 'flex', gap: 6, marginTop: 4, flexWrap: 'wrap' }}>
             {p.cargo && p.orgao && <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>{p.cargo}</span>}
-            {p.banca && <span style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{p.banca}</span>}
-            {dateStr && <span style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>{dateStr}</span>}
-            {passou && <span style={{ fontSize: 9.5, padding: '1px 7px', borderRadius: 99, background: 'rgba(0,168,107,0.1)', color: CC.esmeralda, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>✓ APROVADO</span>}
+            {p.banca && <span style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>{p.banca}</span>}
+            {dateStr && <span style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>{dateStr}</span>}
+            {passou && <span style={{ fontSize: 9.5, padding: '1px 7px', borderRadius: 99, background: 'rgba(79,209,165,0.1)', color: CC.esmeralda, fontWeight: 700, fontFamily: 'var(--font-num)' }}>✓ APROVADO</span>}
           </div>
         </div>
         <div style={{ flexShrink: 0, textAlign: 'right' }}>
           <div className="num" style={{ fontSize: 24, fontWeight: 800, color: passou ? CC.esmeralda : CC.ciano, lineHeight: 1 }}>{pctDes.toFixed(0)}%</div>
-          <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, marginTop: 1 }}>DESEMPENHO</div>
+          <div style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600, marginTop: 1 }}>DESEMPENHO</div>
         </div>
       </div>
 
       {/* Row 2: progress bar */}
-      <div style={{ position: 'relative', height: 8, background: 'rgba(30,32,48,0.07)', borderRadius: 99, marginBottom: 6 }}>
+      <div style={{ position: 'relative', height: 8, background: 'rgba(243,235,221,0.07)', borderRadius: 99, marginBottom: 6 }}>
         <div style={{ height: '100%', width: `${Math.min(100, pctDes)}%`, background: `linear-gradient(90deg,${passou ? CC.ciano : CC.ciano}80,${passou ? CC.esmeralda : CC.ciano})`, borderRadius: 99, transition: 'width 600ms cubic-bezier(0.16,1,0.3,1)' }} />
         {total > 0 && <div style={{ position: 'absolute', top: -3, bottom: -3, left: `${Math.min(100, (corte / total) * 100)}%`, width: 2, background: CC.ambar, transform: 'translateX(-50%)', borderRadius: 99 }} title={`Corte: ${corte}`} />}
       </div>
 
       {/* Row 3: score + gap */}
-      <div style={{ fontSize: 11.5, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+      <div style={{ fontSize: 11.5, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
         <span className="num" style={{ color: passou ? CC.esmeralda : CC.ciano, fontWeight: 700 }}>{pontos}</span>
         <span style={{ color: 'var(--text-dim)' }}> / {total} pts · </span>
         {passou
@@ -725,7 +725,7 @@ function ProvaCard({ p, onEdit, onRemove }) {
       {discs.length > 0 && (
         <div style={{ marginTop: 10 }}>
           <button onClick={() => setShowDiscs(v => !v)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, letterSpacing: '0.1em' }}>DISCIPLINAS ({discs.length})</span>
+            <span style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, letterSpacing: '0.1em' }}>DISCIPLINAS ({discs.length})</span>
             <span style={{ fontSize: 10, color: 'var(--text-dim)', transform: showDiscs ? 'none' : 'rotate(-90deg)', display: 'inline-block', transition: 'transform 180ms' }}>▾</span>
           </button>
           {showDiscs && (
@@ -737,7 +737,7 @@ function ProvaCard({ p, onEdit, onRemove }) {
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <div style={{ width: 7, height: 7, borderRadius: 2, background: color, flexShrink: 0 }} />
                     <span style={{ flex: 1, fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.nome}</span>
-                    <div style={{ width: 70, height: 5, background: 'rgba(30,32,48,0.07)', borderRadius: 99, flexShrink: 0 }}>
+                    <div style={{ width: 70, height: 5, background: 'rgba(243,235,221,0.07)', borderRadius: 99, flexShrink: 0 }}>
                       <div style={{ height: '100%', width: `${pct}%`, background: color, borderRadius: 99 }} />
                     </div>
                     <span className="num" style={{ fontSize: 11, fontWeight: 700, color, flexShrink: 0, minWidth: 34, textAlign: 'right' }}>{pct.toFixed(0)}%</span>
@@ -751,13 +751,13 @@ function ProvaCard({ p, onEdit, onRemove }) {
       )}
 
       {p.observacoes && (
-        <div style={{ marginTop: 10, fontSize: 11.5, color: 'var(--text-muted)', fontStyle: 'italic', borderLeft: '2px solid rgba(30,32,48,0.1)', paddingLeft: 10 }}>
+        <div style={{ marginTop: 10, fontSize: 11.5, color: 'var(--text-muted)', fontStyle: 'italic', paddingLeft: 10 }}>
           {p.observacoes}
         </div>
       )}
 
       <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
-        <button className="btn-ghost" onClick={onEdit} style={{ fontSize: 11, padding: '4px 10px' }}>✏️ Editar</button>
+        <button className="btn-ghost" onClick={onEdit} style={{ fontSize: 11, padding: '4px 10px' }}><Glyph e="✏️" /> Editar</button>
         <button className="btn-ghost" onClick={() => { if (window.confirm('Remover este concurso?')) onRemove(); }} style={{ fontSize: 11, padding: '4px 10px', color: 'var(--coral)' }}>✕ Remover</button>
       </div>
     </div>
@@ -841,8 +841,8 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
       {/* Page header */}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <div className="font-display" style={{ fontSize: 21, fontWeight: 800, color: 'var(--petroleo)' }}>Desempenho em Concursos</div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.12em', fontWeight: 700, marginTop: 3 }}>
+          <div className="font-display" style={{ fontSize: 21, fontWeight: 800, color: 'var(--text-heading)' }}>Desempenho em Concursos</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-label)', letterSpacing: '0.12em', fontWeight: 700, marginTop: 3 }}>
             {provas.length === 0 ? 'PAINEL ESTRATÉGICO' : `${provas.length} ${provas.length === 1 ? 'CONCURSO' : 'CONCURSOS'} REGISTRADO${provas.length === 1 ? '' : 'S'}`}
           </div>
         </div>
@@ -851,8 +851,8 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
 
       {/* Form */}
       {showForm && (
-        <div className="glass anim-slide-up" style={{ padding: '18px 20px', border: '1px solid rgba(0,184,212,0.2)' }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: 14 }}>
+        <div className="glass anim-slide-up" style={{ padding: '18px 20px', border: '1px solid rgba(143,184,255,0.2)' }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, marginBottom: 14 }}>
             {editTarget ? 'EDITAR PROVA' : 'REGISTRAR PROVA ANTERIOR'}
           </div>
           <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', marginBottom: 10 }}>
@@ -895,8 +895,8 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
 
           {/* Live preview */}
           {showPrev && (
-            <div style={{ padding: '8px 12px', borderRadius: 8, marginBottom: 12, background: prvPassou ? 'rgba(0,168,107,0.07)' : 'rgba(0,184,212,0.06)', border: `1px solid ${prvPassou ? 'rgba(0,168,107,0.22)' : 'rgba(0,184,212,0.2)'}`, display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap', fontSize: 12 }}>
-              <span style={{ fontWeight: 700, color: prvPassou ? CC.esmeralda : CC.ciano, fontFamily: 'JetBrains Mono, monospace' }}>
+            <div style={{ padding: '8px 12px', borderRadius: 8, marginBottom: 12, background: prvPassou ? 'rgba(79,209,165,0.07)' : 'rgba(143,184,255,0.06)', border: `1px solid ${prvPassou ? 'rgba(79,209,165,0.22)' : 'rgba(143,184,255,0.2)'}`, display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap', fontSize: 12 }}>
+              <span style={{ fontWeight: 700, color: prvPassou ? CC.esmeralda : CC.ciano, fontFamily: 'var(--font-num)' }}>
                 {prvPassou ? '✓ ' : ''}{prvGapPct.toFixed(1)}% {prvPassou ? 'acima do corte' : 'abaixo do corte'}
               </span>
               <span style={{ color: 'var(--text-muted)' }}>Desempenho: {prvPctDes.toFixed(1)}% · {prvP} / {prvT} pts</span>
@@ -906,7 +906,7 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
           {/* Disciplines */}
           <div style={{ marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-              <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+              <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>
                 DISCIPLINAS <span style={{ opacity: 0.6 }}>(opcional)</span>
               </div>
               <button className="btn-ghost" onClick={addDisc} style={{ fontSize: 11, padding: '3px 10px', color: 'var(--ciano)' }}>+ Adicionar</button>
@@ -918,7 +918,7 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
                     const empty = form.disciplinas.find(d => !d.nome);
                     if (empty) updateDisc(empty.id, 'nome', name);
                     else setForm(f => ({ ...f, disciplinas: [...f.disciplinas, { ...emptyDisc(), nome: name }] }));
-                  }} style={{ fontSize: 10, padding: '2px 8px', borderRadius: 99, cursor: 'pointer', border: '1px solid rgba(0,184,212,0.3)', background: 'rgba(0,184,212,0.06)', color: 'var(--ciano)', fontWeight: 600 }}>
+                  }} style={{ fontSize: 10, padding: '2px 8px', borderRadius: 99, cursor: 'pointer', border: '1px solid rgba(143,184,255,0.3)', background: 'rgba(143,184,255,0.06)', color: 'var(--ciano)', fontWeight: 600 }}>
                     {name.length > 20 ? name.slice(0, 18) + '…' : name}
                   </button>
                 ))}
@@ -928,7 +928,7 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 28px', gap: 5, paddingRight: 2 }}>
                   {['DISCIPLINA', 'ACERTOS', 'TOTAL', ''].map((h, i) => (
-                    <div key={i} style={{ fontSize: 9.5, color: 'var(--text-dim)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', textAlign: i > 0 && i < 3 ? 'center' : 'left' }}>{h}</div>
+                    <div key={i} style={{ fontSize: 9.5, color: 'var(--text-dim)', fontWeight: 700, fontFamily: 'var(--font-num)', textAlign: i > 0 && i < 3 ? 'center' : 'left' }}>{h}</div>
                   ))}
                 </div>
                 {form.disciplinas.map(d => {
@@ -940,9 +940,9 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
                       <input className="input-base" type="number" placeholder="Pts" value={d.pontos} onChange={e => updateDisc(d.id, 'pontos', e.target.value)} style={{ width: '100%', fontSize: 11, textAlign: 'center' }} />
                       <div style={{ position: 'relative' }}>
                         <input className="input-base" type="number" placeholder="Total" value={d.total} onChange={e => updateDisc(d.id, 'total', e.target.value)} style={{ width: '100%', fontSize: 11, textAlign: 'center' }} />
-                        {pct !== null && <span style={{ position: 'absolute', right: -34, top: '50%', transform: 'translateY(-50%)', fontSize: 10, fontWeight: 800, color, fontFamily: 'JetBrains Mono, monospace', whiteSpace: 'nowrap' }}>{pct.toFixed(0)}%</span>}
+                        {pct !== null && <span style={{ position: 'absolute', right: -34, top: '50%', transform: 'translateY(-50%)', fontSize: 10, fontWeight: 800, color, fontFamily: 'var(--font-num)', whiteSpace: 'nowrap' }}>{pct.toFixed(0)}%</span>}
                       </div>
-                      <button onClick={() => removeDisc(d.id)} style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid rgba(30,32,48,0.15)', background: 'rgba(30,32,48,0.04)', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+                      <button onClick={() => removeDisc(d.id)} style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid rgba(243,235,221,0.15)', background: 'rgba(243,235,221,0.04)', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
                     </div>
                   );
                 })}
@@ -950,7 +950,7 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
             )}
           </div>
 
-          {formError && <div style={{ fontSize: 11.5, color: 'var(--coral)', fontWeight: 600, marginBottom: 10 }}>⚠ {formError}</div>}
+          {formError && <div style={{ fontSize: 11.5, color: 'var(--coral)', fontWeight: 600, marginBottom: 10 }}><Glyph e="⚠" /> {formError}</div>}
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="btn-neon" onClick={handleSave} style={{ fontSize: 12 }}>{editTarget ? '✓ Salvar' : '+ Registrar'}</button>
             <button className="btn-ghost" onClick={closeForm} style={{ fontSize: 12 }}>Cancelar</button>
@@ -961,8 +961,8 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
       {/* Empty state */}
       {provas.length === 0 && !showForm && (
         <div className="glass" style={{ padding: '48px 32px', textAlign: 'center' }}>
-          <div style={{ fontSize: 44, opacity: 0.15, marginBottom: 12 }}>🏛️</div>
-          <div className="font-display" style={{ fontSize: 16, fontWeight: 700, color: 'var(--petroleo)', marginBottom: 6 }}>Comece sua jornada</div>
+          <div style={{ fontSize: 44, opacity: 0.15, marginBottom: 12 }}><Glyph e="🏛️" /></div>
+          <div className="font-display" style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-heading)', marginBottom: 6 }}>Comece sua jornada</div>
           <div style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 16 }}>
             Registre sua primeira prova para começar a<br />acompanhar sua evolução estratégica.
           </div>
@@ -984,24 +984,24 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
         <CdpSection label="ANÁLISE DE DISCIPLINAS" icon="📊">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <div>
-              <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, marginBottom: 10 }}>MÉDIA POR DISCIPLINA</div>
+              <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600, marginBottom: 10 }}>MÉDIA POR DISCIPLINA</div>
               <DisciplineAvgChart provas={provas} />
             </div>
-            {provas.length >= 2 && <div style={{ borderTop: '1px solid rgba(30,32,48,0.07)', paddingTop: 18 }}>
-              <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, marginBottom: 10 }}>EVOLUÇÃO TEMPORAL POR DISCIPLINA</div>
+            {provas.length >= 2 && <div style={{ borderTop: '1px solid rgba(243,235,221,0.07)', paddingTop: 18 }}>
+              <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600, marginBottom: 10 }}>EVOLUÇÃO TEMPORAL POR DISCIPLINA</div>
               <DisciplineLineChart provas={provas} />
             </div>}
             {(() => {
               const n = new Set(provas.flatMap(p => (p.disciplinas || []).map(d => d.nome).filter(Boolean))).size;
               return n >= 3 ? (
-                <div style={{ borderTop: '1px solid rgba(30,32,48,0.07)', paddingTop: 18 }}>
-                  <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, marginBottom: 10 }}>RADAR DE DISCIPLINAS</div>
+                <div style={{ borderTop: '1px solid rgba(243,235,221,0.07)', paddingTop: 18 }}>
+                  <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600, marginBottom: 10 }}>RADAR DE DISCIPLINAS</div>
                   <CdpRadarChart provas={provas} />
                 </div>
               ) : null;
             })()}
-            {provas.length >= 2 && <div style={{ borderTop: '1px solid rgba(30,32,48,0.07)', paddingTop: 18 }}>
-              <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, marginBottom: 10 }}>HEATMAP DE DESEMPENHO</div>
+            {provas.length >= 2 && <div style={{ borderTop: '1px solid rgba(243,235,221,0.07)', paddingTop: 18 }}>
+              <div style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600, marginBottom: 10 }}>HEATMAP DE DESEMPENHO</div>
               <PerformanceHeatmap provas={provas} />
             </div>}
           </div>
@@ -1024,7 +1024,7 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
       {provas.length > 0 && (
         <div className="glass anim-slide-up" style={{ padding: '14px 18px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 14 }}>
-            <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+            <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>
               HISTÓRICO · {sorted.length} {sorted.length === 1 ? 'CONCURSO' : 'CONCURSOS'}
             </div>
             {bancas.length >= 2 && (
@@ -1032,10 +1032,10 @@ function ConcursosDesempenhoTab({ provas, setProvas, onXpGain }) {
                 {[null, ...bancas].map(b => (
                   <button key={b || '__all'} onClick={() => setBancaFilter(b || '')} style={{
                     fontSize: 10, padding: '3px 10px', borderRadius: 99, cursor: 'pointer',
-                    border: `1px solid ${bancaFilter === (b || '') ? 'rgba(0,184,212,0.5)' : 'rgba(30,32,48,0.12)'}`,
-                    background: bancaFilter === (b || '') ? 'rgba(0,184,212,0.08)' : 'transparent',
+                    border: `1px solid ${bancaFilter === (b || '') ? 'rgba(143,184,255,0.5)' : 'rgba(243,235,221,0.12)'}`,
+                    background: bancaFilter === (b || '') ? 'rgba(143,184,255,0.08)' : 'transparent',
                     color: bancaFilter === (b || '') ? 'var(--ciano)' : 'var(--text-muted)',
-                    fontWeight: bancaFilter === (b || '') ? 700 : 600, fontFamily: 'JetBrains Mono, monospace',
+                    fontWeight: bancaFilter === (b || '') ? 700 : 600, fontFamily: 'var(--font-num)',
                     transition: 'all 150ms ease',
                   }}>{b || 'Todas'}</button>
                 ))}

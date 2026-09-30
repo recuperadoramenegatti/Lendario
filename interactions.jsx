@@ -18,28 +18,12 @@ const _useBlocker = window.useChromeBlocker || _useBlockerNoop;
 function QuickLogFAB({ onOpenSessionLog, onOpenPomodoro }) {
   return (
     <div className="fab">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-end' }}>
-        <button onClick={onOpenPomodoro} title="Modo Blindado (Pomodoro / Cronômetro)"
-          style={{
-            width: 50, height: 50, borderRadius: 14,
-            background: 'rgba(91,71,184,0.1)',
-            border: '1px solid rgba(91,71,184,0.4)',
-            color: '#3A2780', cursor: 'pointer',
-            display: 'grid', placeItems: 'center',
-            boxShadow: '0 4px 14px rgba(91,71,184,0.2)',
-          }}>
-          <I.shield size={20} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-end' }}>
+        <button className="ld-fab-shield" onClick={onOpenPomodoro} title="Modo Blindado (Pomodoro / Cronômetro)" aria-label="Abrir Modo Blindado">
+          <G name="shield" size={22} color="#8FF0CE" />
         </button>
-        <button onClick={onOpenSessionLog} title="Registrar sessão de estudos"
-          style={{
-            width: 58, height: 58, borderRadius: 18,
-            background: 'linear-gradient(135deg, var(--petroleo), var(--ciano))',
-            border: 'none', color: 'white', cursor: 'pointer',
-            display: 'grid', placeItems: 'center',
-            boxShadow: '0 8px 24px rgba(0,184,212,0.35), 0 0 0 1px rgba(255,255,255,0.3) inset',
-            transition: 'transform 200ms cubic-bezier(0.2,0.8,0.2,1)',
-          }}>
-          <I.plus size={24} stroke={2.5} />
+        <button className="btn-neon ld-fab-main" onClick={onOpenSessionLog} title="Registrar sessão de estudos" aria-label="Registrar sessão de estudos">
+          <G name="quill" size={24} color="#231604" stroke={2} />
         </button>
       </div>
     </div>
@@ -60,9 +44,9 @@ const STUDY_TYPES_POM = [
 
 // Per-mode visual config (mirrors FOCUS_MODES_CONFIG but safe to access before blocker loads)
 const MODE_VISUALS = {
-  leve:     { ringColor: '#00b8d4', ringGlow: 'rgba(0,217,255,0.5)',   bgOverlay: 'rgba(12,13,18,0.5)',   label: 'Foco Leve',    icon: '🌿', finishEmoji: '💎', finishMsg: 'Sessão leve concluída!' },
-  profundo: { ringColor: '#5B47B8', ringGlow: 'rgba(91,71,184,0.6)',   bgOverlay: 'rgba(8,6,22,0.60)',    label: 'Foco Profundo', icon: '🔮', finishEmoji: '⚡', finishMsg: 'Concentração máxima atingida!' },
-  monge:    { ringColor: '#C9A961', ringGlow: 'rgba(201,169,97,0.55)', bgOverlay: 'rgba(6,5,10,0.72)',    label: 'Modo Monge',    icon: '🧘', finishEmoji: '🏆', finishMsg: 'Silêncio total alcançado!' },
+  leve:     { ringColor: '#8FB8FF', ringGlow: 'rgba(169,200,255,0.5)',   bgOverlay: 'rgba(12,13,18,0.5)',   label: 'Foco Leve',    icon: '🌿', finishEmoji: '💎', finishMsg: 'Sessão leve concluída!' },
+  profundo: { ringColor: '#B7AAFF', ringGlow: 'rgba(183,170,255,0.6)',   bgOverlay: 'rgba(8,6,22,0.60)',    label: 'Foco Profundo', icon: '🔮', finishEmoji: '⚡', finishMsg: 'Concentração máxima atingida!' },
+  monge:    { ringColor: '#E8C47A', ringGlow: 'rgba(232,196,122,0.55)', bgOverlay: 'rgba(6,5,10,0.72)',    label: 'Modo Monge',    icon: '🧘', finishEmoji: '🏆', finishMsg: 'Silêncio total alcançado!' },
 };
 
 function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullLog, customStudyTypes = [], onAddCustomStudyType, blindadoStats }) {
@@ -83,7 +67,7 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
 
   const focusMode = blocker.settings.focusMode || 'profundo';
   const mv = MODE_VISUALS[focusMode] || MODE_VISUALS.profundo;
-  const modeConfig = (window.FOCUS_MODES_CONFIG || {})[focusMode] || { xpBonus: 5, colorRaw: '#5B47B8' };
+  const modeConfig = (window.FOCUS_MODES_CONFIG || {})[focusMode] || { xpBonus: 5, colorRaw: '#B7AAFF' };
 
   const totalSecs = mins * 60;
 
@@ -238,12 +222,12 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
           position: 'relative', maxHeight: '90vh', overflowY: 'auto',
           ...(phase === 'running' && isMonge ? {
             background: 'rgba(14,12,8,0.97)',
-            border: `1px solid rgba(201,169,97,0.25)`,
-            boxShadow: `0 0 60px rgba(201,169,97,0.12), 0 24px 80px rgba(0,0,0,0.5)`,
+            border: `1px solid rgba(232,196,122,0.25)`,
+            boxShadow: `0 0 60px rgba(232,196,122,0.12), 0 24px 80px rgba(0,0,0,0.5)`,
           } : phase === 'running' && focusMode === 'profundo' ? {
             background: 'rgba(12,8,28,0.97)',
-            border: `1px solid rgba(91,71,184,0.2)`,
-            boxShadow: `0 0 60px rgba(91,71,184,0.1), 0 24px 80px rgba(0,0,0,0.4)`,
+            border: `1px solid rgba(183,170,255,0.2)`,
+            boxShadow: `0 0 60px rgba(183,170,255,0.1), 0 24px 80px rgba(0,0,0,0.4)`,
           } : {}),
         }}>
 
@@ -253,7 +237,7 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 18 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.25em', color: phase === 'running' ? mv.ringColor : 'var(--neon-violet)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.25em', color: phase === 'running' ? mv.ringColor : 'var(--neon-violet)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>
             MODO BLINDADO {phase === 'running' && `· ${mv.icon} ${mv.label.toUpperCase()}`}
           </div>
           <div className="font-display gradient-neon" style={{ fontSize: 24, fontWeight: 700, marginTop: 4 }}>
@@ -263,10 +247,10 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
           {bdStreak >= 2 && phase === 'pick' && (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 8,
               padding: '3px 10px', borderRadius: 99,
-              background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)',
-              fontSize: 11, color: '#d97706', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace',
+              background: 'rgba(255,176,87,0.1)', border: '1px solid rgba(255,176,87,0.3)',
+              fontSize: 11, color: '#d97706', fontWeight: 700, fontFamily: 'var(--font-num)',
             }}>
-              🔥 {bdStreak} dias blindados seguidos
+              <Glyph e="🔥" /> {bdStreak} dias blindados seguidos
             </div>
           )}
         </div>
@@ -279,14 +263,14 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
               <button onClick={() => setMode('timer')}
                 className={mode === 'timer' ? 'btn-neon' : 'btn-ghost'}
                 style={{ justifyContent: 'center', padding: '8px',
-                  ...(mode === 'timer' ? { background: 'var(--petroleo)', borderColor: 'transparent', color: 'white' } : {}) }}>
-                ⏲ Timer
+                  ...(mode === 'timer' ? { background: 'var(--petroleo)', borderColor: 'transparent', color: '#FFFFFF' } : {}) }}>
+                <Glyph e="⏲" /> Timer
               </button>
               <button onClick={() => setMode('chrono')}
                 className={mode === 'chrono' ? 'btn-neon' : 'btn-ghost'}
                 style={{ justifyContent: 'center', padding: '8px',
-                  ...(mode === 'chrono' ? { background: 'var(--petroleo)', borderColor: 'transparent', color: 'white' } : {}) }}>
-                ⏱ Cronômetro
+                  ...(mode === 'chrono' ? { background: 'var(--petroleo)', borderColor: 'transparent', color: '#FFFFFF' } : {}) }}>
+                <Glyph e="⏱" /> Cronômetro
               </button>
             </div>
 
@@ -296,12 +280,12 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
                   <button key={o.mins} onClick={() => setMins(o.mins)}
                     style={{
                       padding: '10px 4px', borderRadius: 10, cursor: 'pointer',
-                      background: mins === o.mins ? 'rgba(0,184,212,0.1)' : 'white',
-                      border: `1px solid ${mins === o.mins ? 'rgba(0,184,212,0.5)' : 'rgba(12,13,18,0.08)'}`,
-                      boxShadow: mins === o.mins ? '0 0 12px rgba(0,217,255,0.3)' : 'none',
+                      background: mins === o.mins ? 'rgba(143,184,255,0.1)' : 'rgba(255,255,255,0.04)',
+                      border: `1px solid ${mins === o.mins ? 'rgba(143,184,255,0.5)' : 'rgba(243,235,221,0.08)'}`,
+                      boxShadow: mins === o.mins ? '0 0 12px rgba(169,200,255,0.3)' : 'none',
                       color: 'var(--text-primary)', textAlign: 'center',
                     }}>
-                    <div className="num" style={{ fontSize: 14, fontWeight: 700, color: mins === o.mins ? '#00b8d4' : 'var(--text-primary)' }}>
+                    <div className="num" style={{ fontSize: 14, fontWeight: 700, color: mins === o.mins ? '#8FB8FF' : 'var(--text-primary)' }}>
                       {o.label}
                     </div>
                   </button>
@@ -310,7 +294,7 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
             )}
 
             {mode === 'chrono' && (
-              <div style={{ background: 'rgba(0,184,212,0.06)', padding: '12px 14px', borderRadius: 10, marginBottom: 14, fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              <div style={{ background: 'rgba(143,184,255,0.06)', padding: '12px 14px', borderRadius: 10, marginBottom: 14, fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
                 Modo cronômetro: o tempo conta para cima sem limite. Você decide quando finalizar.
               </div>
             )}
@@ -327,19 +311,19 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
               <div style={{
                 marginBottom: 14, padding: '14px',
                 borderRadius: 12,
-                background: `${(window.FOCUS_MODES_CONFIG || {})[focusMode]?.bgGlow || 'rgba(91,71,184,0.06)'}`,
-                border: `1px solid ${(window.FOCUS_MODES_CONFIG || {})[focusMode]?.colorRaw || 'rgba(91,71,184,0.2)'}40`,
+                background: `${(window.FOCUS_MODES_CONFIG || {})[focusMode]?.bgGlow || 'rgba(183,170,255,0.06)'}`,
+                border: `1px solid ${(window.FOCUS_MODES_CONFIG || {})[focusMode]?.colorRaw || 'rgba(183,170,255,0.2)'}40`,
               }}>
                 <FocusModeSelector blocker={blocker} />
 
                 {/* Blocker settings toggle */}
                 <button onClick={() => setShowBlockerSettings(v => !v)}
                   style={{ marginTop: 10, fontSize: 10.5, color: 'var(--text-dim)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0', display: 'flex', alignItems: 'center', gap: 5 }}>
-                  ⚙️ {showBlockerSettings ? 'Ocultar' : 'Configurar sites bloqueados'}
+                  <Glyph e="⚙️" /> {showBlockerSettings ? 'Ocultar' : 'Configurar sites bloqueados'}
                 </button>
 
                 {showBlockerSettings && typeof window.BlockerSettingsPanel === 'function' && (
-                  <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(30,32,48,0.06)' }}>
+                  <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(243,235,221,0.06)' }}>
                     <BlockerSettingsPanel blocker={blocker} />
                   </div>
                 )}
@@ -350,10 +334,10 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
             {!blocker.installed && (
               <div style={{
                 marginBottom: 14, padding: '10px 14px', borderRadius: 10,
-                background: 'rgba(91,71,184,0.04)', border: '1px dashed rgba(91,71,184,0.15)',
+                background: 'rgba(183,170,255,0.04)', border: '1px dashed rgba(183,170,255,0.15)',
                 fontSize: 11, color: 'var(--text-dim)', display: 'flex', gap: 8, alignItems: 'center',
               }}>
-                <span style={{ fontSize: 16 }}>🛡</span>
+                <span style={{ fontSize: 16 }}><Glyph e="🛡" /></span>
                 <span>Instale a extensão <strong>TOGA Blocker</strong> para bloquear sites durante o foco.</span>
               </div>
             )}
@@ -361,13 +345,13 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
             <button onClick={start} className="btn-neon" style={{
               width: '100%', justifyContent: 'center', padding: '12px 20px', fontSize: 13,
               background: blocker.installed
-                ? (window.FOCUS_MODES_CONFIG || {})[focusMode]?.gradient || 'linear-gradient(135deg, var(--petroleo), var(--ciano))'
-                : 'linear-gradient(135deg, var(--petroleo), var(--ciano))',
-              borderColor: 'transparent', color: 'white',
-              boxShadow: blocker.installed ? `0 8px 24px ${(window.FOCUS_MODES_CONFIG || {})[focusMode]?.colorGlow || 'rgba(0,184,212,0.3)'}` : undefined,
+                ? (window.FOCUS_MODES_CONFIG || {})[focusMode]?.gradient || 'var(--grad-primary)'
+                : 'var(--grad-primary)',
+              borderColor: 'transparent', color: 'var(--on-primary)',
+              boxShadow: blocker.installed ? `0 8px 24px ${(window.FOCUS_MODES_CONFIG || {})[focusMode]?.colorGlow || 'rgba(143,184,255,0.3)'}` : undefined,
             }}>
               <I.play size={11} /> Iniciar {mode === 'timer' ? `· ${mins} min` : '· cronômetro'}
-              {blocker.installed && mode === 'timer' && <span style={{ marginLeft: 6, fontSize: 10, opacity: 0.85 }}>· {mv.icon} blindado</span>}
+              {blocker.installed && mode === 'timer' && <span style={{ marginLeft: 6, fontSize: 10, opacity: 0.85 }}>· <Glyph e={mv.icon} /> blindado</span>}
             </button>
           </>
         )}
@@ -379,13 +363,13 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
             {isMonge && (
               <div style={{
                 position: 'absolute', inset: 0, borderRadius: 18, pointerEvents: 'none',
-                background: `radial-gradient(ellipse at 50% 30%, rgba(201,169,97,0.06), transparent 70%)`,
+                background: `radial-gradient(ellipse at 50% 30%, rgba(232,196,122,0.06), transparent 70%)`,
               }} />
             )}
 
             <div style={{ position: 'relative', width: 260, height: 260, margin: '0 auto' }}>
               <svg viewBox="0 0 260 260" width={260} height={260}>
-                <circle cx="130" cy="130" r={r} fill="none" stroke="rgba(12,13,18,0.06)" strokeWidth="4" />
+                <circle cx="130" cy="130" r={r} fill="none" stroke="rgba(243,235,221,0.06)" strokeWidth="4" />
                 {mode === 'timer' && (
                   <circle cx="130" cy="130" r={r} fill="none"
                     stroke={mv.ringColor} strokeWidth="4" strokeLinecap="round"
@@ -404,13 +388,13 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
                 <div>
                   <div className="num" style={{
                     fontSize: showH > 0 ? 38 : 50, fontWeight: 700, letterSpacing: '-0.02em',
-                    color: paused ? 'var(--coral)' : (isMonge ? '#C9A961' : 'var(--text-primary)'),
+                    color: paused ? 'var(--coral)' : (isMonge ? '#E8C47A' : 'var(--text-primary)'),
                   }}>
                     {showH > 0 && <>{String(showH).padStart(2,'0')}<span style={{ color: 'var(--text-dim)' }}>:</span></>}
                     {String(showM).padStart(2,'0')}<span style={{ color: 'var(--text-dim)' }}>:</span>{String(showS).padStart(2,'0')}
                   </div>
-                  <div style={{ fontSize: 10, textAlign: 'center', marginTop: 4, color: mv.ringColor, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, opacity: 0.8 }}>
-                    {mv.icon} {mv.label.toUpperCase()}
+                  <div style={{ fontSize: 10, textAlign: 'center', marginTop: 4, color: mv.ringColor, fontFamily: 'var(--font-num)', fontWeight: 700, opacity: 0.8 }}>
+                    <Glyph e={mv.icon} /> {mv.label.toUpperCase()}
                   </div>
                 </div>
               </div>
@@ -419,17 +403,17 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
             {paused && (
               <div style={{
                 marginTop: 14, padding: '8px 12px', borderRadius: 10,
-                background: pauseSecs >= 240 ? 'rgba(232,93,93,0.10)' : 'rgba(245,158,11,0.10)',
-                border: `1px solid ${pauseSecs >= 240 ? 'rgba(232,93,93,0.40)' : 'rgba(245,158,11,0.35)'}`,
+                background: pauseSecs >= 240 ? 'rgba(255,122,138,0.10)' : 'rgba(255,176,87,0.10)',
+                border: `1px solid ${pauseSecs >= 240 ? 'rgba(255,122,138,0.40)' : 'rgba(255,176,87,0.35)'}`,
                 fontSize: 12, color: pauseSecs >= 240 ? 'var(--coral)' : 'var(--ambar)',
-                fontWeight: 700, fontFamily: 'JetBrains Mono, monospace',
+                fontWeight: 700, fontFamily: 'var(--font-num)',
               }}>
-                ⏸ Pausado há {Math.floor(pauseSecs/60)}min {String(pauseSecs%60).padStart(2,'0')}s
+                <Glyph e="⏸" /> Pausado há {Math.floor(pauseSecs/60)}min {String(pauseSecs%60).padStart(2,'0')}s
                 {pauseSecs >= 240 && pauseSecs < 300 && <span> · alerta em {300 - pauseSecs}s</span>}
               </div>
             )}
 
-            <div style={{ fontSize: 11, color: isMonge ? 'rgba(201,169,97,0.5)' : 'var(--text-dim)', marginTop: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+            <div style={{ fontSize: 11, color: isMonge ? 'rgba(232,196,122,0.5)' : 'var(--text-dim)', marginTop: 10, fontFamily: 'var(--font-num)', fontWeight: 600 }}>
               {mode === 'timer'
                 ? 'XP só é concedido se o timer for finalizado naturalmente.'
                 : 'Modo cronômetro: registre quando quiser.'}
@@ -437,11 +421,11 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
               <button className="btn-ghost" onClick={() => setPaused(p => !p)}
-                style={isMonge ? { borderColor: 'rgba(201,169,97,0.3)', color: '#C9A961' } : {}}>
+                style={isMonge ? { borderColor: 'rgba(232,196,122,0.3)', color: '#E8C47A' } : {}}>
                 {paused ? <I.play size={12} /> : <I.pause size={12} />} {paused ? 'Continuar' : 'Pausar'}
               </button>
               <button className="btn-ghost" onClick={finalizeEarly}
-                style={{ borderColor: 'rgba(232,93,93,0.3)', color: 'var(--coral)' }}>
+                style={{ borderColor: 'rgba(255,122,138,0.3)', color: 'var(--coral)' }}>
                 Encerrar antes
               </button>
             </div>
@@ -454,7 +438,7 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
                   padding: '4px 10px', borderRadius: 99,
                   background: `rgba(${focusMode === 'monge' ? '201,169,97' : focusMode === 'profundo' ? '91,71,184' : '0,184,212'},0.1)`,
                   border: `1px solid ${mv.ringColor}33`,
-                  fontSize: 10.5, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700,
+                  fontSize: 10.5, fontFamily: 'var(--font-num)', fontWeight: 700,
                   color: mv.ringColor,
                 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: mv.ringColor, boxShadow: `0 0 6px ${mv.ringGlow}` }} />
@@ -480,9 +464,9 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
                 padding: '4px 12px', borderRadius: 99,
                 background: `${mv.ringColor}15`,
                 border: `1px solid ${mv.ringColor}33`,
-                fontSize: 11, color: mv.ringColor, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 11, color: mv.ringColor, fontWeight: 700, fontFamily: 'var(--font-num)',
               }}>
-                {mv.icon} {mv.label} · +{modeConfig.xpBonus || 0} XP bônus
+                <Glyph e={mv.icon} /> {mv.label} · +{modeConfig.xpBonus || 0} XP bônus
               </div>
             )}
             <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
@@ -493,11 +477,11 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
             <button onClick={openFullForm} className="btn-neon" style={{
               width: '100%', justifyContent: 'center', marginTop: 18, padding: '12px', fontSize: 14,
               background: naturallyFinished
-                ? (window.FOCUS_MODES_CONFIG || {})[focusMode]?.gradient || 'linear-gradient(135deg, var(--petroleo), var(--ciano))'
-                : 'linear-gradient(135deg, var(--petroleo), var(--ciano))',
-              borderColor: 'transparent', color: 'white',
+                ? (window.FOCUS_MODES_CONFIG || {})[focusMode]?.gradient || 'var(--grad-primary)'
+                : 'var(--grad-primary)',
+              borderColor: 'transparent', color: 'var(--on-primary)',
             }}>
-              ✏️ Abrir registro completo (tema, questões, acertos, erros)
+              <Glyph e="✏️" /> Abrir registro completo (tema, questões, acertos, erros)
             </button>
             <button onClick={onClose} className="btn-ghost" style={{ marginTop: 8, fontSize: 12 }}>
               Fechar sem registrar
@@ -527,20 +511,20 @@ function PomodoroModal({ open, onClose, subjects, onCompleteSession, onOpenFullL
           `}</style>
           <div style={{
             maxWidth: 460, padding: '32px 28px',
-            background: 'rgba(255,255,255,0.96)', borderRadius: 20,
+            background: 'rgba(22,19,40,0.96)', borderRadius: 20,
             border: '2px solid #DC2626',
             boxShadow: '0 0 0 6px rgba(220,38,38,0.45), 0 24px 80px rgba(120,20,20,0.45)',
             textAlign: 'center',
             animation: 'distraction-pulse 1.2s ease-in-out infinite',
           }}>
-            <div style={{ fontSize: 64, marginBottom: 12 }}>🚨</div>
-            <div style={{ fontSize: 11, letterSpacing: '0.28em', color: '#B91C1C', fontFamily: 'JetBrains Mono, monospace', fontWeight: 800, marginBottom: 6 }}>
+            <div style={{ fontSize: 64, marginBottom: 12 }}><Glyph e="🚨" /></div>
+            <div style={{ fontSize: 11, letterSpacing: '0.28em', color: '#EE9E95', fontFamily: 'var(--font-label)', fontWeight: 800, marginBottom: 6 }}>
               ALERTA DISTRAÇÃO
             </div>
-            <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: '#7F1D1D', lineHeight: 1.25, marginBottom: 8 }}>
+            <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: '#EEA59C', lineHeight: 1.25, marginBottom: 8 }}>
               Volte a estudar!
             </div>
-            <div style={{ fontSize: 14, color: '#7F1D1D', lineHeight: 1.5, fontWeight: 600 }}>
+            <div style={{ fontSize: 14, color: '#EEA59C', lineHeight: 1.5, fontWeight: 600 }}>
               A realização do seu sonho depende disso!
             </div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 18, flexWrap: 'wrap' }}>

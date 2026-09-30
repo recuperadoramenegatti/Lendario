@@ -1,4 +1,4 @@
-// TOGA — Cards compartilháveis (Instagram / TikTok)
+// Lendário — Cards compartilháveis (Instagram / TikTok)
 // Gera uma imagem PNG em canvas: Stories (1080×1920) ou Post (1080×1350).
 // Tipos: conquista, evolução do dragão, perfil do dragão e constância.
 // O dragão é o próprio SVG do app, serializado e desenhado no canvas.
@@ -9,11 +9,11 @@
   const THEMES = {
     bronze:    ['#1C0F05', '#6B3A12', '#D08A45'],
     prata:     ['#0B1220', '#334155', '#94A3B8'],
-    ouro:      ['#1F1000', '#8A4B00', '#F59E0B'],
+    ouro:      ['#1F1000', '#8A4B00', '#FFB057'],
     lendario:  ['#12052E', '#5B21B6', '#DB2777'],
     evolution: ['#0B0626', '#3B1F9E', '#A855F7'],
     profile:   ['#0B0626', '#312E81', '#7C5CFF'],
-    streak:    ['#1A0500', '#9A3412', '#F59E0B'],
+    streak:    ['#1A0500', '#9A3412', '#FFB057'],
   };
 
   function roundRect(ctx, x, y, w, h, r) {
@@ -33,7 +33,13 @@
     lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineH));
     return lines.length * lineH;
   }
-  function font(weight, size, fam = 'Space Grotesk') { return `${weight} ${Math.round(size)}px "${fam}", Inter, system-ui, sans-serif`; }
+  // Tipografia da marca no canvas: Cormorant (títulos), Cinzel (rótulos), Manrope (texto)
+  const FONT_MAP = { 'Space Grotesk': 'Cormorant Garamond', 'JetBrains Mono': 'Cinzel', 'Inter': 'Manrope' };
+  function font(weight, size, fam = 'Space Grotesk') {
+    const f = FONT_MAP[fam] || fam;
+    const w = f === 'Cormorant Garamond' ? Math.min(700, weight) : f === 'Cinzel' ? 700 : weight;
+    return `${w} ${Math.round(size)}px "${f}", Georgia, system-ui, serif`;
+  }
 
   function drawBackground(ctx, W, H, theme, seed) {
     const g = ctx.createLinearGradient(0, 0, 0, H);
@@ -177,8 +183,36 @@
 
     // Topo
     ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = '#FFFFFF'; ctx.font = font(800, L.logoSize);
-    ctx.fillText('⚖️ TOGA', W / 2, L.logo);
+    // Assinatura: logo (L-dragão) + LENDÁRIO em folha de ouro
+    (() => {
+      const word = 'LENDÁRIO';
+      ctx.font = font(700, L.logoSize * 0.82, 'JetBrains Mono');
+      try { ctx.letterSpacing = `${Math.round(L.logoSize * 0.16)}px`; } catch (e) {}
+      const tw = ctx.measureText(word).width;
+      const ms = L.logoSize * 1.35, gap = L.logoSize * 0.3;
+      const x0 = W / 2 - (ms + gap + tw) / 2;
+      const gold = ctx.createLinearGradient(x0, L.logo - ms, x0 + ms + gap + tw, L.logo);
+      gold.addColorStop(0, '#FFF1C9'); gold.addColorStop(0.45, '#E8C47A'); gold.addColorStop(1, '#B5843A');
+      const P = window.LD_PATHS;
+      if (P && window.Path2D) {
+        ctx.save();
+        ctx.translate(x0, L.logo - ms * 0.8); ctx.scale(ms / 120, ms / 120);
+        ctx.shadowColor = 'rgba(232,196,122,0.55)'; ctx.shadowBlur = 18;
+        const wing = ctx.createLinearGradient(46, 42, 97, 68); wing.addColorStop(0, '#A89CFF'); wing.addColorStop(1, '#2A1E78');
+        ctx.fillStyle = wing; ctx.fill(new Path2D(P.wing));
+        ctx.fillStyle = gold;
+        ['horn1', 'horn2', 'body', 'spikes'].forEach(k => ctx.fill(new Path2D(P[k])));
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#120E26'; ctx.fill(new Path2D(P.eye));
+        ctx.fillStyle = '#C9C1FF'; ctx.beginPath(); ctx.arc(61.8, 21.4, 1.5, 0, 7); ctx.fill();
+        ctx.fillStyle = '#FFF1C9'; ctx.fill(new Path2D(P.star));
+        ctx.restore();
+      }
+      ctx.textAlign = 'left'; ctx.fillStyle = gold;
+      ctx.fillText(word, x0 + ms + gap, L.logo);
+      try { ctx.letterSpacing = '0px'; } catch (e) {}
+      ctx.textAlign = 'center';
+    })();
     const label = { achievement: '✦ CONQUISTA DESBLOQUEADA ✦', evolution: '✦ MEU DRAGÃO EVOLUIU ✦', profile: '✦ MEU DRAGÃO DE ESTUDOS ✦', streak: '✦ CHAMA DA CONSTÂNCIA ✦' }[kind];
     drawPill(ctx, W / 2, L.pill, label, 'rgba(255,255,255,0.14)', accent, L.tag);
     ctx.textBaseline = 'alphabetic';
@@ -241,7 +275,7 @@
     ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = font(700, L.footSize, 'Inter');
     ctx.fillText(`${d.name} & eu · rumo à aprovação 🐉`, W / 2, L.foot1);
     ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = font(600, L.footSize * 0.75, 'JetBrains Mono');
-    ctx.fillText(`${new Date().toLocaleDateString('pt-BR')} · #TOGA #concurseiro`, W / 2, L.foot2);
+    ctx.fillText(`${new Date().toLocaleDateString('pt-BR')} · #Lendario #concurseiro`, W / 2, L.foot2);
     return canvas;
   }
 
@@ -257,10 +291,10 @@
   function captionFor(kind, { shared, ach, stage }) {
     const d = window.DG.ensure(shared);
     const st = window.DRAGON_STAGES[(stage || window.getDragonStage(shared.xp)) - 1];
-    if (kind === 'achievement' && ach) return `🏆 Conquista desbloqueada: "${ach.name}" — ${ach.desc}! O ${d.name}, meu dragão de estudos, tá orgulhoso 🐉✨\n\n#concursos #concurseiro #estudos #foco #TOGA`;
-    if (kind === 'evolution') return `🐉 Meu dragão ${d.name} evoluiu para ${st.name}! Cada hora de estudo alimenta a magia ✨\n\n#concurseiro #estudos #constancia #TOGA`;
-    if (kind === 'streak') return `🔥 ${shared.streak || 0} dias seguidos estudando! A chama não apaga.\n\n#constancia #concurseiro #rumoaposse #TOGA`;
-    return `Esse é o ${d.name}, meu dragão de estudos 🐉 ${shared.streak || 0} dias de constância e contando!\n\n#concurseiro #estudos #TOGA`;
+    if (kind === 'achievement' && ach) return `🏆 Conquista desbloqueada: "${ach.name}" — ${ach.desc}! O ${d.name}, meu dragão de estudos, tá orgulhoso 🐉✨\n\n#concursos #concurseiro #estudos #foco #Lendario`;
+    if (kind === 'evolution') return `🐉 Meu dragão ${d.name} evoluiu para ${st.name}! Cada hora de estudo alimenta a magia ✨\n\n#concurseiro #estudos #constancia #Lendario`;
+    if (kind === 'streak') return `🔥 ${shared.streak || 0} dias seguidos estudando! A chama não apaga.\n\n#constancia #concurseiro #rumoaposse #Lendario`;
+    return `Esse é o ${d.name}, meu dragão de estudos 🐉 ${shared.streak || 0} dias de constância e contando!\n\n#concurseiro #estudos #Lendario`;
   }
 
   function ShareCardModal({ request, shared, objState, discState, onClose }) {
@@ -308,7 +342,7 @@
       const file = new File([blob], fileName, { type: 'image/png' });
       try {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], title: 'TOGA', text: caption });
+          await navigator.share({ files: [file], title: 'Lendário', text: caption });
           window.SFX && window.SFX.sparkle();
           return;
         }
@@ -327,7 +361,7 @@
         </div>
         <div onClick={(e) => e.stopPropagation()} style={{ width: 'min(440px, 100%)', display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'stretch', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ color: '#FFF', fontWeight: 800, fontSize: 15, fontFamily: 'Space Grotesk, sans-serif' }}>📸 Compartilhar</div>
+            <div style={{ color: '#FFF', fontWeight: 800, fontSize: 15, fontFamily: 'var(--font-display)' }}>📸 Compartilhar</div>
             <button onClick={onClose} className="dg-btn" style={{ padding: '4px 10px' }}>✕</button>
           </div>
           <div className="dg-tabs" style={{ justifyContent: 'center' }}>

@@ -1,105 +1,91 @@
-// Splash + Sound + Confetti
+// Lendário — Abertura (o selo se desenha em ouro) + Som + Confete
 function SplashScreen({ onEnter }) {
-const phrases = [
-'Cada questão respondida é um passo mais perto da posse.',
-'Consistência vence genialidade. Todo dia.',
-'A aprovação não é sorte. É método.',
-'Seu edital. Seu ritmo. Sua posse.',
-];
-const [idx, setIdx] = React.useState(0);
-const [fading, setFading] = React.useState(false);
-React.useEffect(() => {
-const t = setInterval(() => setIdx(i => (i + 1) % phrases.length), 2400);
-return () => clearInterval(t);
-}, []);
-const handleEnter = () => { setFading(true); setTimeout(onEnter, 500); };
+  const phrases = [
+    'Cada questão respondida é um passo mais perto da posse.',
+    'Consistência vence genialidade. Todo dia.',
+    'A aprovação não é sorte. É método.',
+    'Seu edital. Seu ritmo. Sua posse.',
+  ];
+  const [idx, setIdx] = React.useState(0);
+  const [fading, setFading] = React.useState(false);
+  React.useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % phrases.length), 3200);
+    return () => clearInterval(t);
+  }, []);
+  const handleEnter = () => { setFading(true); window.SFX && window.SFX.whoosh && window.SFX.whoosh(); setTimeout(onEnter, 600); };
+  const P = window.LD_PATHS || {};
+  const strokes = [['body', 0.2], ['horn1', 0.7], ['horn2', 0.8], ['spikes', 0.9], ['wing', 1.0]];
 
-return (
-<div style={{
-position: 'fixed', inset: 0, zIndex: 100,
-background: 'linear-gradient(135deg, #f6f7fb 0%, #ffffff 50%, #f0f9ff 100%)',
-display: 'grid', placeItems: 'center',
-opacity: fading ? 0 : 1, transition: 'opacity 500ms ease',
-}}>
-<div style={{
-position: 'absolute', inset: 0,
-background:
-'radial-gradient(ellipse 600px 400px at 30% 40%, rgba(0,184,212,0.12), transparent 60%),' +
-'radial-gradient(ellipse 500px 400px at 70% 60%, rgba(91,71,184,0.10), transparent 60%)',
-}} />
-{Array.from({ length: 24 }).map((_, i) => {
-const x = (i * 127) % 100;
-const y = (i * 211) % 100;
-const delay = (i * 0.17) % 3;
-const size = 1.5 + (i % 3);
-const colors = ['#00b8d4', '#5B47B8', '#C9A961', '#E85D5D'];
-const color = colors[i % colors.length];
-return (
-<div key={i} style={{
-position: 'absolute', left: `${x}%`, top: `${y}%`,
-width: size, height: size, borderRadius: '50%',
-background: color, opacity: 0.5,
-boxShadow: `0 0 8px ${color}`,
-animation: `particle-float 4s ease-in-out ${delay}s infinite`,
-}} />
-);
-})}
-
-  <div style={{ position: 'relative', textAlign: 'center', maxWidth: 520, padding: '0 32px' }}>
-    <div style={{ margin: '0 auto 28px', width: 130, height: 130, animation: 'shield-pulse 3s ease-in-out infinite' }}>
-      <svg viewBox="0 0 130 130" width={130} height={130}>
-        <defs>
-          <linearGradient id="splash-shield" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#0B3D5C">
-              <animate attributeName="stop-color" values="#0B3D5C;#00B8D4;#C9A961;#00A86B;#0B3D5C" dur="8s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stopColor="#C9A961">
-              <animate attributeName="stop-color" values="#C9A961;#00A86B;#0B3D5C;#00B8D4;#C9A961" dur="8s" repeatCount="indefinite" />
-            </stop>
-          </linearGradient>
-        </defs>
-        <g style={{ transformOrigin: '65px 65px', animation: 'spin 20s linear infinite' }}>
-          <circle cx="65" cy="65" r="58" fill="none" stroke="rgba(0,184,212,0.25)" strokeWidth="1" strokeDasharray="3 6" />
-        </g>
-        <path d="M65 16 L102 28 L102 64 C102 88 87 102 65 112 C43 102 28 88 28 64 L28 28 Z"
-          fill="rgba(11,61,92,0.08)" stroke="url(#splash-shield)" strokeWidth="2.5" strokeLinejoin="round" />
-        <text x="65" y="72" textAnchor="middle" fontSize="18" fontWeight="700"
-              fill="url(#splash-shield)" fontFamily="Space Grotesk" letterSpacing="1">TOGA</text>
-      </svg>
-    </div>
-    <div style={{ fontSize: 11, letterSpacing: '0.3em', color: 'var(--text-muted)', marginBottom: 12, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
-      O SISTEMA DOS CONCURSEIROS QUE SE APROVAM
-    </div>
-    <h1 className="gradient-neon" style={{
-      fontFamily: 'Space Grotesk, sans-serif',
-      fontSize: 52, fontWeight: 700, letterSpacing: '-0.03em', margin: '0 0 22px', lineHeight: 1,
-    }}>
-      TOGA
-    </h1>
-    <div style={{ height: 44, position: 'relative', marginBottom: 36 }}>
-      {phrases.map((p, i) => (
-        <div key={i} style={{
-          position: 'absolute', inset: 0, color: 'var(--text-muted)',
-          fontSize: 16, fontStyle: 'italic',
-          opacity: i === idx ? 1 : 0,
-          transform: i === idx ? 'translateY(0)' : 'translateY(6px)',
-          transition: 'opacity 600ms ease, transform 600ms ease',
-        }}>"{p}"</div>
+  return (
+    <div className={`ld-splash ${fading ? 'is-leaving' : ''}`} role="dialog" aria-label="Abertura do Lendário">
+      <div className="ld-splash-rays" />
+      {Array.from({ length: 18 }).map((_, i) => (
+        <span key={i} className="ld-splash-star" style={{ left: `${(i * 127) % 100}%`, top: `${(i * 211) % 100}%`, animationDelay: `${(i * 0.37) % 4}s` }} />
       ))}
+      {Array.from({ length: 6 }).map((_, i) => (
+        <span key={'m' + i} className="ld-splash-mote" style={{ left: `${38 + i * 5}%`, animationDelay: `${i * 0.9}s` }} />
+      ))}
+      <div className="ld-splash-inner">
+        <div className="ld-splash-sigil">
+          <svg className="ld-spin-slow" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="98" fill="none" stroke="#E8C47A" strokeOpacity=".3" strokeWidth=".4" />
+            <circle cx="100" cy="100" r="94" fill="none" stroke="#E8C47A" strokeOpacity=".55" strokeWidth="2" strokeDasharray=".4 4.6" />
+            <circle cx="100" cy="100" r="89" fill="none" stroke="#9D8CFF" strokeOpacity=".45" strokeWidth="3.2" strokeDasharray="1 2 7 2 1 10" />
+            <path d="M100 1 L102.4 8 L100 15 L97.6 8 Z M199 100 L192 102.4 L185 100 L192 97.6 Z M100 199 L97.6 192 L100 185 L102.4 192 Z M1 100 L8 97.6 L15 100 L8 102.4 Z" fill="#E8C47A" />
+          </svg>
+          <svg className="ld-spin-rev" viewBox="0 0 200 200" aria-hidden="true">
+            <polygon points="100,22 167.5,139 32.5,139" fill="none" stroke="#E8C47A" strokeOpacity=".16" strokeWidth=".5" />
+            <polygon points="100,178 32.5,61 167.5,61" fill="none" stroke="#9D8CFF" strokeOpacity=".2" strokeWidth=".5" />
+            <circle cx="100" cy="100" r="74" fill="none" stroke="#9D8CFF" strokeOpacity=".35" strokeWidth=".7" strokeDasharray="3 3" />
+          </svg>
+          <div className="ld-splash-flash" />
+          <svg className="ld-splash-mark" viewBox="0 0 120 120" role="img" aria-label="Logo Lendário">
+            <defs>
+              <linearGradient id="ld-sp-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FFF1C9" /><stop offset=".45" stopColor="#E8C47A" /><stop offset="1" stopColor="#9C6E2C" /></linearGradient>
+            </defs>
+            {strokes.map(([k, d]) => (
+              <path key={k} className="ld-draw" pathLength="1" d={P[k]} fill="none" stroke="url(#ld-sp-g)" strokeWidth="1.4" strokeLinejoin="round" style={{ animationDelay: `${d}s` }} />
+            ))}
+            <g className="ld-fill-in"><LogoMarkInner /></g>
+          </svg>
+        </div>
+        <div className="ld-splash-word gold-leaf">LENDÁRIO</div>
+        <div className="ld-splash-tag font-display">Estude como uma lenda.</div>
+        <div className="ld-splash-phrase" aria-live="polite">
+          {phrases.map((p, i) => (
+            <span key={i} className={i === idx ? 'is-on' : ''}>{p}</span>
+          ))}
+        </div>
+        <button className="btn-neon ld-splash-cta" onClick={handleEnter} autoFocus>
+          Entrar na biblioteca
+          <G name="play" size={14} color="#231604" />
+        </button>
+        <div className="ld-splash-load"><i /><span>ACENDENDO AS RUNAS</span><i /></div>
+      </div>
     </div>
-    <button onClick={handleEnter} style={{
-      padding: '13px 30px', fontSize: 14, fontWeight: 600, letterSpacing: '0.05em',
-      borderRadius: 12, border: 'none',
-      background: 'linear-gradient(90deg, var(--petroleo), var(--ciano))',
-      color: 'white', cursor: 'pointer',
-      boxShadow: '0 6px 20px rgba(11,61,92,0.35)',
-      fontFamily: 'Space Grotesk, sans-serif',
-    }}>
-      ENTRAR EM CAMPO →
-    </button>
-  </div>
-</div>
-);
+  );
+}
+
+// Miolo da logo sem o <svg> externo (para compor animações)
+function LogoMarkInner() {
+  const P = window.LD_PATHS || {};
+  return (
+    <>
+      <defs>
+        <linearGradient id="ld-in-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FFF1C9" /><stop offset=".45" stopColor="#E8C47A" /><stop offset="1" stopColor="#9C6E2C" /></linearGradient>
+        <linearGradient id="ld-in-w" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#A89CFF" /><stop offset="1" stopColor="#2A1E78" /></linearGradient>
+      </defs>
+      <path d={P.wing} fill="url(#ld-in-w)" stroke="url(#ld-in-g)" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d={P.veins} fill="none" stroke="#E8C47A" strokeOpacity=".5" strokeWidth=".9" />
+      <path d={P.horn1} fill="url(#ld-in-g)" /><path d={P.horn2} fill="url(#ld-in-g)" />
+      <path d={P.body} fill="url(#ld-in-g)" /><path d={P.spikes} fill="url(#ld-in-g)" />
+      <path d={P.eye} fill="#120E26" /><circle cx="61.8" cy="21.4" r="1.5" fill="#C9C1FF" />
+      <path d={P.brow} fill="none" stroke="#9C6E2C" strokeWidth="1" strokeLinecap="round" />
+      <circle cx="80.2" cy="26.2" r="1" fill="#6E4A18" />
+      <path d={P.mouth} fill="none" stroke="#9C6E2C" strokeWidth=".9" strokeLinecap="round" />
+      <path className="ld-star-pop" d={P.star} fill="#FFF1C9" />
+    </>
+  );
 }
 
 // ===== Sound (Web Audio synthesized — no external files) =====
@@ -218,7 +204,7 @@ function playTimerEnd() {
 }
 
 // ===== Confetti =====
-function spawnConfetti({ count = 30, colors = ['#00b8d4', '#5B47B8'], spread = 90, velocity = 5, gravity = true, shapes = ['square'] }) {
+function spawnConfetti({ count = 30, colors = ['#E8C47A', '#B7AAFF', '#FFF1C9'], spread = 90, velocity = 5, gravity = true, shapes = ['square'] }) {
 const root = document.getElementById('confetti-root');
 if (!root) return;
 for (let i = 0; i < count; i++) {
@@ -234,12 +220,12 @@ const dur = 1100 + Math.random() * 700;
 const size = 6 + Math.random() * 6;
 el.className = 'confetti-piece';
 if (shape === 'circle') {
-el.style.cssText = `left:50%; top:55%; width:${size}px; height:${size}px; background:${color}; border-radius:50%; box-shadow:0 0 6px ${color}; --dx:${dx}px; --dy:${dy}px; --rot:${rot}deg; animation: confetti-fall ${dur}ms cubic-bezier(0.18,0.7,0.4,1) forwards;`;
+el.style.cssText = `left:50%; top:55%; width:${size}px; height:${size}px; background: ${color}; border-radius:50%; box-shadow: 0 0 6px ${color}; --dx:${dx}px; --dy:${dy}px; --rot:${rot}deg; animation: confetti-fall ${dur}ms cubic-bezier(0.18,0.7,0.4,1) forwards;`;
 } else if (shape === 'star') {
 el.innerHTML = `<svg width="${size*1.6}" height="${size*1.6}" viewBox="0 0 24 24" fill="${color}" style="filter:drop-shadow(0 0 4px ${color})"><path d="M12 2l2.9 7L22 9.5l-5.5 4.5 1.7 7L12 17l-6.2 4 1.7-7L2 9.5l7.1-.5z"/></svg>`;
 el.style.cssText = `left:50%; top:55%; --dx:${dx}px; --dy:${dy}px; --rot:${rot}deg; animation: confetti-fall ${dur}ms cubic-bezier(0.18,0.7,0.4,1) forwards;`;
 } else {
-el.style.cssText = `left:50%; top:55%; width:${size}px; height:${size*0.5}px; background:${color}; box-shadow:0 0 4px ${color}; --dx:${dx}px; --dy:${dy}px; --rot:${rot}deg; animation: confetti-fall ${dur}ms cubic-bezier(0.18,0.7,0.4,1) forwards;`;
+el.style.cssText = `left:50%; top:55%; width:${size}px; height:${size*0.5}px; background: ${color}; box-shadow: 0 0 4px ${color}; --dx:${dx}px; --dy:${dy}px; --rot:${rot}deg; animation: confetti-fall ${dur}ms cubic-bezier(0.18,0.7,0.4,1) forwards;`;
 }
 root.appendChild(el);
 setTimeout(() => el.remove(), dur + 100);
@@ -247,6 +233,7 @@ setTimeout(() => el.remove(), dur + 100);
 }
 
 window.SplashScreen = SplashScreen;
+window.LogoMarkInner = LogoMarkInner;
 window.spawnConfetti = spawnConfetti;
 window.playEvolution = playEvolution;
 window.playSick = playSick;
@@ -256,16 +243,16 @@ window.playCheckChime = playCheckChime;
 window.playTopicMastered = playTopicMastered;
 window.playEmergency = playEmergency;
 window.playTimerEnd = playTimerEnd;
-window.celebrateLight = function() { spawnConfetti({ count: 14, colors: ['#00b8d4', '#5B47B8'], spread: 90, shapes: ['square'] }); playLight(); };
+window.celebrateLight = function() { spawnConfetti({ count: 14, colors: ['#E8C47A', '#B7AAFF', '#FFF1C9'], spread: 90, shapes: ['square'] }); playLight(); };
 window.celebrateHighEnergy = function() {
-spawnConfetti({ count: 70, colors: ['#00b8d4', '#5B47B8', '#C9A961', '#00A86B', '#E85D5D'], spread: 280, velocity: 7, shapes: ['square', 'circle', 'star'] });
+spawnConfetti({ count: 70, colors: ['#8FB8FF', '#B7AAFF', '#E8C47A', '#4FD1A5', '#FF7A8A'], spread: 280, velocity: 7, shapes: ['square', 'circle', 'star'] });
 playMid();
 };
 window.celebrateVictory = function() {
-spawnConfetti({ count: 140, colors: ['#C9A961', '#00A86B', '#E85D5D', '#5B47B8', '#00b8d4'], spread: 360, velocity: 9, shapes: ['square', 'circle', 'star'] });
+spawnConfetti({ count: 140, colors: ['#E8C47A', '#4FD1A5', '#FF7A8A', '#B7AAFF', '#8FB8FF'], spread: 360, velocity: 9, shapes: ['square', 'circle', 'star'] });
 playVictory();
 };
 window.celebrateEvolution = function() {
-spawnConfetti({ count: 200, colors: ['#5B47B8', '#7B67D8', '#E85D5D', '#C9A961', '#E8C97A'], spread: 360, velocity: 10, shapes: ['star', 'star', 'circle'] });
+spawnConfetti({ count: 200, colors: ['#B7AAFF', '#C9C1FF', '#FF7A8A', '#E8C47A', '#E8C97A'], spread: 360, velocity: 10, shapes: ['star', 'star', 'circle'] });
 playEvolution();
 };

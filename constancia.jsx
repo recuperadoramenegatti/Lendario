@@ -1,4 +1,4 @@
-// TOGA — Constância Tracker v2 — Horizontal 30-block sliding window
+// Lendário — Constância Tracker v2 — Horizontal 30-block sliding window
 // Rightmost block = TODAY always. Blocks "roll left" as time passes.
 // Pre-first-log days render as empty/white. Weekends never break constância.
 
@@ -90,50 +90,50 @@ function ConstanciaTracker({ logs, bestStreak }) {
     switch(state) {
       case 'studied': {
         if (hours >= 4) return {
-          bg: 'linear-gradient(160deg, #00D48A 0%, #00A86B 100%)',
-          border: 'rgba(0,168,107,0.7)',
-          glow: '0 0 0 1px rgba(0,168,107,0.5), 0 2px 12px rgba(0,212,138,0.35)',
+          bg: 'linear-gradient(160deg, #FFE7B0 0%, #E8C47A 55%, #C99A4B 100%)',
+          border: 'rgba(255,231,176,0.8)',
+          glow: '0 0 0 1px rgba(232,196,122,0.55), 0 2px 14px rgba(232,196,122,0.45)',
           dot: null, dotColor: null
         };
         if (hours >= 2) return {
-          bg: 'linear-gradient(160deg, #00C47E 0%, #009960 100%)',
-          border: 'rgba(0,153,96,0.65)',
-          glow: '0 0 0 1px rgba(0,153,96,0.45), 0 2px 10px rgba(0,196,126,0.28)',
+          bg: 'linear-gradient(160deg, #FFB27A 0%, #E0703E 100%)',
+          border: 'rgba(255,154,90,0.7)',
+          glow: '0 0 0 1px rgba(255,154,90,0.45), 0 2px 10px rgba(255,154,90,0.3)',
           dot: null, dotColor: null
         };
         if (hours >= 1) return {
-          bg: 'linear-gradient(160deg, rgba(0,168,107,0.72) 0%, rgba(0,153,96,0.78) 100%)',
-          border: 'rgba(0,153,96,0.5)',
-          glow: '0 0 0 1px rgba(0,153,96,0.35), 0 1px 8px rgba(0,168,107,0.22)',
+          bg: 'linear-gradient(160deg, rgba(255,154,90,0.62) 0%, rgba(176,78,40,0.7) 100%)',
+          border: 'rgba(255,154,90,0.45)',
+          glow: '0 0 0 1px rgba(255,154,90,0.3), 0 1px 8px rgba(255,154,90,0.2)',
           dot: null, dotColor: null
         };
         return {
-          bg: 'linear-gradient(160deg, rgba(0,168,107,0.42) 0%, rgba(0,153,96,0.50) 100%)',
-          border: 'rgba(0,153,96,0.38)',
+          bg: 'linear-gradient(160deg, rgba(255,154,90,0.32) 0%, rgba(140,60,30,0.42) 100%)',
+          border: 'rgba(255,154,90,0.3)',
           glow: null,
           dot: null, dotColor: null
         };
       }
       case 'missed': return {
-        bg: 'linear-gradient(160deg, rgba(232,93,93,0.18) 0%, rgba(200,60,60,0.22) 100%)',
-        border: 'rgba(232,93,93,0.38)',
+        bg: 'linear-gradient(160deg, rgba(255,122,138,0.18) 0%, rgba(200,60,60,0.22) 100%)',
+        border: 'rgba(255,122,138,0.38)',
         glow: null,
-        dot: '✕', dotColor: 'rgba(232,93,93,0.75)'
+        dot: '✕', dotColor: 'rgba(255,122,138,0.75)'
       };
       case 'today-empty': return {
-        bg: 'rgba(255,255,255,0.55)',
-        border: 'rgba(0,184,212,0.55)',
-        glow: '0 0 0 2px rgba(0,184,212,0.25)',
+        bg: 'rgba(22,19,40,0.55)',
+        border: 'rgba(143,184,255,0.55)',
+        glow: '0 0 0 2px rgba(143,184,255,0.25)',
         dot: null, dotColor: null
       };
       case 'empty': return {
-        bg: 'rgba(255,255,255,0.70)',
-        border: 'rgba(30,32,48,0.06)',
+        bg: 'rgba(22,19,40,0.70)',
+        border: 'rgba(243,235,221,0.06)',
         glow: null, dot: null, dotColor: null
       };
       default: return {
-        bg: 'rgba(30,32,48,0.04)',
-        border: 'rgba(30,32,48,0.07)',
+        bg: 'rgba(243,235,221,0.04)',
+        border: 'rgba(243,235,221,0.07)',
         glow: null, dot: null, dotColor: null
       };
     }
@@ -150,19 +150,19 @@ function ConstanciaTracker({ logs, bestStreak }) {
     <div className="glass anim-slide-up" style={{
       padding: '18px 20px',
       boxShadow: onFire
-        ? '0 0 0 1px rgba(0,168,107,0.35), 0 0 32px rgba(0,212,138,0.15), var(--card-shadow)'
+        ? '0 0 0 1px rgba(255,154,90,0.35), 0 0 36px rgba(255,154,90,0.14), var(--card-shadow)'
         : undefined,
     }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, textTransform: 'uppercase', marginBottom: 5 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, textTransform: 'uppercase', marginBottom: 5 }}>
             CONSTÂNCIA · ÚLTIMOS 30 DIAS
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--grafite)', letterSpacing: '-0.02em' }}>
-              {onFire && <span style={{ marginRight: 6 }}>🔥</span>}
-              <span style={{ color: streak > 0 ? 'var(--esmeralda)' : 'var(--text-muted)' }}>{streak}</span>
+              {onFire && <span style={{ marginRight: 6 }}><Glyph e="🔥" /></span>}
+              <span style={{ color: streak > 0 ? '#FFC39A' : 'var(--text-muted)' }}>{streak}</span>
               <span style={{ fontSize: 14, color: 'var(--text-muted)', fontWeight: 500, marginLeft: 6 }}>
                 dia{streak !== 1 ? 's' : ''} consecutivo{streak !== 1 ? 's' : ''}
               </span>
@@ -174,26 +174,26 @@ function ConstanciaTracker({ logs, bestStreak }) {
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
           <div title="Maior sequência de dias úteis estudados (fins de semana não quebram)" style={{
             padding: '4px 10px', borderRadius: 99,
-            background: 'rgba(201,169,97,0.10)', border: '1px solid rgba(201,169,97,0.30)',
+            background: 'rgba(232,196,122,0.10)', border: '1px solid rgba(232,196,122,0.30)',
             fontSize: 11, fontWeight: 700, color: 'var(--dourado)',
-            fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.04em',
+            fontFamily: 'var(--font-num)', letterSpacing: '0.04em',
           }}>
-            🏆 Recorde: {record} dia{record !== 1 ? 's' : ''}
+            <Glyph e="🏆" /> Recorde: {record} dia{record !== 1 ? 's' : ''}
           </div>
           <div style={{
             padding: '4px 10px', borderRadius: 99,
-            background: 'rgba(0,168,107,0.10)', border: '1px solid rgba(0,168,107,0.25)',
+            background: 'rgba(79,209,165,0.10)', border: '1px solid rgba(79,209,165,0.25)',
             fontSize: 11, fontWeight: 700, color: 'var(--esmeralda)',
-            fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.04em',
+            fontFamily: 'var(--font-num)', letterSpacing: '0.04em',
           }}>
             ✓ {studiedCount} estudados
           </div>
           {missedCount > 0 && (
             <div style={{
               padding: '4px 10px', borderRadius: 99,
-              background: 'rgba(232,93,93,0.08)', border: '1px solid rgba(232,93,93,0.22)',
+              background: 'rgba(255,122,138,0.08)', border: '1px solid rgba(255,122,138,0.22)',
               fontSize: 11, fontWeight: 700, color: 'var(--coral)',
-              fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.04em',
+              fontFamily: 'var(--font-num)', letterSpacing: '0.04em',
             }}>
               ✕ {missedCount} falta{missedCount !== 1 ? 's' : ''}
             </div>
@@ -216,7 +216,7 @@ function ConstanciaTracker({ logs, bestStreak }) {
                 <div style={{
                   height: 16, fontSize: 8.5,
                   color: b.isToday ? 'var(--ciano)' : 'var(--text-dim)',
-                  fontFamily: 'JetBrains Mono, monospace', fontWeight: b.isToday ? 800 : 600,
+                  fontFamily: 'var(--font-num)', fontWeight: b.isToday ? 800 : 600,
                   letterSpacing: '0.04em', textAlign: 'center',
                   opacity: (showLabel || isHov) ? 1 : 0,
                   transition: 'opacity 150ms ease',
@@ -235,7 +235,7 @@ function ConstanciaTracker({ logs, bestStreak }) {
                     background: colors.bg,
                     border: `1px solid ${colors.border}`,
                     boxShadow: isHov
-                      ? `0 0 0 2px rgba(0,184,212,0.5), 0 4px 16px rgba(0,0,0,0.12)`
+                      ? `0 0 0 2px rgba(143,184,255,0.5), 0 4px 16px rgba(0,0,0,0.12)`
                       : (colors.glow || 'none'),
                     transform: isHov ? 'scaleX(1.08) translateY(-2px)' : 'none',
                     transition: 'all 160ms cubic-bezier(0.16,1,0.3,1)',
@@ -244,7 +244,7 @@ function ConstanciaTracker({ logs, bestStreak }) {
                     position: 'relative',
                     animation: `streak-block-in 300ms ${i * 18}ms cubic-bezier(0.16,1,0.3,1) both`,
                     // Today gets a pulsing outline
-                    ...(b.isToday ? { outline: '2px solid rgba(0,184,212,0.4)', outlineOffset: 2 } : {}),
+                    ...(b.isToday ? { outline: '2px solid rgba(143,184,255,0.4)', outlineOffset: 2 } : {}),
                   }}
                 >
                   {colors.dot && (
@@ -259,7 +259,7 @@ function ConstanciaTracker({ logs, bestStreak }) {
                     <div style={{
                       width: 6, height: 6, borderRadius: '50%',
                       background: 'var(--ciano)',
-                      boxShadow: '0 0 8px rgba(0,184,212,0.8)',
+                      boxShadow: '0 0 8px rgba(143,184,255,0.8)',
                       animation: 'shield-pulse 2s ease-in-out infinite',
                     }} />
                   )}
@@ -269,7 +269,7 @@ function ConstanciaTracker({ logs, bestStreak }) {
                 <div style={{
                   height: 13, fontSize: 8,
                   color: b.isWeekend ? 'var(--esmeralda)' : 'var(--text-dim)',
-                  fontFamily: 'JetBrains Mono, monospace', fontWeight: 600,
+                  fontFamily: 'var(--font-num)', fontWeight: 600,
                   letterSpacing: '0.02em', textAlign: 'center',
                   opacity: b.isToday ? 1 : 0.7,
                 }}>
@@ -284,12 +284,12 @@ function ConstanciaTracker({ logs, bestStreak }) {
       {/* Legend */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 12, flexWrap: 'wrap' }}>
         {[
-          { color: 'linear-gradient(135deg, rgba(0,168,107,0.42), rgba(0,153,96,0.50))', label: '< 1h' },
-          { color: 'linear-gradient(135deg, rgba(0,168,107,0.72), rgba(0,153,96,0.78))', label: '1–2h' },
-          { color: 'linear-gradient(135deg, #00C47E, #009960)', label: '2–4h' },
-          { color: 'linear-gradient(135deg, #00D48A, #00A86B)', label: '4h+' },
-          { color: 'linear-gradient(135deg, rgba(232,93,93,0.18), rgba(200,60,60,0.22))', label: 'Falta', border: 'rgba(232,93,93,0.38)' },
-          { color: 'rgba(255,255,255,0.70)', label: 'Sem registros', border: 'rgba(30,32,48,0.06)' },
+          { color: 'linear-gradient(135deg, rgba(255,154,90,0.32), rgba(140,60,30,0.42))', label: '< 1h' },
+          { color: 'linear-gradient(135deg, rgba(255,154,90,0.62), rgba(176,78,40,0.7))', label: '1–2h' },
+          { color: 'linear-gradient(135deg, #FFB27A, #E0703E)', label: '2–4h' },
+          { color: 'linear-gradient(135deg, #FFE7B0, #E8C47A)', label: '4h+' },
+          { color: 'linear-gradient(135deg, rgba(255,122,138,0.18), rgba(200,60,60,0.22))', label: 'Falta', border: 'rgba(255,122,138,0.38)' },
+          { color: 'rgba(255,255,255,0.70)', label: 'Sem registros', border: 'rgba(243,235,221,0.06)' },
         ].map((l, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{
@@ -297,26 +297,26 @@ function ConstanciaTracker({ logs, bestStreak }) {
               background: l.color, border: `1px solid ${l.border || 'transparent'}`,
               flexShrink: 0,
             }} />
-            <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+            <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>
               {l.label}
             </span>
           </div>
         ))}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
-          <div style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(255,255,255,0.55)', border: '1px solid rgba(0,184,212,0.55)', flexShrink: 0 }} />
-          <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>Hoje</span>
+          <div style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(22,19,40,0.55)', border: '1px solid rgba(143,184,255,0.55)', flexShrink: 0 }} />
+          <span style={{ fontSize: 9.5, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>Hoje</span>
         </div>
       </div>
 
       {onFire && (
         <div style={{
           marginTop: 12, padding: '8px 14px', borderRadius: 10,
-          background: 'linear-gradient(90deg, rgba(0,168,107,0.08), rgba(0,212,138,0.06))',
-          border: '1px solid rgba(0,168,107,0.2)',
-          fontSize: 11.5, color: 'var(--esmeralda)', fontWeight: 700,
+          background: 'linear-gradient(90deg, rgba(255,154,90,0.1), rgba(232,196,122,0.05))',
+          border: '1px solid rgba(255,154,90,0.25)',
+          fontSize: 11.5, color: '#FFC39A', fontWeight: 700,
           textAlign: 'center', letterSpacing: '0.03em',
         }}>
-          ✨ {streak} dias consecutivos — você está em chamas! Continue assim.
+          <Glyph e="✨" /> {streak} dias consecutivos — você está em chamas! Continue assim.
         </div>
       )}
     </div>

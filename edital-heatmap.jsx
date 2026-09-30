@@ -15,7 +15,7 @@ const PALETTE_OBJ = [
 { bg: 'rgba(245,200,11,0.20)', border: 'rgba(245,180,11,0.65)', text: '#7a5d00', label: 'Em construção' },    // 2 — amarelo
 { bg: 'rgba(0,196,106,0.18)',  border: 'rgba(0,196,106,0.60)',  text: '#005a30', label: 'Bom domínio' },      // 3 — verde
 { bg: 'rgba(0,200,170,0.18)',  border: 'rgba(0,184,180,0.60)',  text: '#005a55', label: 'Quase lá' },          // 4 — verde-azulado
-{ bg: 'rgba(0,184,212,0.22)',  border: 'rgba(0,184,212,0.75)',  text: '#004a5a', label: 'Dominado', glow: true }, // 5 — azul (top)
+{ bg: 'rgba(143,184,255,0.22)',  border: 'rgba(143,184,255,0.75)',  text: '#004a5a', label: 'Dominado', glow: true }, // 5 — azul (top)
 ];
 
 // Paleta Discursiva (4 níveis: 0..3 checks)
@@ -23,7 +23,7 @@ const PALETTE_DISC = [
 { bg: 'rgba(255,61,80,0.13)',  border: 'rgba(255,61,80,0.50)',  text: '#9a1727', label: 'Não estudei' },
 { bg: 'rgba(255,122,26,0.15)', border: 'rgba(255,122,26,0.55)', text: '#a14e0c', label: 'Iniciado' },
 { bg: 'rgba(0,196,106,0.18)',  border: 'rgba(0,196,106,0.60)',  text: '#005a30', label: 'Quase lá' },
-{ bg: 'rgba(0,184,212,0.22)',  border: 'rgba(0,184,212,0.75)',  text: '#004a5a', label: 'Dominado', glow: true },
+{ bg: 'rgba(143,184,255,0.22)',  border: 'rgba(143,184,255,0.75)',  text: '#004a5a', label: 'Dominado', glow: true },
 ];
 
 function _daysSince(iso) {
@@ -70,7 +70,7 @@ return (
 {/* Cabeçalho */}
 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, flexWrap: 'wrap', gap: 10 }}>
 <div>
-<div style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+<div style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 600 }}>
 DOMINÂNCIA POR TÓPICO · {isObj ? 'OBJETIVA' : 'DISCURSIVA'}
 </div>
 <div className="font-display" style={{ fontSize: 18, fontWeight: 700, marginTop: 2 }}>
@@ -83,30 +83,30 @@ Heatmap do Edital
 label={i === maxChecks ? `${i} dominado` : `${i}`}
 glow={p.glow} />
 ))}
-<Legend bg="rgba(245,158,11,0.15)" border="rgba(245,158,11,0.7)" label="✦ revisar" reviewGlow />
+<Legend bg="rgba(255,176,87,0.15)" border="rgba(255,176,87,0.7)" label="✦ revisar" reviewGlow />
 </div>
 </div>
 
   {/* Linha de métricas */}
   <div style={{ marginBottom: 14 }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: 10.5, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', flexWrap: 'wrap', gap: 6 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: 10.5, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', flexWrap: 'wrap', gap: 6 }}>
       <span>
-        <span style={{ color: '#004a5a', fontWeight: 700 }}>{masteredCount}</span> dominados ·{' '}
-        <span style={{ color: '#005a30', fontWeight: 700 }}>{studiedCount}</span> em progresso ·{' '}
-        <span style={{ color: '#9a1727', fontWeight: 700 }}>{unseenCount}</span> intocados
+        <span style={{ color: '#96D9E0', fontWeight: 700 }}>{masteredCount}</span> dominados ·{' '}
+        <span style={{ color: '#96E9B7', fontWeight: 700 }}>{studiedCount}</span> em progresso ·{' '}
+        <span style={{ color: '#EE9E9F', fontWeight: 700 }}>{unseenCount}</span> intocados
         {needsReviewCount > 0 && (
-          <> · <span style={{ color: '#a14e0c', fontWeight: 700, textShadow: '0 0 6px rgba(255,193,7,0.4)' }}>
+          <> · <span style={{ color: '#EEBB8F', fontWeight: 700, textShadow: '0 0 6px rgba(255,210,122,0.4)' }}>
             ✦ {needsReviewCount} pedem revisão
           </span></>
         )}
       </span>
-      <span className="num" style={{ color: '#004a5a', fontWeight: 700 }}>{overallPct.toFixed(1)}%</span>
+      <span className="num" style={{ color: '#96D9E0', fontWeight: 700 }}>{overallPct.toFixed(1)}%</span>
     </div>
-    <div style={{ height: 5, background: 'rgba(12,13,18,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+    <div style={{ height: 5, background: 'rgba(243,235,221,0.06)', borderRadius: 4, overflow: 'hidden' }}>
       <div style={{
         height: '100%', width: `${overallPct}%`,
-        background: 'linear-gradient(90deg, var(--coral), #ff7a1a, #f5c80b, var(--esmeralda), #00b8d4)',
-        boxShadow: '0 0 8px rgba(0,184,212,0.4)', transition: 'width 600ms ease',
+        background: 'linear-gradient(90deg, var(--coral), #ff7a1a, #f5c80b, var(--esmeralda), #8FB8FF)',
+        boxShadow: '0 0 8px rgba(143,184,255,0.4)', transition: 'width 600ms ease',
       }} />
     </div>
   </div>
@@ -149,7 +149,7 @@ glow={p.glow} />
                     fontWeight: 600,
                     position: 'relative',
                     overflow: 'hidden',
-                    boxShadow: p.glow && !review ? '0 0 8px rgba(0,184,212,0.25)' : 'none',
+                    boxShadow: p.glow && !review ? '0 0 8px rgba(143,184,255,0.25)' : 'none',
                     transition: 'background 300ms ease, border-color 300ms ease, color 300ms ease, box-shadow 300ms ease',
                     cursor: 'help',
                   }}>
@@ -159,7 +159,7 @@ glow={p.glow} />
                   <div style={{
                     position: 'absolute', bottom: 3, left: 6,
                     fontSize: 8.5, opacity: 0.6,
-                    fontFamily: 'JetBrains Mono, monospace', fontWeight: 700,
+                    fontFamily: 'var(--font-num)', fontWeight: 700,
                     letterSpacing: '0.04em',
                   }}>
                     {checks}/{maxChecks}
@@ -174,7 +174,7 @@ glow={p.glow} />
   </div>
 
   {/* Rodapé explicativo */}
-  <div style={{ marginTop: 12, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.05em', lineHeight: 1.5 }}>
+  <div style={{ marginTop: 12, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', letterSpacing: '0.05em', lineHeight: 1.5 }}>
     AS CORES ATUALIZAM SOZINHAS À MEDIDA QUE VOCÊ MARCA OS CHECKBOXES DA MATRIZ DO EDITAL ACIMA.
     <br />
     TÓPICOS ESTÃO ORDENADOS DO MAIS DOMINADO AO MENOS DOMINADO. APÓS {REVIEW_DAYS} DIAS SEM ATIVIDADE, ELES BRILHAM ✦ PEDINDO REVISÃO.
@@ -187,11 +187,11 @@ glow={p.glow} />
 function Legend({ bg, border, label, glow, reviewGlow }) {
 const cls = reviewGlow ? 'review-glow' : '';
 return (
-<div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>
 <div className={cls} style={{
 width: 12, height: 12, borderRadius: 3,
 background: bg, border: `1px solid ${border}`,
-boxShadow: glow ? '0 0 6px rgba(0,184,212,0.4)' : 'none',
+boxShadow: glow ? '0 0 6px rgba(143,184,255,0.4)' : 'none',
 }} />
 {label}
 </div>

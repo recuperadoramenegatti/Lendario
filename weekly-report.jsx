@@ -1,4 +1,4 @@
-// TOGA — Weekly Report Modal
+// Lendário — Weekly Report Modal
 // Appears automatically on the first visit of each new week (weeks start Monday).
 // Persistence key: 'toga_weekly_report_seen' → stores Monday ISO of last seen week.
 
@@ -226,7 +226,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
   const weeklyGoal = (shared.goals || {}).weeklyHours || 28;
   const goalPct = weeklyGoal > 0 ? Math.min(100, (report.totalHours / weeklyGoal) * 100) : 0;
 
-  const DISC_COLORS = ['#00B8D4', '#7B67D8', '#00A86B', '#C9A961'];
+  const DISC_COLORS = ['#8FB8FF', '#C9C1FF', '#4FD1A5', '#E8C47A'];
 
   const petEmoji = petInfo.stage >= 3 ? '🐉' : '🥚';
 
@@ -240,12 +240,12 @@ function WeeklyReportModal({ open, shared, onClose }) {
         @keyframes _wr_star     { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.2)} }
         @keyframes _wr_fadeslide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
         @keyframes _wr_statpop  { 0%{opacity:0;transform:scale(0.82)} 65%{transform:scale(1.04)} 100%{opacity:1;transform:scale(1)} }
-        @keyframes _wr_glow     { 0%,100%{box-shadow:0 0 24px rgba(0,184,212,.15),0 16px 60px rgba(0,0,0,.5)} 50%{box-shadow:0 0 48px rgba(0,184,212,.28),0 16px 60px rgba(0,0,0,.5)} }
+        @keyframes _wr_glow     { 0%,100%{box-shadow: 0 0 24px rgba(143,184,255,.15),0 16px 60px rgba(0,0,0,.5)} 50%{box-shadow: 0 0 48px rgba(143,184,255,.28),0 16px 60px rgba(0,0,0,.5)} }
         @keyframes _wr_orb      { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.1)} 66%{transform:translate(-20px,15px) scale(0.95)} 100%{transform:translate(0,0) scale(1)} }
 
         ._wr_backdrop {
           position:fixed; inset:0; z-index:9000;
-          background:rgba(5,10,20,.8);
+          background: rgba(5,10,20,.8);
           backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
           display:flex; align-items:center; justify-content:center;
           padding:16px;
@@ -256,8 +256,8 @@ function WeeklyReportModal({ open, shared, onClose }) {
           width:100%; max-width:480px; max-height:92vh;
           border-radius:24px;
           overflow:hidden;
-          background:linear-gradient(160deg,#0d1626 0%,#101928 50%,#0a1420 100%);
-          border:1px solid rgba(0,184,212,.2);
+          background: linear-gradient(160deg,#0d1626 0%,#101928 50%,#0a1420 100%);
+          border: 1px solid rgba(143,184,255,.2);
           animation:_wr_card_in .5s cubic-bezier(.22,1,.36,1) forwards, _wr_glow 3.5s ease-in-out 1s infinite;
           display:flex; flex-direction:column;
         }
@@ -265,60 +265,60 @@ function WeeklyReportModal({ open, shared, onClose }) {
           overflow-y:auto; overflow-x:hidden;
           flex:1;
           scrollbar-width:thin;
-          scrollbar-color:rgba(0,184,212,.25) transparent;
+          scrollbar-color:rgba(143,184,255,.25) transparent;
         }
         ._wr_scroll::-webkit-scrollbar { width:3px; }
-        ._wr_scroll::-webkit-scrollbar-track { background:transparent; }
-        ._wr_scroll::-webkit-scrollbar-thumb { background:rgba(0,184,212,.25); border-radius:3px; }
+        ._wr_scroll::-webkit-scrollbar-track { background: transparent; }
+        ._wr_scroll::-webkit-scrollbar-thumb { background: rgba(143,184,255,.25); border-radius:3px; }
 
         ._wr_header {
           position:relative; overflow:hidden;
           padding:28px 24px 22px;
-          background:linear-gradient(135deg,rgba(0,184,212,.1),rgba(91,71,184,.1));
-          border-bottom:1px solid rgba(0,184,212,.1);
+          background: linear-gradient(135deg,rgba(143,184,255,.1),rgba(183,170,255,.1));
+          border-bottom: 1px solid rgba(143,184,255,.1);
           flex-shrink:0;
         }
         ._wr_orb1 {
           position:absolute; width:180px; height:180px; border-radius:50%;
-          background:radial-gradient(circle, rgba(0,184,212,.12), transparent 70%);
+          background: radial-gradient(circle, rgba(143,184,255,.12), transparent 70%);
           top:-60px; right:-40px;
           animation:_wr_orb 8s ease-in-out infinite;
         }
         ._wr_orb2 {
           position:absolute; width:140px; height:140px; border-radius:50%;
-          background:radial-gradient(circle, rgba(91,71,184,.1), transparent 70%);
+          background: radial-gradient(circle, rgba(183,170,255,.1), transparent 70%);
           bottom:-50px; left:-30px;
           animation:_wr_orb 10s ease-in-out 2s infinite reverse;
         }
         ._wr_stars {
           position:absolute; inset:0; pointer-events:none;
           background-image:
-            radial-gradient(1.5px 1.5px at 12% 22%, rgba(0,184,212,.7) 0%, transparent 100%),
-            radial-gradient(1px 1px at 82% 14%, rgba(201,169,97,.55) 0%, transparent 100%),
-            radial-gradient(1.5px 1.5px at 48% 72%, rgba(91,71,184,.55) 0%, transparent 100%),
-            radial-gradient(1px 1px at 88% 62%, rgba(0,184,212,.45) 0%, transparent 100%),
-            radial-gradient(2px 2px at 8% 82%, rgba(201,169,97,.45) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 12% 22%, rgba(143,184,255,.7) 0%, transparent 100%),
+            radial-gradient(1px 1px at 82% 14%, rgba(232,196,122,.55) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 48% 72%, rgba(183,170,255,.55) 0%, transparent 100%),
+            radial-gradient(1px 1px at 88% 62%, rgba(143,184,255,.45) 0%, transparent 100%),
+            radial-gradient(2px 2px at 8% 82%, rgba(232,196,122,.45) 0%, transparent 100%),
             radial-gradient(1px 1px at 63% 38%, rgba(255,255,255,.3) 0%, transparent 100%),
-            radial-gradient(1.5px 1.5px at 32% 58%, rgba(0,168,107,.45) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 32% 58%, rgba(79,209,165,.45) 0%, transparent 100%),
             radial-gradient(1px 1px at 55% 18%, rgba(255,255,255,.25) 0%, transparent 100%);
         }
         ._wr_badge {
           display:inline-flex; align-items:center; gap:6px;
-          background:linear-gradient(135deg,rgba(0,184,212,.15),rgba(91,71,184,.15));
-          border:1px solid rgba(0,184,212,.3);
+          background: linear-gradient(135deg,rgba(143,184,255,.15),rgba(183,170,255,.15));
+          border: 1px solid rgba(143,184,255,.3);
           border-radius:20px; padding:4px 12px;
           font-size:9px; letter-spacing:.22em;
-          font-family:'JetBrains Mono',monospace;
-          color:#00B8D4; font-weight:700;
+          font-family: var(--font-num);
+          color: #8FB8FF; font-weight:700;
           margin-bottom:12px;
         }
         ._wr_title {
-          font-family:'Space Grotesk',sans-serif;
+          font-family: var(--font-display);
           font-size:26px; font-weight:700; letter-spacing:-.025em;
-          color:#fff; line-height:1.2; margin-bottom:6px;
+          color: #fff; line-height:1.2; margin-bottom:6px;
         }
         ._wr_accent {
-          background:linear-gradient(90deg,#00B8D4 0%,#7B67D8 50%,#C9A961 100%);
+          background: linear-gradient(90deg,#8FB8FF 0%,#C9C1FF 50%,#E8C47A 100%);
           background-size:200% auto;
           -webkit-background-clip:text; -webkit-text-fill-color:transparent;
           background-clip:text;
@@ -327,50 +327,50 @@ function WeeklyReportModal({ open, shared, onClose }) {
         ._wr_close {
           position:absolute; top:14px; right:14px;
           width:30px; height:30px; border-radius:50%;
-          background:rgba(255,255,255,.07);
-          border:1px solid rgba(255,255,255,.1);
-          color:rgba(255,255,255,.45); font-size:15px;
+          background: rgba(255,255,255,.07);
+          border: 1px solid rgba(255,255,255,.1);
+          color: rgba(255,255,255,.45); font-size:15px;
           display:grid; place-items:center; cursor:pointer;
           transition:background .2s,color .2s;
           z-index:2;
         }
-        ._wr_close:hover { background:rgba(255,255,255,.14); color:rgba(255,255,255,.8); }
+        ._wr_close:hover { background: rgba(255,255,255,.14); color: rgba(22,19,40,.8); }
 
         ._wr_body { padding:20px 22px 24px; }
         ._wr_section {
           font-size:9px; letter-spacing:.22em;
-          font-family:'JetBrains Mono',monospace;
-          color:rgba(255,255,255,.28); font-weight:700;
+          font-family: var(--font-num);
+          color: rgba(255,255,255,.28); font-weight:700;
           margin-bottom:10px; text-transform:uppercase;
         }
         ._wr_glass {
-          background:rgba(255,255,255,.04);
-          border:1px solid rgba(255,255,255,.07);
+          background: rgba(255,255,255,.04);
+          border: 1px solid rgba(255,255,255,.07);
           border-radius:14px;
         }
         ._wr_stat {
           border-radius:13px;
           padding:14px 10px;
           text-align:center;
-          background:rgba(255,255,255,.04);
-          border:1px solid rgba(255,255,255,.07);
+          background: rgba(255,255,255,.04);
+          border: 1px solid rgba(255,255,255,.07);
           animation:_wr_statpop .5s cubic-bezier(.22,1,.36,1) forwards;
           opacity:0;
         }
         ._wr_stat_val {
-          font-family:'Space Grotesk',sans-serif;
+          font-family: var(--font-display);
           font-size:26px; font-weight:700; line-height:1;
           margin-bottom:4px;
         }
         ._wr_stat_lbl {
           font-size:9px; letter-spacing:.1em;
-          font-family:'JetBrains Mono',monospace;
-          color:rgba(255,255,255,.35); font-weight:700;
+          font-family: var(--font-num);
+          color: rgba(255,255,255,.35); font-weight:700;
         }
         ._wr_insight {
-          background:rgba(255,255,255,.04);
-          border:1px solid rgba(0,184,212,.12);
-          border-left:3px solid #00B8D4;
+          background: rgba(255,255,255,.04);
+          border: 1px solid rgba(143,184,255,.12);
+          border:1px solid rgba(232,196,122,0.16);
           border-radius:12px; padding:12px 14px;
           display:flex; gap:10px; align-items:flex-start;
           animation:_wr_fadeslide .5s ease forwards; opacity:0;
@@ -378,10 +378,10 @@ function WeeklyReportModal({ open, shared, onClose }) {
         ._wr_cta {
           width:100%; padding:16px;
           border-radius:14px;
-          background:linear-gradient(135deg,rgba(0,184,212,.18),rgba(91,71,184,.18));
-          border:1px solid rgba(0,184,212,.3);
-          color:#fff;
-          font-family:'Space Grotesk',sans-serif;
+          background: linear-gradient(135deg,rgba(143,184,255,.18),rgba(183,170,255,.18));
+          border: 1px solid rgba(143,184,255,.3);
+          color: #fff;
+          font-family: var(--font-display);
           font-size:15px; font-weight:700;
           cursor:pointer;
           transition:all .2s;
@@ -389,19 +389,19 @@ function WeeklyReportModal({ open, shared, onClose }) {
           margin-top:20px;
           letter-spacing:.01em;
         }
-        ._wr_cta:hover { border-color:rgba(0,184,212,.5); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,184,212,.2); }
+        ._wr_cta:hover { border-color: rgba(143,184,255,.5); transform:translateY(-2px); box-shadow: 0 8px 24px rgba(143,184,255,.2); }
         ._wr_cta:active { transform:translateY(0); }
         ._wr_pet {
           display:flex; align-items:center; gap:12px;
-          background:rgba(91,71,184,.1);
-          border:1px solid rgba(91,71,184,.2);
+          background: rgba(183,170,255,.1);
+          border: 1px solid rgba(183,170,255,.2);
           border-radius:12px; padding:12px 14px;
           animation:_wr_fadeslide .5s ease .3s forwards; opacity:0;
         }
         ._wr_nodata {
           text-align:center; padding:36px 16px;
-          color:rgba(255,255,255,.4);
-          font-family:'Inter',sans-serif;
+          color: rgba(255,255,255,.4);
+          font-family: var(--font-ui);
           font-size:14px; line-height:1.6;
         }
       `}</style>
@@ -417,7 +417,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
             <button className="_wr_close" onClick={onClose}>✕</button>
 
             <div className="_wr_badge">
-              <span style={{ animation: '_wr_star 2s ease-in-out infinite', display: 'inline-block' }}>✨</span>
+              <span style={{ animation: '_wr_star 2s ease-in-out infinite', display: 'inline-block' }}><Glyph e="✨" /></span>
               RELATÓRIO SEMANAL
             </div>
 
@@ -429,7 +429,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
             <div style={{
               marginTop: 8,
               fontSize: 11, color: 'rgba(255,255,255,.4)',
-              fontFamily: "'JetBrains Mono',monospace", letterSpacing: '.06em',
+              fontFamily: 'var(--font-num)', letterSpacing: '.06em',
             }}>
               {rangeLabel}
             </div>
@@ -442,7 +442,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
               {!report.hasData ? (
                 /* Empty state */
                 <div className="_wr_nodata">
-                  <div style={{ fontSize: 44, marginBottom: 14, animation: '_wr_float 3s ease-in-out infinite', display: 'inline-block' }}>🌱</div>
+                  <div style={{ fontSize: 44, marginBottom: 14, animation: '_wr_float 3s ease-in-out infinite', display: 'inline-block' }}><Glyph e="🌱" /></div>
                   <div style={{ color: 'rgba(255,255,255,.65)', fontWeight: 700, marginBottom: 8, fontSize: 15 }}>
                     Semana anterior sem registros
                   </div>
@@ -451,7 +451,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
                     para ver seu progresso semanal aqui!
                   </div>
                   <button className="_wr_cta" onClick={onClose} style={{ marginTop: 24 }}>
-                    ✨ Começar agora
+                    <Glyph e="✨" /> Começar agora
                   </button>
                 </div>
               ) : (
@@ -459,12 +459,12 @@ function WeeklyReportModal({ open, shared, onClose }) {
                   {/* ── Stat cards ── */}
                   {phase >= 1 && (
                     <div style={{ marginBottom: 20 }}>
-                      <div className="_wr_section">📊 Resumo da semana</div>
+                      <div className="_wr_section"><Glyph e="📊" /> Resumo da semana</div>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9, marginBottom: 9 }}>
                         {[
-                          { val: report.totalHours < 10 ? report.totalHours.toFixed(1) : Math.round(report.totalHours), unit: 'h', label: 'ESTUDADAS', color: '#00B8D4', delay: 0 },
-                          { val: report.activeDays, unit: 'd', label: 'DIAS ATIVOS', color: '#C9A961', delay: 80 },
-                          { val: shared.streak || 0, unit: '🔥', label: 'SEQUÊNCIA', color: '#E85D5D', delay: 160 },
+                          { val: report.totalHours < 10 ? report.totalHours.toFixed(1) : Math.round(report.totalHours), unit: 'h', label: 'ESTUDADAS', color: '#8FB8FF', delay: 0 },
+                          { val: report.activeDays, unit: 'd', label: 'DIAS ATIVOS', color: '#E8C47A', delay: 80 },
+                          { val: shared.streak || 0, unit: '🔥', label: 'SEQUÊNCIA', color: '#FF7A8A', delay: 160 },
                         ].map(s => (
                           <div key={s.label} className="_wr_stat" style={{ animationDelay: `${s.delay}ms` }}>
                             <div className="_wr_stat_val" style={{ color: s.color }}>
@@ -480,14 +480,14 @@ function WeeklyReportModal({ open, shared, onClose }) {
                       {report.totalQuestions > 0 && (
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9 }}>
                           <div className="_wr_stat" style={{ animationDelay: '240ms' }}>
-                            <div className="_wr_stat_val" style={{ color: '#7B67D8' }}>{report.totalQuestions}</div>
+                            <div className="_wr_stat_val" style={{ color: '#C9C1FF' }}>{report.totalQuestions}</div>
                             <div className="_wr_stat_lbl">QUESTÕES</div>
                           </div>
                           {report.totalCorrect > 0 && (
                             <div className="_wr_stat" style={{ animationDelay: '320ms' }}>
-                              <div className="_wr_stat_val" style={{ color: '#00A86B' }}>
+                              <div className="_wr_stat_val" style={{ color: '#4FD1A5' }}>
                                 {Math.round((report.totalCorrect / report.totalQuestions) * 100)}
-                                <span style={{ fontSize: 12, color: 'rgba(0,168,107,.7)' }}>%</span>
+                                <span style={{ fontSize: 12, color: 'rgba(79,209,165,.7)' }}>%</span>
                               </div>
                               <div className="_wr_stat_lbl">ACERTOS</div>
                             </div>
@@ -500,7 +500,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
                   {/* ── Weekly goal ── */}
                   {phase >= 1 && weeklyGoal > 0 && (
                     <div style={{ marginBottom: 20 }}>
-                      <div className="_wr_section">🎯 Meta semanal</div>
+                      <div className="_wr_section"><Glyph e="🎯" /> Meta semanal</div>
                       <div className="_wr_glass" style={{ padding: '14px 16px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
                           <span style={{ fontSize: 13, color: 'rgba(255,255,255,.7)', fontWeight: 600 }}>
@@ -508,8 +508,8 @@ function WeeklyReportModal({ open, shared, onClose }) {
                           </span>
                           <span style={{
                             fontSize: 12, fontWeight: 700,
-                            fontFamily: "'JetBrains Mono',monospace",
-                            color: goalPct >= 100 ? '#00A86B' : goalPct >= 70 ? '#C9A961' : '#00B8D4',
+                            fontFamily: 'var(--font-num)',
+                            color: goalPct >= 100 ? '#4FD1A5' : goalPct >= 70 ? '#E8C47A' : '#8FB8FF',
                           }}>
                             {Math.round(goalPct)}%{goalPct >= 100 ? ' ✓' : ''}
                           </span>
@@ -519,18 +519,18 @@ function WeeklyReportModal({ open, shared, onClose }) {
                           delay={0}
                           color={
                             goalPct >= 100
-                              ? 'linear-gradient(90deg,#00B8D4,#00A86B)'
+                              ? 'linear-gradient(90deg,#8FB8FF,#4FD1A5)'
                               : goalPct >= 70
-                              ? 'linear-gradient(90deg,#00B8D4,#C9A961)'
-                              : 'linear-gradient(90deg,#00B8D4,#7B67D8)'
+                              ? 'linear-gradient(90deg,#8FB8FF,#E8C47A)'
+                              : 'linear-gradient(90deg,#8FB8FF,#C9C1FF)'
                           }
                         />
                         {goalPct >= 100 && (
                           <div style={{
-                            fontSize: 10, color: '#00A86B', marginTop: 7,
-                            fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, letterSpacing: '.08em',
+                            fontSize: 10, color: '#4FD1A5', marginTop: 7,
+                            fontFamily: 'var(--font-num)', fontWeight: 700, letterSpacing: '.08em',
                           }}>
-                            🏆 META DA SEMANA ATINGIDA!
+                            <Glyph e="🏆" /> META DA SEMANA ATINGIDA!
                           </div>
                         )}
                       </div>
@@ -540,7 +540,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
                   {/* ── Top disciplines ── */}
                   {phase >= 2 && report.topDiscs.length > 0 && (
                     <div style={{ marginBottom: 20 }}>
-                      <div className="_wr_section">📚 Disciplinas destaque</div>
+                      <div className="_wr_section"><Glyph e="📚" /> Disciplinas destaque</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                         {report.topDiscs.map(([disc, hours], i) => (
                           <div key={disc} style={{
@@ -555,7 +555,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
                                 display: 'grid', placeItems: 'center',
                                 fontSize: 10, fontWeight: 700,
                                 color: DISC_COLORS[i],
-                                fontFamily: "'JetBrains Mono',monospace",
+                                fontFamily: 'var(--font-num)',
                               }}>{i + 1}</div>
                               <div style={{ flex: 1, minWidth: 0 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, gap: 4 }}>
@@ -566,7 +566,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
                                   }}>{disc}</span>
                                   <span style={{
                                     fontSize: 11, color: DISC_COLORS[i], fontWeight: 700,
-                                    fontFamily: "'JetBrains Mono',monospace", flexShrink: 0,
+                                    fontFamily: 'var(--font-num)', flexShrink: 0,
                                   }}>
                                     {hours < 1 ? `${Math.round(hours * 60)}min` : `${hours.toFixed(1)}h`}
                                   </span>
@@ -587,11 +587,11 @@ function WeeklyReportModal({ open, shared, onClose }) {
                   {/* ── Insights ── */}
                   {phase >= 2 && insights.length > 0 && (
                     <div style={{ marginBottom: 20 }}>
-                      <div className="_wr_section">💬 Insights da semana</div>
+                      <div className="_wr_section"><Glyph e="💬" /> Insights da semana</div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                         {insights.map((ins, i) => (
                           <div key={i} className="_wr_insight" style={{ animationDelay: `${i * 120}ms` }}>
-                            <span style={{ fontSize: 18, flexShrink: 0, lineHeight: 1.4 }}>{ins.icon}</span>
+                            <span style={{ fontSize: 18, flexShrink: 0, lineHeight: 1.4 }}><Glyph e={ins.icon} /></span>
                             <span style={{ fontSize: 13, color: 'rgba(255,255,255,.68)', lineHeight: 1.5 }}>
                               {ins.text}
                             </span>
@@ -623,16 +623,16 @@ function WeeklyReportModal({ open, shared, onClose }) {
                             <AnimBar
                               pct={goalBarReady ? Math.round(petInfo.progress * 100) : 0}
                               delay={600}
-                              color="linear-gradient(90deg,#7B67D8,#C9A961)"
+                              color="linear-gradient(90deg,#C9C1FF,#E8C47A)"
                             />
                           </div>
                         )}
                       </div>
                       <div style={{ flexShrink: 0, textAlign: 'right' }}>
-                        <div style={{ fontSize: 9, color: 'rgba(255,255,255,.28)', fontFamily: "'JetBrains Mono',monospace", marginBottom: 2 }}>
+                        <div style={{ fontSize: 9, color: 'rgba(255,255,255,.28)', fontFamily: 'var(--font-num)', marginBottom: 2 }}>
                           XP TOTAL
                         </div>
-                        <div style={{ fontSize: 18, fontWeight: 700, color: '#7B67D8', fontFamily: "'Space Grotesk',sans-serif" }}>
+                        <div style={{ fontSize: 18, fontWeight: 700, color: '#C9C1FF', fontFamily: 'var(--font-display)' }}>
                           {(shared.xp || 0).toLocaleString('pt-BR')}
                         </div>
                       </div>
@@ -641,7 +641,7 @@ function WeeklyReportModal({ open, shared, onClose }) {
 
                   {/* ── CTA ── */}
                   <button className="_wr_cta" onClick={onClose}>
-                    ✨ Continuar minha jornada
+                    <Glyph e="✨" /> Continuar minha jornada
                   </button>
                 </>
               )}

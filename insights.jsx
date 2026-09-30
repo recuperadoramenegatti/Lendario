@@ -1,4 +1,4 @@
-// TOGA — Sistema de Insights Automáticos (Bloco 6)
+// Lendário — Sistema de Insights Automáticos (Bloco 6)
 // 8+ regras priorizadas; exibe 1-3 insights por vez; descartável
 
 function computeInsights(shared, objState, discState) {
@@ -150,7 +150,7 @@ function computeInsights(shared, objState, discState) {
       id: 'review-due',
       priority: 6,
       icon: '🔄',
-      color: '#F59E0B',
+      color: '#FFB057',
       title: `${reviewCount} tópico${reviewCount>1?'s':''} pedindo revisão`,
       body: `Você tem tópicos que não revisita há mais de 30 dias. A revisão espaçada é crucial para a retenção.`,
       action: null,
@@ -296,17 +296,16 @@ function InsightsPanel({ shared, objState, discState }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 4 }}>
-      <div style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>
+      <div style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)' }}>
         INSIGHTS · {visible.length} HOJE
       </div>
       {visible.map(ins => (
         <div key={ins.id} className={`glass ${ins.pulse ? 'insight-pulse-warn' : ''}`} style={{
           padding: '12px 14px',
-          borderLeft: `3px solid ${ins.color}`,
           display: 'flex', alignItems: 'flex-start', gap: 12,
           ...(ins.pulse ? { boxShadow: `0 0 0 1px ${ins.color}55, 0 0 18px ${ins.color}44` } : {}),
         }}>
-          <div style={{ fontSize: 22, flexShrink: 0, lineHeight: 1, marginTop: 1 }}>{ins.icon}</div>
+          <div style={{ fontSize: 22, flexShrink: 0, lineHeight: 1, marginTop: 1 }}><Glyph e={ins.icon} /></div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: ins.color, marginBottom: 3 }}>{ins.title}</div>
             <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.4 }}>{ins.body}</div>

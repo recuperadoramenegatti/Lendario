@@ -1,4 +1,4 @@
-// TOGA — Dragon UI
+// Lendário — Dragon UI
 // Painel do dragão (aba Hoje), Covil (aba própria), missões, baú, loja,
 // galeria de conquistas, cinemática de evolução e efeitos de recompensa.
 
@@ -12,7 +12,7 @@ const FX = {
       const el = document.createElement('div');
       el.className = 'fx-float-text';
       el.textContent = text;
-      el.style.cssText = `left:${x}px; top:${y}px; color:${color}; font-size:${size}px;`;
+      el.style.cssText = `left:${x}px; top:${y}px; color: ${color}; font-size:${size}px;`;
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 1500);
     }, delay);
@@ -24,12 +24,12 @@ const FX = {
       const a = (i / n) * Math.PI * 2 + Math.random() * 0.4;
       const r = dist * (0.6 + Math.random() * 0.6);
       const c = colors[i % colors.length];
-      el.style.cssText = `left:${x}px; top:${y}px; background:${c}; box-shadow:0 0 8px ${c}; --dx:${Math.cos(a) * r}px; --dy:${Math.sin(a) * r}px; width:${5 + Math.random() * 6}px; height:${5 + Math.random() * 6}px;`;
+      el.style.cssText = `left:${x}px; top:${y}px; background: ${c}; box-shadow: 0 0 8px ${c}; --dx:${Math.cos(a) * r}px; --dy:${Math.sin(a) * r}px; width:${5 + Math.random() * 6}px; height:${5 + Math.random() * 6}px;`;
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 800);
     }
     const ring = document.createElement('div');
-    ring.className = 'fx-ring'; ring.style.cssText = `left:${x}px; top:${y}px; color:${colors[0]};`;
+    ring.className = 'fx-ring'; ring.style.cssText = `left:${x}px; top:${y}px; color: ${colors[0]};`;
     document.body.appendChild(ring); setTimeout(() => ring.remove(), 700);
   },
   emojiBurst(x, y, emoji = '💜', n = 6) {
@@ -141,7 +141,7 @@ function HabitatDecor({ bg }) {
   );
   if (bg === 'bg_galaxia') return (
     <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMax slice" style={common}>
-      <g transform="translate(330 70)"><circle r="22" fill="#F59E0B" /><circle r="22" fill="url(#none)" /><ellipse rx="38" ry="8" fill="none" stroke="#FDE68A" strokeWidth="3" transform="rotate(-18)" opacity="0.8" /></g>
+      <g transform="translate(330 70)"><circle r="22" fill="#FFB057" /><circle r="22" fill="url(#none)" /><ellipse rx="38" ry="8" fill="none" stroke="#FDE68A" strokeWidth="3" transform="rotate(-18)" opacity="0.8" /></g>
       <circle cx="70" cy="60" r="10" fill="#38BDF8" opacity="0.9" style={{ filter: 'drop-shadow(0 0 8px #38BDF8)' }} />
       <path d="M0 280 Q200 250 400 280 L400 300 L0 300 Z" fill="#2E1065" opacity="0.8" />
     </svg>
@@ -265,8 +265,8 @@ function useDragonCore(shared, setShared) {
 function StatBar({ icon, label, value, from, to, hint }) {
   return (
     <div title={hint}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10.5, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 3, fontFamily: 'JetBrains Mono, monospace' }}>
-        <span>{icon} {label}</span><span className="num" style={{ color: to }}>{value}%</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10.5, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 3, fontFamily: 'var(--font-num)' }}>
+        <span><Glyph e={icon} /> {label}</span><span className="num" style={{ color: to }}>{value}%</span>
       </div>
       <div className="dg-stat-bar">
         <div className="dg-stat-fill" style={{ width: `${value}%`, background: `linear-gradient(90deg, ${from}, ${to})`, boxShadow: `0 0 8px ${to}88` }} />
@@ -281,21 +281,21 @@ function ComboChip({ streak }) {
   const next = DG.nextComboStep(streak);
   const tip = next ? `Chegue a ${next[0]} dias de constância para x${next[1]}` : 'Multiplicador máximo!';
   if (m <= 1) return (
-    <span className="dg-chip" title={tip} style={{ background: 'rgba(100,116,139,0.1)', color: '#64748B', border: '1px solid rgba(100,116,139,0.25)' }}>
-      🔥 x1 · {next ? `x${next[1]} em ${next[0] - (streak || 0)}d` : ''}
+    <span className="dg-chip" title={tip} style={{ background: 'rgba(100,116,139,0.1)', color: '#D5DAE0', border: '1px solid rgba(100,116,139,0.25)' }}>
+      <Glyph e="🔥" /> x1 · {next ? `x${next[1]} em ${next[0] - (streak || 0)}d` : ''}
     </span>
   );
   return (
-    <span className="dg-chip dg-combo" title={tip} style={{ background: 'linear-gradient(135deg, rgba(251,191,36,0.2), rgba(249,115,22,0.2))', color: '#C2410C', border: '1px solid rgba(249,115,22,0.45)' }}>
-      🔥 CHAMA x{m}
+    <span className="dg-chip dg-combo" title={tip} style={{ background: 'linear-gradient(135deg, rgba(251,191,36,0.2), rgba(249,115,22,0.2))', color: '#EEAE8E', border: '1px solid rgba(249,115,22,0.45)' }}>
+      <Glyph e="🔥" /> CHAMA x{m}
     </span>
   );
 }
 
 function GemBadge({ gems, big }) {
   return (
-    <span className="dg-chip" style={{ background: 'rgba(14,165,233,0.1)', color: '#0369A1', border: '1px solid rgba(14,165,233,0.3)', fontSize: big ? 13 : 10, padding: big ? '4px 10px' : undefined }}>
-      💎 {(gems || 0).toLocaleString('pt-BR')}
+    <span className="dg-chip" style={{ background: 'rgba(14,165,233,0.1)', color: '#98CAE0', border: '1px solid rgba(14,165,233,0.3)', fontSize: big ? 13 : 10, padding: big ? '4px 10px' : undefined }}>
+      <Glyph e="💎" /> {(gems || 0).toLocaleString('pt-BR')}
     </span>
   );
 }
@@ -305,7 +305,7 @@ function FeedPicker({ core, onClose }) {
   const left = DG.MAX_FEEDS_PER_DAY - core.d.today.feeds;
   return (
     <div className="glass-strong anim-slide-up" style={{ padding: 10, borderRadius: 14, display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)' }}>
         <span>PETISCOS · {left} HOJE</span>
         <button onClick={onClose} className="btn-ghost" style={{ padding: '2px 8px', fontSize: 11 }}>✕</button>
       </div>
@@ -313,9 +313,9 @@ function FeedPicker({ core, onClose }) {
         <button key={t.id} className="dg-btn" disabled={left <= 0 || core.d.gems < t.price}
           onClick={(e) => { if (core.onFeed(t.id, e)) onClose(); }}
           style={{ justifyContent: 'space-between', width: '100%' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ fontSize: 20 }}>{t.icon}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ fontSize: 20 }}><Glyph e={t.icon} /></span>
             <span style={{ textAlign: 'left' }}><div>{t.name}</div><div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>{t.desc}</div></span></span>
-          <span style={{ color: '#0369A1' }}>{t.price} 💎</span>
+          <span style={{ color: '#98CAE0' }}>{t.price} <Glyph e="💎" /></span>
         </button>
       ))}
       <div style={{ fontSize: 10.5, color: 'var(--text-muted)', lineHeight: 1.4 }}>
@@ -329,19 +329,19 @@ function SpeechBubble({ text, onClick, tail = 'left' }) {
   return (
     <div key={text} className="dg-bubble-speech" onClick={onClick} title="Clique para outra fala">
       {text}
-      <span style={{ position: 'absolute', [tail === 'left' ? 'left' : 'right']: -6, top: 14, width: 12, height: 12, background: '#fff', transform: 'rotate(45deg)', borderRadius: 2, boxShadow: '-2px 2px 3px rgba(42,31,92,0.06)' }} />
+      <span style={{ position: 'absolute', [tail === 'left' ? 'left' : 'right']: -6, top: 14, width: 12, height: 12, background: 'var(--surface)', transform: 'rotate(45deg)', borderRadius: 2, boxShadow: '-2px 2px 3px rgba(42,31,92,0.06)' }} />
     </div>
   );
 }
 
 function EvolutionProgress({ evo, compact }) {
   if (evo.isMax) return (
-    <div style={{ fontSize: 11.5, fontWeight: 800, color: '#B45309', fontFamily: 'JetBrains Mono, monospace' }}>👑 Forma máxima alcançada — lenda viva!</div>
+    <div style={{ fontSize: 11.5, fontWeight: 800, color: '#EEB98D', fontFamily: 'var(--font-num)' }}><Glyph e="👑" /> Forma máxima alcançada — lenda viva!</div>
   );
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10.5, color: 'var(--text-muted)', marginBottom: 4, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
-        <span>🌟 evolui para <span style={{ color: '#6D4FE0' }}>{evo.next.name}</span></span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10.5, color: 'var(--text-muted)', marginBottom: 4, fontFamily: 'var(--font-num)', fontWeight: 700 }}>
+        <span><Glyph e="🌟" /> evolui para <span style={{ color: '#C0B0E0' }}>{evo.next.name}</span></span>
         <span className="num">faltam {evo.toNext.toLocaleString('pt-BR')} XP</span>
       </div>
       <div className="dg-stat-bar" style={{ height: compact ? 8 : 10 }}>
@@ -372,8 +372,8 @@ function DragonHomeCard({ shared, setShared, onOpenLair }) {
       <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
           <span className="font-display" style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-primary)' }}>{d.name}</span>
-          <span className="dg-chip" style={{ background: 'rgba(124,92,255,0.12)', color: '#5B3FD6', border: '1px solid rgba(124,92,255,0.3)' }}>FASE {evo.stage.id}/8</span>
-          <span className="dg-chip" style={{ background: `${moodInfo.color}18`, color: moodInfo.color, border: `1px solid ${moodInfo.color}44` }}>{moodInfo.icon} {moodInfo.label}</span>
+          <span className="dg-chip" style={{ background: 'rgba(124,92,255,0.12)', color: '#BBABE0', border: '1px solid rgba(124,92,255,0.3)' }}>FASE {evo.stage.id}/8</span>
+          <span className="dg-chip" style={{ background: `${moodInfo.color}18`, color: moodInfo.color, border: `1px solid ${moodInfo.color}44` }}><Glyph e={moodInfo.icon} /> {moodInfo.label}</span>
           <ComboChip streak={shared.streak} />
         </div>
         <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, marginTop: -4 }}>{evo.stage.name}</div>
@@ -385,8 +385,8 @@ function DragonHomeCard({ shared, setShared, onOpenLair }) {
         </div>
         <EvolutionProgress evo={evo} compact />
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 2 }}>
-          <button className="dg-btn" onClick={() => { window.SFX && window.SFX.pop(); setFeedOpen(o => !o); }}>🍪 Alimentar</button>
-          <button className="dg-btn dg-btn-primary" onClick={() => { window.SFX && window.SFX.whoosh(); onOpenLair && onOpenLair(); }}>🏰 Covil do dragão</button>
+          <button className="dg-btn" onClick={() => { window.SFX && window.SFX.pop(); setFeedOpen(o => !o); }}><Glyph e="🍪" /> Alimentar</button>
+          <button className="dg-btn dg-btn-primary" onClick={() => { window.SFX && window.SFX.whoosh(); onOpenLair && onOpenLair(); }}><Glyph e="🏰" /> Covil do dragão</button>
         </div>
         {feedOpen && <div style={{ position: 'absolute', right: 12, bottom: 56, zIndex: 20, width: 280 }}><FeedPicker core={core} onClose={() => setFeedOpen(false)} /></div>}
       </div>
@@ -450,7 +450,7 @@ function ChestModal({ reward, onClose }) {
     <div className="cel-overlay" onClick={phase === 'open' ? onClose : undefined}>
       {phase === 'open' && <div className="cel-rays" />}
       <div style={{ textAlign: 'center', position: 'relative', zIndex: 2 }} onClick={(e) => e.stopPropagation()}>
-        <div style={{ fontSize: 11, letterSpacing: '0.4em', color: r.c1, fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', marginBottom: 16, textShadow: `0 0 14px ${r.glow}` }}>
+        <div style={{ fontSize: 11, letterSpacing: '0.4em', color: r.c1, fontWeight: 800, fontFamily: 'var(--font-label)', marginBottom: 16, textShadow: `0 0 14px ${r.glow}` }}>
           {phase === 'open' ? `✦ BAÚ ${r.label} ✦` : 'ABRINDO O BAÚ DO DIA…'}
         </div>
         <div className={phase === 'shake' ? 'dg-chest shake' : 'cel-pop'} style={{ display: 'inline-block' }}>
@@ -458,12 +458,12 @@ function ChestModal({ reward, onClose }) {
         </div>
         {phase === 'open' && (
           <div className="cel-rise" style={{ marginTop: 18 }}>
-            <div className="font-display" style={{ fontSize: 40, fontWeight: 800, color: '#FFF', textShadow: `0 0 24px ${r.glow}` }}>+{reward.gems} 💎</div>
+            <div className="font-display" style={{ fontSize: 40, fontWeight: 800, color: '#FFF', textShadow: `0 0 24px ${r.glow}` }}>+{reward.gems} <Glyph e="💎" /></div>
             <div style={{ fontSize: 16, fontWeight: 700, color: '#E9D5FF', marginTop: 4 }}>+{reward.xp} XP</div>
             <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.75)', marginTop: 10 }}>
-              🗝️ Sequência de baús: <b>{reward.streak} dia{reward.streak > 1 ? 's' : ''}</b> — volte amanhã para um baú ainda melhor!
+              <Glyph e="🗝️" /> Sequência de baús: <b>{reward.streak} dia{reward.streak > 1 ? 's' : ''}</b> — volte amanhã para um baú ainda melhor!
             </div>
-            <button className="dg-btn dg-btn-gold" style={{ marginTop: 18, padding: '12px 28px', fontSize: 14 }} onClick={onClose}>Pegar tesouro ✨</button>
+            <button className="dg-btn dg-btn-gold" style={{ marginTop: 18, padding: '12px 28px', fontSize: 14 }} onClick={onClose}>Pegar tesouro <Glyph e="✨" /></button>
           </div>
         )}
       </div>
@@ -521,8 +521,8 @@ function DailyQuestsCard({ shared, setShared, compact }) {
     <div className="glass" style={{ padding: compact ? '12px 14px' : '16px 18px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, gap: 8, flexWrap: 'wrap' }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' }}>
-            🗺️ MISSÕES DO DIA · {doneCount}/{quests.length}
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'var(--font-label)' }}>
+            <Glyph e="🗺️" /> MISSÕES DO DIA · {doneCount}/{quests.length}
           </div>
           <div style={{ fontSize: 10.5, color: 'var(--text-dim)', marginTop: 2 }}>renovam em {hoursUntilReset()}h</div>
         </div>
@@ -536,11 +536,11 @@ function DailyQuestsCard({ shared, setShared, compact }) {
           return (
             <div key={q.id} className={`dg-quest ${q.claimed ? 'done' : ''} ${claimable ? 'claimable' : ''}`}>
               <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0,
-                background: q.claimed ? 'rgba(0,168,107,0.12)' : 'rgba(124,92,255,0.1)' }}>{q.claimed ? '✅' : q.icon}</div>
+                background: q.claimed ? 'rgba(79,209,165,0.12)' : 'rgba(124,92,255,0.1)' }}><Glyph e={q.claimed ? '✅' : q.icon} /></div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-primary)', display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ textDecoration: q.claimed ? 'line-through' : 'none', opacity: q.claimed ? 0.7 : 1 }}>{q.title}</span>
-                  {q.hard && <span className="dg-chip" style={{ background: 'rgba(239,68,68,0.1)', color: '#DC2626', border: '1px solid rgba(239,68,68,0.3)', fontSize: 8.5 }}>DIFÍCIL</span>}
+                  {q.hard && <span className="dg-chip" style={{ background: 'rgba(239,68,68,0.1)', color: '#EEA097', border: '1px solid rgba(239,68,68,0.3)', fontSize: 8.5 }}>DIFÍCIL</span>}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 5 }}>
                   <div className="dg-stat-bar" style={{ flex: 1, height: 6 }}>
@@ -552,11 +552,11 @@ function DailyQuestsCard({ shared, setShared, compact }) {
                 </div>
               </div>
               {claimable ? (
-                <button className="dg-btn dg-btn-gold" onClick={(e) => claim(q, e)} style={{ padding: '7px 10px', flexShrink: 0 }}>🎁 Resgatar</button>
+                <button className="dg-btn dg-btn-gold" onClick={(e) => claim(q, e)} style={{ padding: '7px 10px', flexShrink: 0 }}><Glyph e="🎁" /> Resgatar</button>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2, flexShrink: 0, opacity: q.claimed ? 0.5 : 1 }}>
-                  <span style={{ fontSize: 10, fontWeight: 800, color: '#6D4FE0', fontFamily: 'JetBrains Mono, monospace' }}>+{q.xp} XP</span>
-                  <span style={{ fontSize: 10, fontWeight: 800, color: '#0369A1', fontFamily: 'JetBrains Mono, monospace' }}>+{q.gems} 💎</span>
+                  <span style={{ fontSize: 10, fontWeight: 800, color: '#C0B0E0', fontFamily: 'var(--font-num)' }}>+{q.xp} XP</span>
+                  <span style={{ fontSize: 10, fontWeight: 800, color: '#98CAE0', fontFamily: 'var(--font-num)' }}>+{q.gems} <Glyph e="💎" /></span>
                 </div>
               )}
             </div>
@@ -565,17 +565,17 @@ function DailyQuestsCard({ shared, setShared, compact }) {
 
         {/* Dia perfeito */}
         <div className={`dg-quest ${d.today.perfect ? 'done' : ''} ${perfectReady ? 'claimable' : ''}`} style={{ background: d.today.perfect ? undefined : 'linear-gradient(135deg, rgba(251,191,36,0.10), rgba(236,72,153,0.08))' }}>
-          <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', fontSize: 18, background: 'rgba(251,191,36,0.16)' }}>🌟</div>
+          <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', fontSize: 18, background: 'rgba(251,191,36,0.16)' }}><Glyph e="🌟" /></div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 12.5, fontWeight: 800 }}>Dia Perfeito</div>
             <div style={{ fontSize: 10.5, color: 'var(--text-muted)' }}>{d.today.perfect ? 'Conquistado hoje! Lendário 👑' : 'Resgate as 3 missões para ganhar o bônus'}</div>
           </div>
           {perfectReady ? (
-            <button className="dg-btn dg-btn-gold" onClick={claimPerfect} style={{ padding: '7px 10px' }}>🌟 Bônus</button>
+            <button className="dg-btn dg-btn-gold" onClick={claimPerfect} style={{ padding: '7px 10px' }}><Glyph e="🌟" /> Bônus</button>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2, opacity: d.today.perfect ? 0.5 : 1 }}>
-              <span style={{ fontSize: 10, fontWeight: 800, color: '#6D4FE0', fontFamily: 'JetBrains Mono, monospace' }}>+{DG.PERFECT_REWARD.xp} XP</span>
-              <span style={{ fontSize: 10, fontWeight: 800, color: '#0369A1', fontFamily: 'JetBrains Mono, monospace' }}>+{DG.PERFECT_REWARD.gems} 💎</span>
+              <span style={{ fontSize: 10, fontWeight: 800, color: '#C0B0E0', fontFamily: 'var(--font-num)' }}>+{DG.PERFECT_REWARD.xp} XP</span>
+              <span style={{ fontSize: 10, fontWeight: 800, color: '#98CAE0', fontFamily: 'var(--font-num)' }}>+{DG.PERFECT_REWARD.gems} <Glyph e="💎" /></span>
             </div>
           )}
         </div>
@@ -588,7 +588,7 @@ function DailyQuestsCard({ shared, setShared, compact }) {
             <ChestSVG size={44} open={chest.state === 'opened'} rarity={chest.state === 'opened' ? chest.reward.rarity : 'comum'} glow={chest.state === 'ready'} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 12.5, fontWeight: 800 }}>Baú do Dia {d.chestStreak > 0 && <span style={{ fontSize: 10, color: '#B45309' }}>· 🗝️ {d.chestStreak}d seguidos</span>}</div>
+            <div style={{ fontSize: 12.5, fontWeight: 800 }}>Baú do Dia {d.chestStreak > 0 && <span style={{ fontSize: 10, color: '#EEB98D' }}>· <Glyph e="🗝️" /> {d.chestStreak}d seguidos</span>}</div>
             <div style={{ fontSize: 10.5, color: 'var(--text-muted)' }}>
               {chest.state === 'locked' && 'Registre qualquer estudo hoje para destrancar 🔒'}
               {chest.state === 'ready' && 'Pronto! Toque para abrir — pode vir um baú lendário ✨'}
@@ -620,10 +620,10 @@ function AchievementBadge({ ach, unlocked = true, size = 64 }) {
         background: `radial-gradient(circle at 35% 28%, #FFFFFF 0%, ${t.c1} 30%, ${t.c2} 100%)`,
         boxShadow: `0 0 0 ${Math.max(2, size / 22)}px ${t.ring}, inset 0 -${size / 12}px ${size / 6}px rgba(0,0,0,0.18), 0 ${size / 10}px ${size / 4}px ${unlocked ? t.glow : 'transparent'}`,
       }}>
-        <span style={{ fontSize: size * 0.46, lineHeight: 1, filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.25))' }}>{ach.icon}</span>
+        <span style={{ fontSize: size * 0.46, lineHeight: 1, filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.25))' }}><Glyph e={ach.icon} /></span>
         {unlocked && <div className="dg-badge-shine" style={{ borderRadius: '50%' }} />}
       </div>
-      {!unlocked && <span style={{ position: 'absolute', right: -2, bottom: -2, fontSize: size * 0.26 }}>🔒</span>}
+      {!unlocked && <span style={{ position: 'absolute', right: -2, bottom: -2, fontSize: size * 0.26 }}><Glyph e="🔒" /></span>}
     </div>
   );
 }
@@ -640,7 +640,7 @@ function AchievementGallery({ shared, objState, discState, onShare }) {
     <div className="glass" style={{ padding: '18px 20px' }}>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' }}>🏆 SALA DE TROFÉUS</div>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'var(--font-label)' }}><Glyph e="🏆" /> SALA DE TROFÉUS</div>
           <div className="font-display" style={{ fontSize: 20, fontWeight: 800, marginTop: 2 }}>{unlockedCount} <span style={{ color: 'var(--text-dim)', fontSize: 15 }}>/ {list.length} conquistas</span></div>
         </div>
         <div style={{ flex: '1 1 180px', maxWidth: 320 }}>
@@ -651,7 +651,7 @@ function AchievementGallery({ shared, objState, discState, onShare }) {
       </div>
       <div className="dg-tabs" style={{ marginBottom: 14 }}>
         <button className={`dg-tab ${cat === 'all' ? 'active' : ''}`} onClick={() => setCat('all')}>Todas</button>
-        {DG.CATS.map(c => <button key={c.id} className={`dg-tab ${cat === c.id ? 'active' : ''}`} onClick={() => { window.SFX && window.SFX.tick(); setCat(c.id); }}>{c.icon} {c.label}</button>)}
+        {DG.CATS.map(c => <button key={c.id} className={`dg-tab ${cat === c.id ? 'active' : ''}`} onClick={() => { window.SFX && window.SFX.tick(); setCat(c.id); }}><Glyph e={c.icon} /> {c.label}</button>)}
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 }}>
         {shown.map(a => {
@@ -660,20 +660,20 @@ function AchievementGallery({ shared, objState, discState, onShare }) {
           return (
             <div key={a.id} onClick={() => unlocked && onShare && onShare({ kind: 'achievement', achId: a.id })}
               title={unlocked ? 'Clique para compartilhar' : a.desc}
-              style={{ padding: 12, borderRadius: 14, background: unlocked ? `linear-gradient(160deg, ${t.c1}33, rgba(255,255,255,0.75))` : 'rgba(255,255,255,0.55)',
-                border: `1px solid ${unlocked ? t.c2 + '55' : 'rgba(30,32,48,0.06)'}`, cursor: unlocked ? 'pointer' : 'default',
+              style={{ padding: 12, borderRadius: 14, background: unlocked ? `linear-gradient(160deg, ${t.c1}33, rgba(22,19,40,0.75))` : 'rgba(22,19,40,0.55)',
+                border: `1px solid ${unlocked ? t.c2 + '55' : 'rgba(243,235,221,0.06)'}`, cursor: unlocked ? 'pointer' : 'default',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 6 }}>
               <AchievementBadge ach={a} unlocked={unlocked} size={58} />
-              <div style={{ fontSize: 8.5, fontWeight: 900, letterSpacing: '0.18em', color: t.ring, fontFamily: 'JetBrains Mono, monospace' }}>{t.label}</div>
+              <div style={{ fontSize: 8.5, fontWeight: 900, letterSpacing: '0.18em', color: t.ring, fontFamily: 'var(--font-label)' }}>{t.label}</div>
               <div className="font-display" style={{ fontSize: 13, fontWeight: 800, lineHeight: 1.2 }}>{a.name}</div>
               <div style={{ fontSize: 10.5, color: 'var(--text-muted)', lineHeight: 1.35 }}>{a.desc}</div>
               {unlocked ? (
-                <div style={{ fontSize: 10, color: '#6D4FE0', fontWeight: 800 }}>📸 Compartilhar</div>
+                <div style={{ fontSize: 10, color: '#C0B0E0', fontWeight: 800 }}><Glyph e="📸" /> Compartilhar</div>
               ) : (
                 <div style={{ width: '100%' }}>
                   <div className="dg-stat-bar" style={{ height: 5 }}><div className="dg-stat-fill" style={{ width: `${a.pct}%`, background: `linear-gradient(90deg, ${t.c1}, ${t.c2})` }} /></div>
                   <div className="num" style={{ fontSize: 9.5, color: 'var(--text-dim)', marginTop: 3, fontWeight: 700 }}>
-                    {Math.floor(Math.min(a.cur, a.target)).toLocaleString('pt-BR')}/{a.target.toLocaleString('pt-BR')} · +{t.gems} 💎
+                    {Math.floor(Math.min(a.cur, a.target)).toLocaleString('pt-BR')}/{a.target.toLocaleString('pt-BR')} · +{t.gems} <Glyph e="💎" />
                   </div>
                 </div>
               )}
@@ -708,7 +708,7 @@ function AchievementCelebration({ ids, onDone, onShare }) {
     <div className="cel-overlay">
       <div className="cel-rays" />
       <div style={{ textAlign: 'center', maxWidth: 560, position: 'relative', zIndex: 2 }}>
-        <div className="cel-rise" style={{ fontSize: 11, letterSpacing: '0.4em', color: '#FDE68A', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' }}>✦ SALA DE TROFÉUS ✦</div>
+        <div className="cel-rise" style={{ fontSize: 11, letterSpacing: '0.4em', color: '#FDE68A', fontWeight: 800, fontFamily: 'var(--font-label)' }}>✦ SALA DE TROFÉUS ✦</div>
         <div className="font-display cel-rise" style={{ fontSize: 30, fontWeight: 800, color: '#FFF', margin: '8px 0 18px' }}>{achs.length} conquistas desbloqueadas!</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', marginBottom: 18 }}>
           {achs.map((x, k) => (
@@ -718,8 +718,8 @@ function AchievementCelebration({ ids, onDone, onShare }) {
             </div>
           ))}
         </div>
-        <div className="font-display" style={{ fontSize: 22, color: '#7DD3FC', fontWeight: 800, marginBottom: 16 }}>+{totalGems} 💎</div>
-        <button className="dg-btn dg-btn-gold" style={{ padding: '12px 28px', fontSize: 14 }} onClick={onDone}>Incrível! ✨</button>
+        <div className="font-display" style={{ fontSize: 22, color: '#7DD3FC', fontWeight: 800, marginBottom: 16 }}>+{totalGems} <Glyph e="💎" /></div>
+        <button className="dg-btn dg-btn-gold" style={{ padding: '12px 28px', fontSize: 14 }} onClick={onDone}>Incrível! <Glyph e="✨" /></button>
       </div>
     </div>
   );
@@ -730,17 +730,17 @@ function AchievementCelebration({ ids, onDone, onShare }) {
     <div className="cel-overlay">
       <div className="cel-rays" />
       <div key={a.id} style={{ textAlign: 'center', maxWidth: 440, position: 'relative', zIndex: 2 }}>
-        <div className="cel-rise" style={{ fontSize: 11, letterSpacing: '0.4em', color: t.c1, fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', marginBottom: 20, textShadow: `0 0 14px ${t.glow}` }}>
+        <div className="cel-rise" style={{ fontSize: 11, letterSpacing: '0.4em', color: t.c1, fontWeight: 800, fontFamily: 'var(--font-label)', marginBottom: 20, textShadow: `0 0 14px ${t.glow}` }}>
           ✦ CONQUISTA DESBLOQUEADA ✦
         </div>
         <div className="cel-pop" style={{ display: 'inline-block' }}><div className="cel-float"><AchievementBadge ach={a} size={150} /></div></div>
         <div className="cel-rise" style={{ animationDelay: '200ms' }}>
-          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: '0.3em', color: t.c1, marginTop: 20, fontFamily: 'JetBrains Mono, monospace' }}>{t.label}</div>
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: '0.3em', color: t.c1, marginTop: 20, fontFamily: 'var(--font-label)' }}>{t.label}</div>
           <div className="font-display" style={{ fontSize: 32, fontWeight: 800, color: '#FFF', margin: '4px 0 6px', textShadow: `0 0 24px ${t.glow}` }}>{a.name}</div>
           <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)' }}>{a.desc}</div>
-          <div className="font-display" style={{ fontSize: 20, color: '#7DD3FC', fontWeight: 800, margin: '14px 0 20px' }}>+{t.gems} 💎</div>
+          <div className="font-display" style={{ fontSize: 20, color: '#7DD3FC', fontWeight: 800, margin: '14px 0 20px' }}>+{t.gems} <Glyph e="💎" /></div>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button className="dg-btn" style={{ padding: '12px 20px', fontSize: 13 }} onClick={() => onShare && onShare({ kind: 'achievement', achId: a.id })}>📸 Compartilhar</button>
+            <button className="dg-btn" style={{ padding: '12px 20px', fontSize: 13 }} onClick={() => onShare && onShare({ kind: 'achievement', achId: a.id })}><Glyph e="📸" /> Compartilhar</button>
             <button className="dg-btn dg-btn-gold" style={{ padding: '12px 24px', fontSize: 13 }} onClick={() => last ? onDone() : setI(i + 1)}>
               {last ? 'Incrível! ✨' : `Próxima (${i + 1}/${achs.length}) →`}
             </button>
@@ -777,7 +777,7 @@ function EvolutionCinematic({ from, to, equipped, onClose, onShare }) {
       style={{ background: `radial-gradient(ellipse at center, ${info.pal.accent}dd, rgba(8,6,24,0.96))` }}>
       {phase === 'reveal' && <div className="cel-rays" />}
       <div style={{ textAlign: 'center', maxWidth: 520, position: 'relative', zIndex: 2 }}>
-        <div style={{ fontSize: 11, letterSpacing: '0.45em', color: info.pal.glow, fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', marginBottom: 8, textShadow: `0 0 16px ${info.pal.glow}` }}>
+        <div style={{ fontSize: 11, letterSpacing: '0.45em', color: info.pal.glow, fontWeight: 800, fontFamily: 'var(--font-label)', marginBottom: 8, textShadow: `0 0 16px ${info.pal.glow}` }}>
           {phase === 'charge' ? 'ALGO ESTÁ ACONTECENDO…' : '✦ EVOLUÇÃO ✦'}
         </div>
         <div style={{ width: 280, height: 280, margin: '0 auto', display: 'grid', placeItems: 'center' }}>
@@ -789,20 +789,20 @@ function EvolutionCinematic({ from, to, equipped, onClose, onShare }) {
         </div>
         {phase === 'reveal' && (
           <div className="cel-rise">
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.2em', fontWeight: 700 }}>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-label)', letterSpacing: '0.2em', fontWeight: 700 }}>
               FASE {from} <span style={{ color: info.pal.glow, padding: '0 8px' }}>→</span> FASE {to}
             </div>
             <div className="font-display" style={{ fontSize: 36, fontWeight: 800, color: '#FFF', margin: '4px 0 8px', textShadow: `0 0 26px ${info.pal.glow}` }}>{info.name}</div>
             <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.85)', lineHeight: 1.55, maxWidth: 400, margin: '0 auto' }}>{info.desc}</div>
             {unlocks.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center', margin: '14px 0 4px' }}>
-                {unlocks.map(u => <span key={u} className="dg-chip" style={{ background: 'rgba(255,255,255,0.12)', color: '#FFF', border: `1px solid ${info.pal.glow}66`, fontSize: 10.5, padding: '4px 10px' }}>✨ {u}</span>)}
+                {unlocks.map(u => <span key={u} className="dg-chip" style={{ background: 'rgba(255,255,255,0.12)', color: '#FFFFFF', border: `1px solid ${info.pal.glow}66`, fontSize: 10.5, padding: '4px 10px' }}><Glyph e="✨" /> {u}</span>)}
               </div>
             )}
-            <div className="font-display" style={{ fontSize: 20, color: '#7DD3FC', fontWeight: 800, margin: '12px 0 18px' }}>+{window.DG.EVOLUTION_GEMS * Math.max(1, to - from)} 💎</div>
+            <div className="font-display" style={{ fontSize: 20, color: '#7DD3FC', fontWeight: 800, margin: '12px 0 18px' }}>+{window.DG.EVOLUTION_GEMS * Math.max(1, to - from)} <Glyph e="💎" /></div>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button className="dg-btn" style={{ padding: '12px 20px', fontSize: 13 }} onClick={() => onShare && onShare({ kind: 'evolution', stage: to })}>📸 Compartilhar</button>
-              <button className="dg-btn dg-btn-gold" style={{ padding: '12px 26px', fontSize: 13 }} onClick={onClose}>Continuar jornada 🐉</button>
+              <button className="dg-btn" style={{ padding: '12px 20px', fontSize: 13 }} onClick={() => onShare && onShare({ kind: 'evolution', stage: to })}><Glyph e="📸" /> Compartilhar</button>
+              <button className="dg-btn dg-btn-gold" style={{ padding: '12px 26px', fontSize: 13 }} onClick={onClose}>Continuar jornada <Glyph e="🐉" /></button>
             </div>
           </div>
         )}
@@ -819,7 +819,7 @@ function EvolutionPath({ xp, equipped }) {
   const evo = window.evaluateDragon(xp);
   return (
     <div className="glass" style={{ padding: '18px 20px' }}>
-      <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', marginBottom: 12 }}>🌟 JORNADA DE EVOLUÇÃO</div>
+      <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'var(--font-label)', marginBottom: 12 }}><Glyph e="🌟" /> JORNADA DE EVOLUÇÃO</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(92px, 1fr))', gap: 8 }}>
         {window.DRAGON_STAGES.map(s => {
           const unlocked = evo.stage.id >= s.id;
@@ -827,16 +827,16 @@ function EvolutionPath({ xp, equipped }) {
           const isNext = evo.stage.id + 1 === s.id;
           return (
             <div key={s.id} style={{ padding: '10px 6px', borderRadius: 14, textAlign: 'center', position: 'relative',
-              background: current ? 'linear-gradient(160deg, rgba(124,92,255,0.18), rgba(236,72,153,0.1))' : unlocked ? 'rgba(255,255,255,0.7)' : 'rgba(30,32,48,0.035)',
-              border: current ? '1.5px solid rgba(124,92,255,0.55)' : '1px solid rgba(30,32,48,0.06)',
+              background: current ? 'linear-gradient(160deg, rgba(124,92,255,0.18), rgba(236,72,153,0.1))' : unlocked ? 'rgba(22,19,40,0.7)' : 'rgba(243,235,221,0.035)',
+              border: current ? '1.5px solid rgba(124,92,255,0.55)' : '1px solid rgba(243,235,221,0.06)',
               boxShadow: current ? '0 0 0 3px rgba(124,92,255,0.12), 0 8px 24px rgba(124,92,255,0.18)' : undefined }}>
               <div style={{ display: 'grid', placeItems: 'center', height: 72 }}>
                 <div style={{ filter: unlocked ? undefined : 'brightness(0) opacity(0.22)' }}>
                   <window.DragonSprite stage={s.id} mood="happy" equipped={unlocked ? { ...equipped, bg: undefined, aura: undefined } : {}} size={70} animate={current} showFamiliars={false} />
                 </div>
-                {!unlocked && <div style={{ position: 'absolute', top: 30, left: 0, right: 0, fontSize: 20, fontWeight: 800, color: 'rgba(30,32,48,0.35)' }}>?</div>}
+                {!unlocked && <div style={{ position: 'absolute', top: 30, left: 0, right: 0, fontSize: 20, fontWeight: 800, color: 'rgba(243,235,221,0.35)' }}>?</div>}
               </div>
-              <div style={{ fontSize: 8.5, fontWeight: 900, color: current ? '#6D4FE0' : 'var(--text-dim)', letterSpacing: '0.14em', fontFamily: 'JetBrains Mono, monospace', marginTop: 4 }}>
+              <div style={{ fontSize: 8.5, fontWeight: 900, color: current ? '#6D4FE0' : 'var(--text-dim)', letterSpacing: '0.14em', fontFamily: 'var(--font-label)', marginTop: 4 }}>
                 {current ? 'VOCÊ ESTÁ AQUI' : `FASE ${s.id}`}
               </div>
               <div style={{ fontSize: 11, fontWeight: 800, color: unlocked || isNext ? 'var(--text-primary)' : 'var(--text-dim)', lineHeight: 1.2, marginTop: 2 }}>
@@ -885,7 +885,7 @@ function ShopPanel({ shared, setShared, stage, tryOn, setTryOn }) {
     <div className="glass" style={{ padding: '18px 20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' }}>🛍️ LOJA & GUARDA-ROUPA</div>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'var(--font-label)' }}><Glyph e="🛍️" /> LOJA & GUARDA-ROUPA</div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 3 }}>Passe o mouse para provar · clique duas vezes para comprar</div>
         </div>
         <GemBadge gems={d.gems} big />
@@ -893,7 +893,7 @@ function ShopPanel({ shared, setShared, stage, tryOn, setTryOn }) {
       <div className="dg-tabs" style={{ marginBottom: 12 }}>
         {DG.SLOTS.map(s => <button key={s.id} className={`dg-tab ${tab === s.id ? 'active' : ''}`} onClick={() => { window.SFX && window.SFX.tick(); setTab(s.id); setConfirm(null); }}>{s.label}</button>)}
       </div>
-      {msg && <div className="anim-slide-up" style={{ fontSize: 12, fontWeight: 700, color: '#5B3FD6', background: 'rgba(124,92,255,0.08)', padding: '8px 12px', borderRadius: 10, marginBottom: 10 }}>{msg}</div>}
+      {msg && <div className="anim-slide-up" style={{ fontSize: 12, fontWeight: 700, color: '#BBABE0', background: 'rgba(124,92,255,0.08)', padding: '8px 12px', borderRadius: 10, marginBottom: 10 }}>{msg}</div>}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(118px, 1fr))', gap: 10 }}>
         {items.map(it => {
           const owned = d.owned.includes(it.id);
@@ -905,15 +905,15 @@ function ShopPanel({ shared, setShared, stage, tryOn, setTryOn }) {
               onMouseEnter={() => setTryOn(it)} onMouseLeave={() => setTryOn(null)} onClick={(e) => click(it, e)}>
               <div style={{ height: 78, width: '100%', display: 'grid', placeItems: 'center', borderRadius: 10, overflow: 'hidden' }}>
                 {it.slot === 'bg' ? (
-                  <DragonHabitat bg={it.id} height={78} rounded={10} style={{ width: '100%' }}><span style={{ fontSize: 26, marginBottom: 14 }}>{it.icon}</span></DragonHabitat>
+                  <DragonHabitat bg={it.id} height={78} rounded={10} style={{ width: '100%' }}><span style={{ fontSize: 26, marginBottom: 14 }}><Glyph e={it.icon} /></span></DragonHabitat>
                 ) : stage >= 3 ? (
                   <window.DragonSprite stage={stage} mood="happy" equipped={previewEq} size={80} animate={false} showFamiliars={false} />
                 ) : (
-                  <span style={{ fontSize: 34 }}>{it.icon}</span>
+                  <span style={{ fontSize: 34 }}><Glyph e={it.icon} /></span>
                 )}
               </div>
-              <div style={{ fontSize: 11.5, fontWeight: 800, lineHeight: 1.2 }}>{it.icon} {it.name}</div>
-              <div style={{ fontSize: 10.5, fontWeight: 800, fontFamily: 'JetBrains Mono, monospace',
+              <div style={{ fontSize: 11.5, fontWeight: 800, lineHeight: 1.2 }}><Glyph e={it.icon} /> {it.name}</div>
+              <div style={{ fontSize: 10.5, fontWeight: 800, fontFamily: 'var(--font-num)',
                 color: equipped ? '#6D4FE0' : owned ? '#059669' : locked ? 'var(--text-dim)' : '#0369A1' }}>
                 {equipped ? (it.slot === 'bg' ? '✓ EM USO' : '✓ EQUIPADO') : owned ? 'USAR' : locked ? `🔒 FASE ${it.minStage}` : confirm === it.id ? `CONFIRMAR ${it.price} 💎?` : it.price === 0 ? 'GRÁTIS' : `${it.price} 💎`}
               </div>
@@ -940,8 +940,8 @@ function DragonLairTab({ shared, setShared, objState, discState, onShare }) {
 
   const statTiles = [
     { label: 'Cristais ganhos', value: (d.gemsTotal || 0).toLocaleString('pt-BR'), icon: '💎', color: '#0EA5E9' },
-    { label: 'Missões', value: d.stats.quests || 0, icon: '🗺️', color: '#7C5CFF' },
-    { label: 'Dias perfeitos', value: d.stats.perfectDays || 0, icon: '🌟', color: '#F59E0B' },
+    { label: 'Missões', value: d.stats.quests || 0, icon: '🗺️', color: '#C0B0E0' },
+    { label: 'Dias perfeitos', value: d.stats.perfectDays || 0, icon: '🌟', color: '#FFB057' },
     { label: 'Baús abertos', value: d.stats.chests || 0, icon: '🎁', color: '#EC4899' },
     { label: 'Carinhos', value: d.stats.pets || 0, icon: '💜', color: '#A855F7' },
     { label: 'Dias juntos', value: daysTogether, icon: '📅', color: '#10B981' },
@@ -958,27 +958,27 @@ function DragonLairTab({ shared, setShared, objState, discState, onShare }) {
           <div style={{ position: 'absolute', top: 14, left: 14, right: 14, zIndex: 3, display: 'flex', justifyContent: 'center' }}>
             <div style={{ maxWidth: 360 }}><SpeechBubble text={core.line} onClick={core.cycle} /></div>
           </div>
-          {tryOn && <div style={{ position: 'absolute', bottom: 12, left: 12, zIndex: 3 }} className="dg-chip"><span style={{ background: '#FFF', padding: '4px 10px', borderRadius: 99, color: '#5B3FD6' }}>👀 Provando: {tryOn.name}</span></div>}
+          {tryOn && <div style={{ position: 'absolute', bottom: 12, left: 12, zIndex: 3 }} className="dg-chip"><span style={{ background: 'var(--surface)', padding: '4px 10px', borderRadius: 99, color: '#BBABE0' }}><Glyph e="👀" /> Provando: {tryOn.name}</span></div>}
         </DragonHabitat>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '6px 6px 6px 0', minWidth: 0 }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace' }}>🏰 COVIL DO DRAGÃO</div>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'var(--font-label)' }}><Glyph e="🏰" /> COVIL DO DRAGÃO</div>
           {editing ? (
             <div style={{ display: 'flex', gap: 6 }}>
               <input autoFocus value={nameDraft} maxLength={18} onChange={e => setNameDraft(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') saveName(); if (e.key === 'Escape') setEditing(false); }}
-                style={{ flex: 1, fontSize: 20, fontWeight: 800, padding: '6px 10px', borderRadius: 10, border: '1.5px solid #7C5CFF', fontFamily: 'Space Grotesk, sans-serif' }} />
+                style={{ flex: 1, fontSize: 20, fontWeight: 800, padding: '6px 10px', borderRadius: 10, border: '1.5px solid #7C5CFF', fontFamily: 'var(--font-display)' }} />
               <button className="dg-btn dg-btn-primary" onClick={saveName}>Salvar</button>
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span className="font-display" style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.02em' }}>{d.name}</span>
-              <button className="btn-ghost" style={{ padding: '3px 8px', fontSize: 12 }} title="Renomear" onClick={() => { setNameDraft(d.name); setEditing(true); }}>✏️</button>
+              <button className="btn-ghost" style={{ padding: '3px 8px', fontSize: 12 }} title="Renomear" onClick={() => { setNameDraft(d.name); setEditing(true); }}><Glyph e="✏️" /></button>
             </div>
           )}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            <span className="dg-chip" style={{ background: 'rgba(124,92,255,0.12)', color: '#5B3FD6', border: '1px solid rgba(124,92,255,0.3)' }}>FASE {evo.stage.id}/8 · {evo.stage.name.toUpperCase()}</span>
-            <span className="dg-chip" style={{ background: `${moodInfo.color}18`, color: moodInfo.color, border: `1px solid ${moodInfo.color}44` }}>{moodInfo.icon} {moodInfo.label}</span>
+            <span className="dg-chip" style={{ background: 'rgba(124,92,255,0.12)', color: '#BBABE0', border: '1px solid rgba(124,92,255,0.3)' }}>FASE {evo.stage.id}/8 · {evo.stage.name.toUpperCase()}</span>
+            <span className="dg-chip" style={{ background: `${moodInfo.color}18`, color: moodInfo.color, border: `1px solid ${moodInfo.color}44` }}><Glyph e={moodInfo.icon} /> {moodInfo.label}</span>
             <ComboChip streak={shared.streak} />
             <GemBadge gems={d.gems} />
           </div>
@@ -988,13 +988,13 @@ function DragonLairTab({ shared, setShared, objState, discState, onShare }) {
           <StatBar icon="💜" label="Afeto — constância, carinho e missões" value={v.affection} from="#FBCFE8" to="#EC4899" />
           <EvolutionProgress evo={evo} />
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', position: 'relative' }}>
-            <button className="dg-btn" onClick={() => { window.SFX && window.SFX.pop(); setFeedOpen(o => !o); }}>🍪 Alimentar</button>
-            <button className="dg-btn dg-btn-primary" onClick={() => onShare && onShare({ kind: 'profile' })}>📸 Card do dragão</button>
-            <button className="dg-btn" onClick={() => onShare && onShare({ kind: 'streak' })}>🔥 Card de constância</button>
+            <button className="dg-btn" onClick={() => { window.SFX && window.SFX.pop(); setFeedOpen(o => !o); }}><Glyph e="🍪" /> Alimentar</button>
+            <button className="dg-btn dg-btn-primary" onClick={() => onShare && onShare({ kind: 'profile' })}><Glyph e="📸" /> Card do dragão</button>
+            <button className="dg-btn" onClick={() => onShare && onShare({ kind: 'streak' })}><Glyph e="🔥" /> Card de constância</button>
             {feedOpen && <div style={{ position: 'absolute', left: 0, bottom: 44, zIndex: 20, width: 290 }}><FeedPicker core={core} onClose={() => setFeedOpen(false)} /></div>}
           </div>
           <div style={{ fontSize: 10.5, color: 'var(--text-dim)', lineHeight: 1.45 }}>
-            💡 Toque no dragão para fazer carinho. Ele sente quando você estuda: horas enchem a Mana, questões enchem o Saber e a constância enche o Afeto.
+            <Glyph e="💡" /> Toque no dragão para fazer carinho. Ele sente quando você estuda: horas enchem a Mana, questões enchem o Saber e a constância enche o Afeto.
           </div>
         </div>
       </div>
@@ -1004,17 +1004,17 @@ function DragonLairTab({ shared, setShared, objState, discState, onShare }) {
       <div className="dg-lair-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.2fr) minmax(0,1fr)', gap: 16 }}>
         <DailyQuestsCard shared={shared} setShared={setShared} />
         <div className="glass" style={{ padding: '16px 18px' }}>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', marginBottom: 12 }}>📊 VOCÊS DOIS</div>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 800, fontFamily: 'var(--font-label)', marginBottom: 12 }}><Glyph e="📊" /> VOCÊS DOIS</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0,1fr))', gap: 8 }}>
             {statTiles.map(s => (
               <div key={s.label} style={{ padding: '10px 12px', borderRadius: 12, background: `${s.color}10`, border: `1px solid ${s.color}26` }}>
-                <div style={{ fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 800, letterSpacing: '0.06em', fontFamily: 'JetBrains Mono, monospace' }}>{s.icon} {s.label.toUpperCase()}</div>
+                <div style={{ fontSize: 9.5, color: 'var(--text-muted)', fontWeight: 800, letterSpacing: '0.06em', fontFamily: 'var(--font-num)' }}><Glyph e={s.icon} /> {s.label.toUpperCase()}</div>
                 <div className="num font-display" style={{ fontSize: 22, fontWeight: 800, color: s.color }}>{s.value}</div>
               </div>
             ))}
           </div>
           <div style={{ marginTop: 12, padding: '10px 12px', borderRadius: 12, background: 'linear-gradient(135deg, rgba(251,191,36,0.12), rgba(249,115,22,0.1))', border: '1px solid rgba(249,115,22,0.25)' }}>
-            <div style={{ fontSize: 11.5, fontWeight: 800, color: '#C2410C' }}>🔥 Chama do Dragão</div>
+            <div style={{ fontSize: 11.5, fontWeight: 800, color: '#EEAE8E' }}><Glyph e="🔥" /> Chama do Dragão</div>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.45, marginTop: 3 }}>
               Constância multiplica XP e cristais das sessões: 3 dias <b>x1.1</b> · 7 dias <b>x1.25</b> · 14 dias <b>x1.5</b> · 30 dias <b>x2</b>.
             </div>
@@ -1033,12 +1033,9 @@ function DragonLairTab({ shared, setShared, objState, discState, onShare }) {
 // ══════════════════════════════════════════════════════════════
 function GemCounterChip({ gems, onClick }) {
   return (
-    <button id="gem-counter" onClick={onClick} title="Cristais arcanos — gaste na loja do Covil" style={{
-      display: 'flex', alignItems: 'center', gap: 6, padding: '7px 13px', borderRadius: 10, cursor: 'pointer',
-      background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.25)', boxShadow: '0 0 0 1px rgba(255,255,255,0.6) inset',
-    }}>
-      <span style={{ fontSize: 13, filter: 'drop-shadow(0 0 4px rgba(56,189,248,0.7))' }}>💎</span>
-      <span className="num" style={{ fontSize: 13, fontWeight: 700, color: '#0369A1' }}>{(gems || 0).toLocaleString('pt-BR')}</span>
+    <button id="gem-counter" className="ld-chip" onClick={onClick} title="Cristais arcanos — gaste na loja do Covil">
+      <G name="gem" size={16} color="#9D8CFF" style={{ filter: 'drop-shadow(0 0 5px rgba(157,140,255,0.7))' }} />
+      <span className="num" style={{ color: '#D6CFFF' }}>{(gems || 0).toLocaleString('pt-BR')}</span>
     </button>
   );
 }
@@ -1047,10 +1044,10 @@ function SoundToggle() {
   const [muted, setMuted] = React.useState(() => window.SFX ? window.SFX.isMuted() : false);
   React.useEffect(() => window.SFX ? window.SFX.subscribe(setMuted) : undefined, []);
   return (
-    <button onClick={() => window.SFX && window.SFX.setMuted(!muted)} title={muted ? 'Ativar sons' : 'Silenciar sons'} style={{
-      width: 36, height: 34, borderRadius: 10, cursor: 'pointer', fontSize: 15,
-      background: 'rgba(91,71,184,0.06)', border: '1px solid rgba(91,71,184,0.18)',
-    }}>{muted ? '🔇' : '🔊'}</button>
+    <button className="ld-chip" onClick={() => window.SFX && window.SFX.setMuted(!muted)} aria-label={muted ? 'Ativar sons' : 'Silenciar sons'} title={muted ? 'Ativar sons' : 'Silenciar sons'}
+      style={{ width: 38, padding: 0, justifyContent: 'center' }}>
+      <G name={muted ? 'mute' : 'sound'} size={17} color={muted ? '#8F88A8' : '#E8C47A'} />
+    </button>
   );
 }
 

@@ -3,11 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>🐉 TOGA</title>
+<title>Lendário · Estude como uma lenda</title>
+<meta name="description" content="Lendário — seu grimório de estudos para concursos: edital, constância, simulados e um dragão que evolui com você." />
+<meta name="theme-color" content="#0B0914" />
+<meta name="color-scheme" content="dark" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Lendário" />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=toga4" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=lendario1" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
@@ -17,11 +27,12 @@
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="data.jsx"></script>
 <script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="brand.jsx?v=1"></script>
 <script type="text/babel" src="shield-badge.jsx"></script>
 <script type="text/babel" src="sfx.jsx"></script>
 <script type="text/babel" src="splash.jsx"></script>
 <script type="text/babel" src="pet.jsx"></script>
-<script type="text/babel" src="header.jsx?v=4"></script>
+<script type="text/babel" src="header.jsx?v=5"></script>
 <script type="text/babel" src="metrics-row.jsx"></script>
 <script type="text/babel" src="gavel-bar.jsx"></script>
 <script type="text/babel" src="syllabus-matrix.jsx"></script>
@@ -44,7 +55,7 @@ return (
 className={`glass ${urgent ? 'pulse-amber' : ''}`}
 style={{ padding: '14px 18px', minWidth: 240, flexShrink: 0 }}>
 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-<div style={{ fontSize: 11, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+<div style={{ fontSize: 11, letterSpacing: '0.15em', color: 'var(--text-dim)', fontFamily: 'var(--font-label)' }}>
 CONCURSO
 </div>
 {urgent && (
@@ -61,14 +72,14 @@ PRÓXIMO
 {days}
 </span>
 <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>dias</span>
-<span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 'auto', fontFamily: 'JetBrains Mono, monospace' }}>
+<span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 'auto', fontFamily: 'var(--font-num)' }}>
 {new Date(c.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
 </span>
 </div>
-<div style={{ height: 4, background: 'rgba(30,32,48,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+<div style={{ height: 4, background: 'rgba(243,235,221,0.06)', borderRadius: 4, overflow: 'hidden' }}>
 <div className="gradient-bar-green-cyan" style={{ height: '100%', width: `${Math.min(100, Math.max(0, 100 - (days || 0) / 2))}%` }} />
 </div>
-<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace' }}>
+<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)' }}>
 <span>Preparação</span>
 <span>{Math.round(Math.min(100, Math.max(0, 100 - (days || 0) / 2)))}%</span>
 </div>
@@ -83,7 +94,7 @@ PRÓXIMO
 })}
 <button onClick={onAddConcurso} className="glass" style={{
 minWidth: 140, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-gap: 6, color: 'var(--text-muted)', cursor: 'pointer', border: '1px dashed rgba(30,32,48,0.12)',
+gap: 6, color: 'var(--text-muted)', cursor: 'pointer', border: '1px dashed rgba(243,235,221,0.12)',
 background: 'transparent',
 }}>
 <I.plus size={20} />
@@ -103,7 +114,7 @@ window.ConcursoTimeline = ConcursoTimeline;
 <script type="text/babel" src="simulados.jsx"></script>
 <script type="text/babel" src="constancia.jsx"></script>
 <script type="text/babel">
-// TOGA — Insights Panel
+// Lendário — Insights Panel
 function computeInsights(shared, objState, discState) {
   const logs = shared.dailyLogs || [];
   const insights = [];
@@ -188,7 +199,7 @@ function computeInsights(shared, objState, discState) {
     if (hasCheck && t.lastStudiedAt) { const days = Math.floor((today - new Date(t.lastStudiedAt))/86400000); if (days >= 30) reviewCount++; }
   }));
   if (reviewCount > 0) {
-    insights.push({ id: 'review-due', priority: 6, icon: '🔄', color: '#F59E0B', title: `${reviewCount} tópico${reviewCount>1?'s':''} pedindo revisão`, body: 'Você tem tópicos que não revisita há mais de 30 dias. A revisão espaçada é crucial para a retenção.', action: null });
+    insights.push({ id: 'review-due', priority: 6, icon: '🔄', color: '#FFB057', title: `${reviewCount} tópico${reviewCount>1?'s':''} pedindo revisão`, body: 'Você tem tópicos que não revisita há mais de 30 dias. A revisão espaçada é crucial para a retenção.', action: null });
   }
   if (weekPct >= 90 && logs.length > 0) {
     insights.push({ id: 'great-rhythm', priority: 5, icon: '🏆', color: 'var(--esmeralda)', title: `Ritmo excelente! ${weekPct.toFixed(0)}% da meta`, body: `Você fez ${weeklyHours.toFixed(1)}h esta semana. Continue assim — consistência é o que aprova.`, action: null });
@@ -259,16 +270,16 @@ function InsightsPanel({ shared, objState, discState }) {
   if (visible.length === 0) return null;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 4 }}>
-      <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>
+      <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)' }}>
         INSIGHTS · {visible.length} HOJE
       </div>
       {visible.map(ins => (
         <div key={ins.id} className={`glass ${ins.pulse ? 'insight-pulse-warn' : ''}`} style={{
-          padding: '12px 14px', borderLeft: `3px solid ${ins.color}`,
+          padding: '12px 14px',
           display: 'flex', alignItems: 'flex-start', gap: 12,
           ...(ins.pulse ? { boxShadow: `0 0 0 1px ${ins.color}55, 0 0 18px ${ins.color}44` } : {}),
         }}>
-          <div style={{ fontSize: 20, flexShrink: 0, lineHeight: 1, marginTop: 1 }}>{ins.icon}</div>
+          <div style={{ fontSize: 20, flexShrink: 0, lineHeight: 1, marginTop: 1 }}><Glyph e={ins.icon} /></div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: ins.color, marginBottom: 3 }}>{ins.title}</div>
             <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.4 }}>{ins.body}</div>
@@ -290,6 +301,6 @@ window.InsightsPanel = InsightsPanel;
 <script type="text/babel" src="dragon-plus.jsx?v=1"></script>
 <script type="text/babel" src="share-card.jsx?v=1"></script>
 <script type="text/babel" src="weekly-report.jsx"></script>
-<script type="text/babel" src="app.jsx?v=4"></script>
+<script type="text/babel" src="app.jsx?v=5"></script>
 </body>
 </html>

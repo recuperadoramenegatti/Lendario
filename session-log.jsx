@@ -1,4 +1,4 @@
-// TOGA — Modal de Registro Enriquecido de Sessão (Bloco 5)
+// Lendário — Modal de Registro Enriquecido de Sessão (Bloco 5)
 // Suporta entrada manual de duração OU cronômetro (count-up).
 
 const STUDY_TYPES = [
@@ -129,8 +129,8 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
   const inputStyle = {
     width: '100%', boxSizing: 'border-box',
     padding: '9px 12px', borderRadius: 9,
-    border: '1px solid rgba(42,45,58,0.13)',
-    background: 'rgba(255,255,255,0.75)',
+    border: '1px solid rgba(243,235,221,0.13)',
+    background: 'rgba(22,19,40,0.75)',
     fontSize: 13, color: 'var(--grafite)',
     fontFamily: 'inherit', outline: 'none',
   };
@@ -143,7 +143,7 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
   return (
     <div onClick={onClose} style={{
       position: 'fixed', inset: 0, zIndex: 90,
-      background: 'rgba(11,61,92,0.35)', backdropFilter: 'blur(8px)',
+      background: 'radial-gradient(ellipse at 50% 30%, rgba(42,31,92,0.55), rgba(7,6,13,0.86))', backdropFilter: 'blur(8px)',
       display: 'grid', placeItems: 'center', padding: 16,
     }}>
       <div onClick={e => e.stopPropagation()} className="glass-strong anim-slide-up"
@@ -152,7 +152,7 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
         <button onClick={onClose} className="btn-ghost" style={{ position: 'absolute', top: 12, right: 12, padding: '4px 8px' }}>✕</button>
 
         <div style={{ marginBottom: 18 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.25em', color: 'var(--ciano)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>{isEdit ? 'EDITAR SESSÃO DE ESTUDOS' : 'REGISTRAR SESSÃO DE ESTUDOS'}</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.25em', color: 'var(--ciano)', fontFamily: 'var(--font-label)', fontWeight: 700 }}>{isEdit ? 'EDITAR SESSÃO DE ESTUDOS' : 'REGISTRAR SESSÃO DE ESTUDOS'}</div>
           <div className="font-display" style={{ fontSize: 20, fontWeight: 700, marginTop: 3 }}>{isEdit ? 'Atualize os dados' : 'O que você estudou?'}</div>
         </div>
 
@@ -192,7 +192,7 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
                 <button key={t} onClick={() => set('studyType', form.studyType === t ? '' : t)}
                   className={form.studyType === t ? 'btn-neon' : 'btn-ghost'}
                   style={{ fontSize: 12, padding: '5px 12px',
-                    ...(form.studyType === t ? { background: 'var(--petroleo)', borderColor: 'transparent', color: 'white' } : {}) }}>
+                    ...(form.studyType === t ? { background: 'var(--petroleo)', borderColor: 'transparent', color: '#FFFFFF' } : {}) }}>
                   {t}
                 </button>
               ))}
@@ -210,20 +210,20 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
               <button onClick={() => setChronoOpen(o => !o)}
                 className="btn-ghost"
                 style={{ fontSize: 11, padding: '3px 10px',
-                  ...(chronoOpen ? { background: 'rgba(0,184,212,0.1)', borderColor: 'rgba(0,184,212,0.4)', color: 'var(--ciano)' } : {}) }}>
-                ⏱ Usar cronômetro
+                  ...(chronoOpen ? { background: 'rgba(143,184,255,0.1)', borderColor: 'rgba(143,184,255,0.4)', color: 'var(--ciano)' } : {}) }}>
+                <Glyph e="⏱" /> Usar cronômetro
               </button>
             </div>
 
             {chronoOpen ? (
               <div style={{
                 padding: 14, borderRadius: 12,
-                background: 'rgba(0,184,212,0.06)',
-                border: '1px solid rgba(0,184,212,0.2)',
+                background: 'rgba(143,184,255,0.06)',
+                border: '1px solid rgba(143,184,255,0.2)',
                 textAlign: 'center',
               }}>
                 <div className="num" style={{
-                  fontSize: 36, fontWeight: 700, color: 'var(--petroleo)',
+                  fontSize: 36, fontWeight: 700, color: 'var(--text-heading)',
                   letterSpacing: '-0.02em', marginBottom: 12,
                 }}>
                   {String(ch).padStart(2,'0')}<span style={{ color: 'var(--text-dim)' }}>:</span>
@@ -234,8 +234,8 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
                   <button onClick={() => setChronoRunning(r => !r)}
                     className="btn-neon"
                     style={{ fontSize: 12, padding: '6px 16px',
-                      background: chronoRunning ? 'var(--coral)' : 'linear-gradient(135deg, var(--petroleo), var(--ciano))',
-                      borderColor: 'transparent', color: 'white' }}>
+                      background: chronoRunning ? 'var(--coral)' : 'var(--grad-primary)',
+                      borderColor: 'transparent', color: 'var(--on-primary)' }}>
                     {chronoRunning ? '⏸ Pausar' : '▶ Iniciar'}
                   </button>
                   <button onClick={resetChrono} className="btn-ghost" style={{ fontSize: 12, padding: '6px 14px' }}>
@@ -243,7 +243,7 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
                   </button>
                   <button onClick={applyChrono} className="btn-ghost"
                     style={{ fontSize: 12, padding: '6px 14px',
-                      background: 'rgba(0,168,107,0.1)', borderColor: 'rgba(0,168,107,0.4)', color: 'var(--esmeralda)' }}
+                      background: 'rgba(79,209,165,0.1)', borderColor: 'rgba(79,209,165,0.4)', color: 'var(--esmeralda)' }}
                     disabled={chronoSecs === 0}>
                     ✓ Aplicar
                   </button>
@@ -312,8 +312,8 @@ function SessionLogModal({ open, subjects, onSave, onClose, customStudyTypes = [
         <button onClick={handleSave} className="btn-neon" style={{
           width: '100%', justifyContent: 'center', marginTop: 20,
           padding: '12px', fontSize: 14,
-          background: 'linear-gradient(135deg, var(--petroleo), var(--ciano))',
-          borderColor: 'transparent', color: 'white',
+          background: 'var(--grad-primary)',
+          borderColor: 'transparent', color: 'var(--on-primary)',
         }}>
           {isEdit ? 'Salvar alterações' : 'Salvar sessão'}
         </button>

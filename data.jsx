@@ -1,4 +1,4 @@
-// TOGA — modelo de dados, defaults, helpers
+// Lendário — modelo de dados, defaults, helpers
 
 const INITIAL_SUBJECTS_OBJ = [
   {
@@ -570,12 +570,12 @@ function getTotalStatsDisc(subjects) {
 
 function getLevelInfo(xp) {
   const tiers = [
-    { min: 0,    max: 149,     name: 'Aspirante',        color: '#7a7a8c' },
-    { min: 150,  max: 399,     name: 'Estagiário(a)',    color: '#00B8D4' },
-    { min: 400,  max: 899,     name: 'Advogado(a)',      color: '#00A86B' },
-    { min: 900,  max: 1999,    name: 'Aprovado(a)',      color: '#C9A961' },
-    { min: 2000, max: 3999,    name: 'Nomeado(a)',       color: '#5B47B8' },
-    { min: 4000, max: Infinity, name: 'Empossado(a)',    color: '#E85D5D' },
+    { min: 0,    max: 149,     name: 'Aspirante',        color: '#E2DDE0' },
+    { min: 150,  max: 399,     name: 'Estagiário(a)',    color: '#8FB8FF' },
+    { min: 400,  max: 899,     name: 'Advogado(a)',      color: '#4FD1A5' },
+    { min: 900,  max: 1999,    name: 'Aprovado(a)',      color: '#E8C47A' },
+    { min: 2000, max: 3999,    name: 'Nomeado(a)',       color: '#B7AAFF' },
+    { min: 4000, max: Infinity, name: 'Empossado(a)',    color: '#FF7A8A' },
   ];
   const tier = tiers.find(t => xp >= t.min && xp <= t.max) || tiers[0];
   const next = tiers[tiers.indexOf(tier) + 1];
@@ -592,28 +592,28 @@ function daysUntil(iso) {
 // ── Pet System ──
 const PET_STAGES = [
   { stage: 1, name: 'Ovinho Místico',         minXp: 0,    nextXp: 50,
-    color: '#fff5e0', accent: '#C9A961', glow: '#E8C97A', shellColor: '#fff0d8',
+    color: '#fff5e0', accent: '#E8C47A', glow: '#E8C97A', shellColor: '#fff0d8',
     desc: 'Algo místico está adormecido aqui dentro… A jornada começa em silêncio.' },
   { stage: 2, name: 'Ovo Trincando',          minXp: 50,   nextXp: 150,
-    color: '#fff0d0', accent: '#5B47B8', glow: '#7B67D8', shellColor: '#ffe5b8',
+    color: '#fff0d0', accent: '#B7AAFF', glow: '#C9C1FF', shellColor: '#ffe5b8',
     desc: 'A casca começa a ceder! Sinais de vida pulsam por dentro.' },
   { stage: 3, name: 'Filhote Recém-Eclodido', minXp: 150,  nextXp: 400,
-    color: '#e8e0ff', accent: '#7B67D8', glow: '#5B47B8',
+    color: '#e8e0ff', accent: '#C9C1FF', glow: '#B7AAFF',
     desc: 'Eclodiu! Olhos enormes descobrem o mundo pela primeira vez. 🌱' },
   { stage: 4, name: 'Dragãozinho Curioso',    minXp: 400,  nextXp: 900,
-    color: '#d8d0f8', accent: '#5B47B8', glow: '#7B67D8',
+    color: '#d8d0f8', accent: '#B7AAFF', glow: '#C9C1FF',
     desc: 'Pequenos chifrinhos despontaram. Já ensaia os primeiros voos curtos.' },
   { stage: 5, name: 'Dragão Jovem',           minXp: 900,  nextXp: 2000,
-    color: '#c8b8f8', accent: '#4A37A8', glow: '#7B67D8',
+    color: '#c8b8f8', accent: '#4A37A8', glow: '#C9C1FF',
     desc: 'Asas mais firmes, olhar determinado. Sua jornada se intensifica. ✨' },
   { stage: 6, name: 'Dragão Adulto',          minXp: 2000, nextXp: 4000,
-    color: '#a8a0e8', accent: '#3A2780', glow: '#5B47B8',
+    color: '#a8a0e8', accent: '#3A2780', glow: '#B7AAFF',
     desc: 'Forma plena. Sabedoria nos olhos. Pronto para grandes batalhas jurídicas.' },
   { stage: 7, name: 'Dragão Concurseiro',     minXp: 4000, nextXp: 7000,
-    color: '#9488f8', accent: '#2A1860', glow: '#E85D5D',
+    color: '#9488f8', accent: '#2A1860', glow: '#FF7A8A',
     desc: 'Vestiu a toga! Segura o livro da Lei. Pronto para a posse. ⚖️' },
   { stage: 8, name: 'Empossado(a)',           minXp: 7000, nextXp: Infinity,
-    color: '#b0a4f8', accent: '#C9A961', glow: '#E8C97A',
+    color: '#b0a4f8', accent: '#E8C47A', glow: '#E8C97A',
     desc: 'Forma final. Aura de justiça encarnada. A aprovação chegou. 👑' },
 ];
 

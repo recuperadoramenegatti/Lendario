@@ -1,4 +1,4 @@
-// TOGA — Página de Estatísticas (Bloco 5)
+// Lendário — Página de Estatísticas (Bloco 5)
 
 function ActivityCurve({ logs }) {
   const { useState: useSt, useRef, useEffect } = React;
@@ -57,14 +57,14 @@ function ActivityCurve({ logs }) {
     <div className="glass" style={{ padding: 18 }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
         <div>
-          <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)' }}>
             CURVA DE ATIVIDADE · ÚLTIMOS 30 DIAS
           </div>
           <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
             Passe o mouse para ver detalhes do dia (horas e questões).
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 14, fontSize: 11, color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>
+        <div style={{ display: 'flex', gap: 14, fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-num)', fontWeight: 600 }}>
           <span><span style={{ display: 'inline-block', width: 10, height: 10, background: 'var(--ciano)', borderRadius: 3, marginRight: 6, verticalAlign: 'middle' }} />horas</span>
           <span><span style={{ display: 'inline-block', width: 10, height: 10, background: 'var(--esmeralda)', borderRadius: 3, marginRight: 6, verticalAlign: 'middle' }} />questões</span>
         </div>
@@ -88,8 +88,8 @@ function ActivityCurve({ logs }) {
           {/* Y axis grid + labels */}
           {yAxis.map((g, i) => (
             <g key={i}>
-              <line x1={PAD_L} x2={width - PAD_R} y1={g.y} y2={g.y} stroke="rgba(30,32,48,0.06)" strokeDasharray={i === 0 ? '0' : '3 4'} />
-              <text x={PAD_L - 8} y={g.y + 3} fontSize="10" textAnchor="end" fill="rgba(90,100,120,0.7)" fontFamily="JetBrains Mono, monospace">{g.v.toFixed(1)}h</text>
+              <line x1={PAD_L} x2={width - PAD_R} y1={g.y} y2={g.y} stroke="rgba(243,235,221,0.06)" strokeDasharray={i === 0 ? '0' : '3 4'} />
+              <text x={PAD_L - 8} y={g.y + 3} fontSize="10" textAnchor="end" fill="rgba(179,171,199,0.7)" fontFamily="Manrope, sans-serif">{g.v.toFixed(1)}h</text>
             </g>
           ))}
           {/* Area under hours line */}
@@ -117,14 +117,14 @@ function ActivityCurve({ logs }) {
           {/* Hours dots */}
           {last30.map((d, i) => (
             <circle key={'h'+i} cx={xAt(i)} cy={yH(d.h)} r={d.isToday ? 4.5 : 3}
-              fill={d.isToday ? 'var(--petroleo)' : 'var(--ciano)'}
+              fill={d.isToday ? '#E8C47A' : 'var(--ciano)'}
               stroke="white" strokeWidth="1.5" />
           ))}
           {/* X axis labels (sparse) */}
           {last30.map((d, i) => {
             if (i % 5 !== 0 && i !== last30.length - 1) return null;
             return (
-              <text key={'xl'+i} x={xAt(i)} y={H - 6} fontSize="9" textAnchor="middle" fill="rgba(90,100,120,0.6)" fontFamily="JetBrains Mono, monospace">
+              <text key={'xl'+i} x={xAt(i)} y={H - 6} fontSize="9" textAnchor="middle" fill="rgba(179,171,199,0.6)" fontFamily="Manrope, sans-serif">
                 {new Date(d.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
               </text>
             );
@@ -135,7 +135,7 @@ function ActivityCurve({ logs }) {
             const hx = xAt(hover.i);
             return (
               <g>
-                <line x1={hx} x2={hx} y1={PAD_T} y2={PAD_T + innerH} stroke="rgba(11,61,92,0.35)" strokeDasharray="3 3" />
+                <line x1={hx} x2={hx} y1={PAD_T} y2={PAD_T + innerH} stroke="rgba(74,54,196,0.35)" strokeDasharray="3 3" />
                 <circle cx={hx} cy={yH(d.h)} r={6} fill="white" stroke="var(--ciano)" strokeWidth="2.5" />
               </g>
             );
@@ -154,15 +154,15 @@ function ActivityCurve({ logs }) {
               pointerEvents: 'none',
               padding: '10px 12px',
               borderRadius: 10,
-              background: 'rgba(255,255,255,0.96)',
-              border: '1px solid rgba(0,184,212,0.35)',
-              boxShadow: '0 8px 24px rgba(11,61,92,0.18)',
+              background: 'rgba(22,19,40,0.96)',
+              border: '1px solid rgba(143,184,255,0.35)',
+              boxShadow: '0 8px 24px rgba(74,54,196,0.18)',
               fontSize: 11,
-              fontFamily: 'JetBrains Mono, monospace',
+              fontFamily: 'var(--font-num)',
               minWidth: 150,
               zIndex: 5,
             }}>
-              <div style={{ fontWeight: 800, color: 'var(--petroleo)', textTransform: 'capitalize', marginBottom: 4 }}>{fmtDate(d.date)}</div>
+              <div style={{ fontWeight: 800, color: 'var(--text-heading)', textTransform: 'capitalize', marginBottom: 4 }}>{fmtDate(d.date)}</div>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
                 <span style={{ color: 'var(--text-muted)' }}>Horas</span>
                 <span style={{ fontWeight: 800, color: 'var(--ciano)' }}>{d.h.toFixed(1)}h</span>
@@ -269,7 +269,7 @@ function PieChart({ data, size = 180, donut = true, formatValue }) {
                 <div className="num" style={{ fontSize: 22, fontWeight: 800, color: s.color, letterSpacing: '-0.02em' }}>
                   {pct.toFixed(0)}<span style={{ fontSize: 12, opacity: 0.7 }}>%</span>
                 </div>
-                <div style={{ fontSize: 9.5, letterSpacing: '0.14em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', marginTop: 2, maxWidth: size * 0.6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <div style={{ fontSize: 9.5, letterSpacing: '0.14em', color: 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-label)', marginTop: 2, maxWidth: size * 0.6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {s.label}
                 </div>
               </div>
@@ -434,11 +434,11 @@ function StatsPage({ shared, objState, discState }) {
   const lastWeek = weekH(1);
 
   // ── chart colors ──
-  const COLORS = ['var(--ciano)','var(--esmeralda)','var(--dourado)','var(--tinta)','var(--coral)','#F59E0B','#00B8D4','#5B47B8'];
+  const COLORS = ['var(--ciano)','var(--esmeralda)','var(--dourado)','var(--tinta)','var(--coral)','#FFB057','#8FB8FF','#B7AAFF'];
 
   // ── helpers ──
   const Bar = ({ pct, color, height = 8 }) => (
-    <div style={{ background: 'rgba(42,45,58,0.08)', borderRadius: 99, overflow: 'hidden', height }}>
+    <div style={{ background: 'rgba(243,235,221,0.08)', borderRadius: 99, overflow: 'hidden', height }}>
       <div style={{ width: `${Math.min(100, pct)}%`, height: '100%', background: color, borderRadius: 99, transition: 'width 600ms ease' }} />
     </div>
   );
@@ -446,8 +446,8 @@ function StatsPage({ shared, objState, discState }) {
   if (logs.length === 0 && Object.keys(hoursByDisc).length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 24px' }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>📊</div>
-        <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--petroleo)', marginBottom: 8 }}>
+        <div style={{ fontSize: 48, marginBottom: 12 }}><Glyph e="📊" /></div>
+        <div className="font-display" style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-heading)', marginBottom: 8 }}>
           Nenhum dado ainda
         </div>
         <div style={{ fontSize: 14, color: 'var(--text-muted)', maxWidth: 360, margin: '0 auto' }}>
@@ -462,7 +462,7 @@ function StatsPage({ shared, objState, discState }) {
 
       {/* Period selector */}
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-        <div className="font-display" style={{ fontSize: 20, fontWeight: 700, color: 'var(--petroleo)', flex: 1 }}>
+        <div className="font-display" style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-heading)', flex: 1 }}>
           Suas Estatísticas
         </div>
         {[['7d','7 dias'],['30d','30 dias'],['all','Todo período']].map(([v,l]) => (
@@ -483,7 +483,7 @@ function StatsPage({ shared, objState, discState }) {
           { label: 'Dias ativos', value: activeDays, color: 'var(--dourado)', icon: '📅' },
         ].map((m,i) => (
           <div key={i} className="glass" style={{ padding: '12px 14px', textAlign: 'center' }}>
-            <div style={{ fontSize: 20 }}>{m.icon}</div>
+            <div style={{ fontSize: 20 }}><Glyph e={m.icon} /></div>
             <div className="num" style={{ fontSize: 22, fontWeight: 700, color: m.color, marginTop: 4 }}>{m.value}</div>
             <div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{m.label}</div>
           </div>
@@ -498,13 +498,13 @@ function StatsPage({ shared, objState, discState }) {
 
         {/* Comparação semanal */}
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'JetBrains Mono, monospace' }}>COMPARAÇÃO SEMANAL</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'var(--font-label)' }}>COMPARAÇÃO SEMANAL</div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', marginBottom: 8 }}>
             {[['Esta semana', thisWeek, 'var(--petroleo)'], ['Semana passada', lastWeek, 'var(--ardosia)']].map(([label, h, color]) => {
               const maxW = Math.max(thisWeek, lastWeek, 0.1);
               return (
                 <div key={label} style={{ flex: 1 }}>
-                  <div style={{ background: 'rgba(42,45,58,0.06)', borderRadius: 8, height: 80, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
+                  <div style={{ background: 'rgba(243,235,221,0.06)', borderRadius: 8, height: 80, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
                     <div style={{ width: '100%', height: `${(h/maxW)*100}%`, background: color, borderRadius: '8px 8px 0 0', minHeight: h > 0 ? 4 : 0, transition: 'height 600ms ease' }} />
                   </div>
                   <div className="num" style={{ fontSize: 18, fontWeight: 700, color, marginTop: 6 }}>{h.toFixed(1)}h</div>
@@ -514,10 +514,10 @@ function StatsPage({ shared, objState, discState }) {
             })}
             <div style={{ flex: 1, textAlign: 'center' }}>
               {thisWeek > lastWeek
-                ? <div><div style={{ fontSize: 28 }}>📈</div><div style={{ fontSize: 11, color: 'var(--esmeralda)', fontWeight: 700 }}>+{((thisWeek-lastWeek)/Math.max(lastWeek,0.1)*100).toFixed(0)}%</div></div>
+                ? <div><div style={{ fontSize: 28 }}><Glyph e="📈" /></div><div style={{ fontSize: 11, color: 'var(--esmeralda)', fontWeight: 700 }}>+{((thisWeek-lastWeek)/Math.max(lastWeek,0.1)*100).toFixed(0)}%</div></div>
                 : thisWeek < lastWeek
-                ? <div><div style={{ fontSize: 28 }}>📉</div><div style={{ fontSize: 11, color: 'var(--coral)', fontWeight: 700 }}>{((thisWeek-lastWeek)/Math.max(lastWeek,0.1)*100).toFixed(0)}%</div></div>
-                : <div style={{ fontSize: 28 }}>😐</div>
+                ? <div><div style={{ fontSize: 28 }}><Glyph e="📉" /></div><div style={{ fontSize: 11, color: 'var(--coral)', fontWeight: 700 }}>{((thisWeek-lastWeek)/Math.max(lastWeek,0.1)*100).toFixed(0)}%</div></div>
+                : <div style={{ fontSize: 28 }}><Glyph e="😐" /></div>
               }
             </div>
           </div>
@@ -531,7 +531,7 @@ function StatsPage({ shared, objState, discState }) {
       {/* Horas por disciplina (com %) lado a lado com Peso por disciplina (pizza) */}
       <div className="stats-dual-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 14 }}>
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'JetBrains Mono, monospace' }}>HORAS POR DISCIPLINA</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'var(--font-label)' }}>HORAS POR DISCIPLINA</div>
           {hoursByDiscArr.length === 0
             ? <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '8px 0' }}>Registre sessões com disciplina para ver este gráfico.</div>
             : hoursByDiscArr.map(([d, h], i) => {
@@ -555,7 +555,7 @@ function StatsPage({ shared, objState, discState }) {
         </div>
 
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'JetBrains Mono, monospace' }}>PESO POR DISCIPLINA · EDITAL</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'var(--font-label)' }}>PESO POR DISCIPLINA · EDITAL</div>
           {weightByDiscArr.length === 0
             ? <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '8px 0' }}>Defina pesos para as disciplinas na aba Edital para ver este gráfico.</div>
             : <PieChart
@@ -570,7 +570,7 @@ function StatsPage({ shared, objState, discState }) {
               />
           }
           {totalWeight > 0 && (
-            <div style={{ marginTop: 10, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, textAlign: 'center', letterSpacing: '0.05em' }}>
+            <div style={{ marginTop: 10, fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-num)', fontWeight: 600, textAlign: 'center', letterSpacing: '0.05em' }}>
               PESO TOTAL · {totalWeight}
             </div>
           )}
@@ -583,7 +583,7 @@ function StatsPage({ shared, objState, discState }) {
 
         {/* Tipo de estudo (pizza) */}
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'JetBrains Mono, monospace' }}>HORAS POR TIPO DE ESTUDO</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'var(--font-label)' }}>HORAS POR TIPO DE ESTUDO</div>
           {hoursByTypeArr.length === 0
             ? <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '8px 0' }}>Registre sessões com tipo de estudo para ver este gráfico.</div>
             : <PieChart
@@ -597,7 +597,7 @@ function StatsPage({ shared, objState, discState }) {
 
         {/* Chart 4 — % acerto por disciplina */}
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'JetBrains Mono, monospace' }}>% ACERTO POR DISCIPLINA</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'var(--font-label)' }}>% ACERTO POR DISCIPLINA</div>
           {accByDiscArr.length === 0
             ? <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '8px 0' }}>Registre sessões de questões com acertos/erros para ver este gráfico.</div>
             : accByDiscArr.map((item, i) => (
@@ -616,7 +616,7 @@ function StatsPage({ shared, objState, discState }) {
 
         {/* Chart 5 — Top 5 melhores disciplinas */}
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'JetBrains Mono, monospace' }}>TOP 5 MELHORES NO EDITAL</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'var(--font-label)' }}>TOP 5 MELHORES NO EDITAL</div>
           {bestSubjects.map((s, i) => (
             <div key={s.name} style={{ marginBottom: 8 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 3 }}>
@@ -630,7 +630,7 @@ function StatsPage({ shared, objState, discState }) {
 
         {/* Chart 6 — Top 5 piores disciplinas (no edital) */}
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'JetBrains Mono, monospace' }}>TOP 5 PIORES NO EDITAL</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'var(--font-label)' }}>TOP 5 PIORES NO EDITAL</div>
           {worstSubjects.map((s, i) => (
             <div key={s.name} style={{ marginBottom: 8 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 3 }}>
@@ -644,12 +644,12 @@ function StatsPage({ shared, objState, discState }) {
 
         {/* Chart 7 — Disciplinas negligenciadas */}
         <div className="glass" style={{ padding: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'JetBrains Mono, monospace' }}>DISCIPLINAS NEGLIGENCIADAS (7+ DIAS)</div>
+          <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 10, fontFamily: 'var(--font-label)' }}>DISCIPLINAS NEGLIGENCIADAS (7+ DIAS)</div>
           {neglected.length === 0
             ? <div style={{ fontSize: 13, color: 'var(--esmeralda)', fontWeight: 600, padding: '8px 0' }}>Tudo em dia!</div>
             : neglected.map((d, i) => (
-              <div key={d} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, padding: '8px 10px', background: 'rgba(232,93,93,0.06)', borderRadius: 8, border: '1px solid rgba(232,93,93,0.15)' }}>
-                <span style={{ fontSize: 14 }}>⚠️</span>
+              <div key={d} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, padding: '8px 10px', background: 'rgba(255,122,138,0.06)', borderRadius: 8, border: '1px solid rgba(255,122,138,0.15)' }}>
+                <span style={{ fontSize: 14 }}><Glyph e="⚠️" /></span>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--grafite)' }}>{d.length > 28 ? d.slice(0,26)+'…' : d}</span>
               </div>
             ))
@@ -684,14 +684,14 @@ function ConstanciaPercentCard({ logs, bestStreak }) {
   const pct = totalDays > 0 ? (fulfilledDays / totalDays) * 100 : 0;
   const currentStreak = (window.DA && window.DA.calcConstancia) ? window.DA.calcConstancia(logs || []) : 0;
   const record = Math.max(bestStreak || 0, (window.DA && window.DA.calcConstanciaRecord) ? window.DA.calcConstanciaRecord(logs || []) : 0, currentStreak);
-  const tier = pct >= 90 ? 'var(--esmeralda)' : pct >= 70 ? '#00b8d4' : pct >= 50 ? 'var(--ambar)' : 'var(--coral)';
+  const tier = pct >= 90 ? 'var(--esmeralda)' : pct >= 70 ? '#8FB8FF' : pct >= 50 ? 'var(--ambar)' : 'var(--coral)';
   return (
     <div className="glass" style={{ padding: 16 }}>
-      <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'JetBrains Mono, monospace' }}>% DE CONSTÂNCIA</div>
+      <div style={{ fontSize: 10, letterSpacing: '0.15em', color: 'var(--text-muted)', fontWeight: 700, marginBottom: 12, fontFamily: 'var(--font-label)' }}>% DE CONSTÂNCIA</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <div style={{ position: 'relative', width: 90, height: 90, flexShrink: 0 }}>
           <svg viewBox="0 0 100 100" width={90} height={90} style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}>
-            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(30,32,48,0.08)" strokeWidth="9" />
+            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(243,235,221,0.08)" strokeWidth="9" />
             <circle cx="50" cy="50" r="40" fill="none" stroke={tier} strokeWidth="9"
               strokeDasharray={`${(pct/100)*251.3} 251.3`} strokeLinecap="round"
               style={{ filter: `drop-shadow(0 0 6px ${tier}66)`, transition: 'stroke-dasharray 700ms cubic-bezier(0.16,1,0.3,1)' }} />
@@ -707,11 +707,11 @@ function ConstanciaPercentCard({ logs, bestStreak }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
               <span style={{ color: 'var(--text-muted)' }}>Atual</span>
-              <span className="num" style={{ color: 'var(--esmeralda)', fontWeight: 700 }}>🔥 {currentStreak}d</span>
+              <span className="num" style={{ color: 'var(--esmeralda)', fontWeight: 700 }}><Glyph e="🔥" /> {currentStreak}d</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
               <span style={{ color: 'var(--text-muted)' }}>Recorde</span>
-              <span className="num" style={{ color: 'var(--dourado)', fontWeight: 700 }}>🏆 {record}d</span>
+              <span className="num" style={{ color: 'var(--dourado)', fontWeight: 700 }}><Glyph e="🏆" /> {record}d</span>
             </div>
           </div>
         </div>

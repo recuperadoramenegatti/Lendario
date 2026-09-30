@@ -1,4 +1,4 @@
-// TOGA — Dragão+ (camada de recompensas extras sobre o motor do dragão)
+// Lendário — Dragão+ (camada de recompensas extras sobre o motor do dragão)
 // Complementa dragon-game.jsx / dragon-ui.jsx sem substituí-los:
 // • Níveis contínuos (vitórias frequentes) + banner de "subiu de nível" (+5 💎 por nível)
 // • "Insight Crítico": 12% de chance de XP em dobro ao registrar uma sessão
@@ -220,7 +220,7 @@
         gr.addColorStop(0, '#E0F2FE'); gr.addColorStop(0.5, p.color); gr.addColorStop(1, '#4C1D95');
         g2.fillStyle = gr; g2.fill(); g2.strokeStyle = 'rgba(255,255,255,0.8)'; g2.lineWidth = 0.8; g2.stroke();
       } else if (p.kind === 'glyph') {
-        g2.fillStyle = p.color; g2.font = `700 ${size * 2.2}px "Space Grotesk", serif`;
+        g2.fillStyle = p.color; g2.font = `700 ${size * 2.2}px "Cormorant Garamond", serif`;
         g2.textAlign = 'center'; g2.textBaseline = 'middle'; g2.fillText(p.glyph, 0, 0);
       } else { g2.fillStyle = '#fff'; g2.beginPath(); g2.arc(0, 0, size * 0.4, 0, 7); g2.fill(); }
       g2.restore();
@@ -235,7 +235,7 @@
       g2.save();
       g2.translate(tx.x, tx.y - e * tx.rise); g2.scale(sc, sc);
       g2.globalAlpha = t > 0.7 ? (1 - t) / 0.3 : 1;
-      g2.font = `800 ${tx.size}px "Space Grotesk", Inter, sans-serif`;
+      g2.font = `800 ${tx.size}px "Cormorant Garamond", Georgia, serif`;
       g2.textAlign = 'center'; g2.textBaseline = 'middle';
       g2.shadowColor = tx.color; g2.shadowBlur = 14;
       g2.lineWidth = 4; g2.strokeStyle = 'rgba(255,255,255,0.85)'; g2.strokeText(tx.text, 0, 0);
@@ -399,7 +399,7 @@
   //  INSIGHT CRÍTICO + BAÚS DE SABEDORIA
   // ════════════════════════════════════════════════════════════
   const CHESTS = {
-    comum:    { name: 'Baú de Madeira', min: 10, max: 18, color: '#D6A36A', glow: 'rgba(245,158,11,0.55)', wood: ['#B7773D', '#7A4520'], metal: ['#E5E7EB', '#6B7280'], gem: '#F59E0B' },
+    comum:    { name: 'Baú de Madeira', min: 10, max: 18, color: '#D6A36A', glow: 'rgba(255,176,87,0.55)', wood: ['#B7773D', '#7A4520'], metal: ['#E5E7EB', '#6B7280'], gem: '#FFB057' },
     raro:     { name: 'Baú Arcano',     min: 25, max: 40, color: '#A78BFA', glow: 'rgba(139,92,246,0.65)', wood: ['#7C3AED', '#3B0F7A'], metal: ['#F1F5F9', '#94A3B8'], gem: '#67E8F9' },
     lendario: { name: 'Baú Lendário',   min: 70, max: 100, color: '#FCD34D', glow: 'rgba(252,211,77,0.75)', wood: ['#FCD34D', '#B45309'], metal: ['#FFFBEB', '#D97706'], gem: '#F472B6' },
   };
@@ -476,7 +476,7 @@
 
   // ── Medalha (substitui o emblema redondo em toda a Sala de Troféus) ──
   const MEDAL = {
-    bronze:   { colors: ['#FFE3C4', '#D8904F', '#7C3F16'], ribbon: ['#B45309', '#78350F'], glow: '#F59E0B' },
+    bronze:   { colors: ['#FFE3C4', '#D8904F', '#7C3F16'], ribbon: ['#B45309', '#78350F'], glow: '#FFB057' },
     prata:    { colors: ['#FFFFFF', '#C9D3E3', '#6B7A93'], ribbon: ['#6366F1', '#3730A3'], glow: '#A5B4FC' },
     ouro:     { colors: ['#FFF8C9', '#F5C542', '#9A5B06'], ribbon: ['#7C3AED', '#4C1D95'], glow: '#FCD34D' },
     lendario: { colors: ['#FCE7F3', '#C084FC', '#22D3EE'], ribbon: ['#DB2777', '#0891B2'], glow: '#E879F9' },
@@ -504,7 +504,23 @@
         <circle cx="50" cy="50" r="38" fill={`url(#${id}i)`} stroke={T.colors[2]} strokeWidth="1.5" />
         <circle cx="50" cy="50" r="33" fill="none" stroke={T.colors[1]} strokeOpacity="0.45" strokeWidth="0.8" strokeDasharray="1.5 3" />
         {[[30, 32], [71, 36], [66, 70], [33, 66]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r="0.9" fill="#fff" opacity="0.7" />)}
-        <text x="50" y="53" textAnchor="middle" dominantBaseline="middle" fontSize="30" style={{ filter: locked ? 'grayscale(1)' : 'drop-shadow(0 0 4px rgba(255,255,255,0.35))' }}>{icon}</text>
+        {(() => {
+          // Ícone gravado no metal (traço da marca); emojis sem equivalente seguem como texto
+          const hit = window.EMOJI_GLYPH && typeof icon === 'string' && (window.EMOJI_GLYPH[icon] || window.EMOJI_GLYPH[icon.replace(/\uFE0F/g, '')]);
+          const gp = hit && hit[0] !== 'dragon' && window.LD_GLYPHS ? window.LD_GLYPHS[hit[0]] : null;
+          if (hit && hit[0] === 'dragon' && window.LD_PATHS) return (
+            <g transform="translate(31 31) scale(0.32)" opacity={locked ? 0.5 : 0.92}>
+              {['horn1', 'horn2', 'body', 'spikes'].map(k => <path key={k} d={window.LD_PATHS[k]} fill="#1A1235" />)}
+              <path d={window.LD_PATHS.wing} fill="#1A1235" opacity="0.7" />
+            </g>
+          );
+          if (gp) return (
+            <g transform="translate(34 34) scale(1.34)" opacity={locked ? 0.5 : 0.92}>
+              <path d={gp} fill="none" stroke="#1A1235" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+          );
+          return <text x="50" y="53" textAnchor="middle" dominantBaseline="middle" fontSize="30" style={{ filter: locked ? 'grayscale(1)' : 'drop-shadow(0 0 4px rgba(255,255,255,0.35))' }}>{icon}</text>;
+        })()}
         {!locked && <g clipPath={`url(#${id}c)`}><rect className="medal-shine" x="-60" y="-10" width="40" height="120" fill={`url(#${id}s)`} transform="rotate(20 50 50)" /></g>}
         {locked && (
           <>
@@ -599,9 +615,9 @@
             <div className="wchest-hint">Toque {3 - taps}× para abrir</div>
           ) : (
             <div className="wchest-reward plus-pop">
-              <div className="wchest-num num">+{chest.gems} 💎</div>
+              <div className="wchest-num num">+{chest.gems} <Glyph e="💎" /></div>
               <div className="wchest-sub">Baú de Sabedoria · recompensa por estudar</div>
-              <button className="dg-btn dg-btn-gold" style={{ padding: '12px 28px', fontSize: 14 }} onClick={onClose}>Coletar ✨</button>
+              <button className="dg-btn dg-btn-gold" style={{ padding: '12px 28px', fontSize: 14 }} onClick={onClose}>Coletar <Glyph e="✨" /></button>
             </div>
           )}
         </div>
@@ -635,10 +651,10 @@
           <div className="reward-xp num">+{shown}<span>XP</span></div>
           <div className="reward-chips">
             <span className="reward-chip">Base {reward.base}</span>
-            {reward.mult > 1 && <span className="reward-chip chip-fire">🔥 Chama ×{reward.mult}</span>}
-            {reward.crit > 1 && <span className="reward-chip chip-crit">⚡ INSIGHT CRÍTICO ×2</span>}
-            {reward.extra > 0 && <span className="reward-chip">🛡️ Blindado +{reward.extra}</span>}
-            {reward.gems > 0 && <span className="reward-chip chip-gem">+{reward.gems} 💎</span>}
+            {reward.mult > 1 && <span className="reward-chip chip-fire"><Glyph e="🔥" /> Chama ×{reward.mult}</span>}
+            {reward.crit > 1 && <span className="reward-chip chip-crit"><Glyph e="⚡" /> INSIGHT CRÍTICO ×2</span>}
+            {reward.extra > 0 && <span className="reward-chip"><Glyph e="🛡️" /> Blindado +{reward.extra}</span>}
+            {reward.gems > 0 && <span className="reward-chip chip-gem">+{reward.gems} <Glyph e="💎" /></span>}
           </div>
         </div>
         {reward.chest && (
@@ -673,7 +689,7 @@
         <div className="levelup-core">
           <div className="levelup-eyebrow">SUBIU DE NÍVEL</div>
           <div className="levelup-num num">NÍVEL {level}</div>
-          {gems > 0 && <div className="levelup-gems">+{gems} 💎</div>}
+          {gems > 0 && <div className="levelup-gems">+{gems} <Glyph e="💎" /></div>}
         </div>
         <div className="levelup-wing levelup-wing-r" />
       </div>

@@ -1,14 +1,14 @@
-// TOGA — Heatmaps v2 — GitHub-style density, rounded cells, smooth color transitions
+// Lendário — Heatmaps v2 — GitHub-style density, rounded cells, smooth color transitions
 // + Ultra-premium ConcursoDonuts redesign
 
 function SubjectDonuts({ subjects, mode = 'objetiva' }) {
-  const colors = ['#00b8d4', 'var(--tinta)', 'var(--esmeralda)', '#f59e0b', 'var(--coral)', '#00b8d4', 'var(--tinta)'];
-  const colorsRaw = ['#00b8d4', '#5B47B8', '#00A86B', '#f59e0b', '#E85D5D', '#00b8d4', '#5B47B8'];
+  const colors = ['#8FB8FF', 'var(--tinta)', 'var(--esmeralda)', '#FFB057', 'var(--coral)', '#8FB8FF', 'var(--tinta)'];
+  const colorsRaw = ['#8FB8FF', '#B7AAFF', '#4FD1A5', '#FFB057', '#FF7A8A', '#8FB8FF', '#B7AAFF'];
   const compute = mode === 'discursiva' ? window.DA.getSubjectCompletionDisc : window.DA.getSubjectCompletionObj;
 
   return (
     <div className="glass" style={{ padding: '16px 18px' }}>
-      <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', marginBottom: 16, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, textTransform: 'uppercase' }}>
+      <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', marginBottom: 16, fontFamily: 'var(--font-label)', fontWeight: 700, textTransform: 'uppercase' }}>
         CONCLUSÃO POR DISCIPLINA
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))', gap: 12 }}>
@@ -109,13 +109,14 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
   // Smooth gradient using oklch/color-mix
   const cellBg = (v, placeholder) => {
     if (placeholder) return 'transparent';
-    if (v === 0) return 'rgba(30,32,48,0.045)';
+    if (v === 0) return 'rgba(243,235,221,0.045)';
     const t = Math.min(1, v / max);
     // 4 intensity levels for premium look
-    if (t < 0.25) return `color-mix(in oklab, ${color} 22%, white 78%)`;
-    if (t < 0.50) return `color-mix(in oklab, ${color} 42%, white 58%)`;
-    if (t < 0.75) return `color-mix(in oklab, ${color} 65%, white 35%)`;
-    return `color-mix(in oklab, ${color} 88%, white 12%)`;
+    // Escala sequencial de um só tom, do nanquim até a luz (tema escuro)
+    if (t < 0.25) return `color-mix(in oklab, ${color} 26%, #141124 74%)`;
+    if (t < 0.50) return `color-mix(in oklab, ${color} 48%, #141124 52%)`;
+    if (t < 0.75) return `color-mix(in oklab, ${color} 72%, #141124 28%)`;
+    return `color-mix(in oklab, ${color} 96%, #FFF6DE 4%)`;
   };
 
   const MONTHS_PT = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
@@ -127,7 +128,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
         <div>
-          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>
+          <div style={{ fontSize: 9.5, letterSpacing: '0.22em', color: 'var(--text-muted)', fontFamily: 'var(--font-label)', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>
             {title}
           </div>
           <div className="font-display" style={{ fontSize: 18, fontWeight: 700, marginTop: 2 }}>
@@ -139,15 +140,15 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
           {headerAction}
-          <div style={{ display: 'flex', gap: 4, padding: 3, background: 'rgba(30,32,48,0.04)', borderRadius: 8, border: '1px solid rgba(30,32,48,0.07)' }}>
+          <div style={{ display: 'flex', gap: 4, padding: 3, background: 'rgba(243,235,221,0.04)', borderRadius: 8, border: '1px solid rgba(243,235,221,0.07)' }}>
             {['month','year'].map(v => (
               <button key={v} onClick={() => setView(v)} style={{
                 padding: '4px 12px', borderRadius: 6, border: 'none', cursor: 'pointer',
                 fontSize: 11, fontWeight: 700, letterSpacing: '0.04em',
                 background: view === v ? 'var(--petroleo)' : 'transparent',
-                color: view === v ? 'white' : 'var(--text-muted)',
+                color: view === v ? '#F7E7C1' : 'var(--text-muted)',
                 transition: 'all 160ms ease',
-                boxShadow: view === v ? '0 2px 8px rgba(11,61,92,0.25)' : 'none',
+                boxShadow: view === v ? '0 2px 8px rgba(74,54,196,0.25)' : 'none',
               }}>
                 {v === 'month' ? 'Mês' : 'Ano'}
               </button>
@@ -170,7 +171,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: GAP_M }}>
               {DOWS.map((d, i) => (
-                <div key={'h'+i} style={{ textAlign: 'center', fontSize: 9, color: 'var(--text-dim)', fontWeight: 800, fontFamily: 'JetBrains Mono, monospace', paddingBottom: 4 }}>
+                <div key={'h'+i} style={{ textAlign: 'center', fontSize: 9, color: 'var(--text-dim)', fontWeight: 800, fontFamily: 'var(--font-num)', paddingBottom: 4 }}>
                   {d}
                 </div>
               ))}
@@ -192,7 +193,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
                       position: 'relative',
                       height: CELL_M, borderRadius: 8,
                       background: bg,
-                      border: `1px solid ${c.isToday ? color : (c.value > 0 ? 'transparent' : 'rgba(30,32,48,0.06)')}`,
+                      border: `1px solid ${c.isToday ? color : (c.value > 0 ? 'transparent' : 'rgba(243,235,221,0.06)')}`,
                       boxShadow: c.isToday ? `0 0 0 2px ${color}44, 0 0 8px ${color}33` : (c.value > 0 ? `0 1px 3px rgba(0,0,0,0.06)` : 'none'),
                       display: 'grid', placeItems: 'center',
                       opacity: isWeekend && c.value === 0 ? 0.55 : 1,
@@ -203,7 +204,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
                       position: 'absolute', top: 3, left: 4,
                       fontSize: 8.5, fontWeight: 700,
                       color: 'var(--text-dim)',
-                      fontFamily: 'JetBrains Mono, monospace',
+                      fontFamily: 'var(--font-num)',
                       letterSpacing: '0.02em',
                       lineHeight: 1,
                     }}>{day}</span>
@@ -211,7 +212,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
                       <span className="num" style={{
                         fontSize: valStr.length >= 4 ? 11 : 13,
                         fontWeight: 800,
-                        color: '#1a1c28',
+                        color: c.value / max >= 0.75 ? '#1A1235' : '#F3EBDD',
                         lineHeight: 1,
                         marginTop: 4,
                       }}>{valStr}</span>
@@ -245,7 +246,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
                 {DOWS_LABEL.map((l, i) => (
                   <div key={i} style={{
                     height: CELL_Y, fontSize: 8.5, color: 'var(--text-dim)',
-                    fontFamily: 'JetBrains Mono, monospace', fontWeight: 600,
+                    fontFamily: 'var(--font-num)', fontWeight: 600,
                     display: 'flex', alignItems: 'center', letterSpacing: '0.04em',
                     width: 22,
                   }}>{l}</div>
@@ -258,7 +259,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
                     <div key={i} style={{
                       position: 'absolute', left: m.col * (CELL_Y + GAP_Y),
                       fontSize: 9, color: 'var(--text-muted)',
-                      fontFamily: 'JetBrains Mono, monospace', fontWeight: 700,
+                      fontFamily: 'var(--font-num)', fontWeight: 700,
                       letterSpacing: '0.06em', textTransform: 'uppercase',
                     }}>{m.label}</div>
                   ))}
@@ -281,7 +282,7 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
                           width: CELL_Y, height: CELL_Y,
                           borderRadius: 4,
                           background: bg,
-                          border: c.placeholder ? 'none' : `1px solid ${c.isToday ? color : (c.value > 0 ? 'transparent' : 'rgba(30,32,48,0.05)')}`,
+                          border: c.placeholder ? 'none' : `1px solid ${c.isToday ? color : (c.value > 0 ? 'transparent' : 'rgba(243,235,221,0.05)')}`,
                           boxShadow: c.isToday && !c.placeholder ? `0 0 0 1.5px ${color}55, 0 0 6px ${color}44` : (c.value > 0 ? '0 1px 2px rgba(0,0,0,0.05)' : 'none'),
                           transition: 'all 120ms ease',
                         }} />
@@ -295,14 +296,14 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
       })()}
 
       {/* Legend */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, fontSize: 9, color: 'var(--text-dim)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, letterSpacing: '0.1em' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-label)', fontWeight: 600, letterSpacing: '0.1em' }}>
         <span>{view === 'month' ? 'MÊS ATUAL' : 'ÚLTIMOS 365 DIAS'}</span>
         <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
           <span>menos</span>
           {[0.22, 0.42, 0.65, 0.88].map((t, i) => (
             <div key={i} style={{
               width: 11, height: 11, borderRadius: 3,
-              background: `color-mix(in oklab, ${color} ${Math.round(t * 100)}%, white ${Math.round((1-t) * 100)}%)`,
+              background: `color-mix(in oklab, ${color} ${Math.round(t * 100)}%, #141124 ${Math.round((1-t) * 100)}%)`,
               boxShadow: i === 3 ? `0 0 6px ${color}55` : 'none',
             }} />
           ))}
@@ -314,17 +315,17 @@ function HeatmapCard({ logs, title, field, color, label, unit, headerAction }) {
 }
 
 function StudyHeatmap({ logs }) {
-  return <HeatmapCard logs={logs} title="HEATMAP DE HORAS" field="hours" color="#00A86B" label="horas" unit="h" />;
+  return <HeatmapCard logs={logs} title="HEATMAP DE HORAS" field="hours" color="#E8C47A" label="horas" unit="h" />;
 }
 
 function QuestionsFlashcardsHeatmap({ logs }) {
   const [mode, setMode] = React.useState('questions');
   const isQ = mode === 'questions';
-  const color = isQ ? '#5B47B8' : '#0EA5E9';
-  const colorBg = isQ ? 'rgba(91,71,184,0.10)' : 'rgba(14,165,233,0.10)';
-  const colorBorder = isQ ? 'rgba(91,71,184,0.35)' : 'rgba(14,165,233,0.45)';
+  const color = isQ ? '#B7AAFF' : '#8FB8FF';
+  const colorBg = isQ ? 'rgba(183,170,255,0.10)' : 'rgba(143,184,255,0.10)';
+  const colorBorder = isQ ? 'rgba(183,170,255,0.35)' : 'rgba(143,184,255,0.45)';
   const otherLabel = isQ ? 'Flash Cards' : 'Questões';
-  const otherColor = isQ ? '#0EA5E9' : '#5B47B8';
+  const otherColor = isQ ? '#8FB8FF' : '#B7AAFF';
   const toggleBtn = (
     <button
       onClick={() => setMode(isQ ? 'flashcards' : 'questions')}
@@ -336,8 +337,8 @@ function QuestionsFlashcardsHeatmap({ logs }) {
         background: `linear-gradient(135deg, ${otherColor}22, ${otherColor}11)`,
         color: otherColor,
         fontSize: 11, fontWeight: 800, letterSpacing: '0.04em',
-        fontFamily: 'JetBrains Mono, monospace',
-        boxShadow: `0 2px 8px ${otherColor}33, 0 0 0 1px rgba(255,255,255,0.6) inset`,
+        fontFamily: 'var(--font-num)',
+        boxShadow: `0 2px 8px ${otherColor}33, 0 0 0 1px rgba(255,255,255,0.06) inset`,
         transition: 'all 160ms ease',
       }}
       onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = `0 4px 14px ${otherColor}55, 0 0 0 1px rgba(255,255,255,0.6) inset`; }}
